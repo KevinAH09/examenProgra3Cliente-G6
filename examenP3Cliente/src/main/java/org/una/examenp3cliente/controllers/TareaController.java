@@ -46,22 +46,22 @@ public class TareaController extends Controller implements Initializable {
         llenarProyectos();
         System.out.println(listProyectos);
         if (listProyectos != null) {
-
-            Node imgroot = new ImageView(new Image("org/una/laboratorio/icons/menu.png"));
-            Node imgInformacion = new ImageView(new Image("org/una/laboratorio/icons/informacion.png"));
-            Node imgAdmin = new ImageView(new Image("org/una/laboratorio/icons/lengueta.png"));
+//
+//            Node imgroot = new ImageView(new Image("org/una/laboratorio/icons/menu.png"));
+//            Node imgInformacion = new ImageView(new Image("org/una/laboratorio/icons/informacion.png"));
+//            Node imgAdmin = new ImageView(new Image("org/una/laboratorio/icons/lengueta.png"));
 
             TreeItem<String> root = new TreeItem<>("Proyectos");
-            root.setGraphic(imgroot);
+//            root.setGraphic(imgroot);
             treeView.setRoot(root);
 
             for (ProyectoDTO proyecto : listProyectos) {
                 TreeItem<String> item = new TreeItem<>(proyecto.getNombre());
-                item.setGraphic(imgroot);
+//                item.setGraphic(imgroot);
                 root.getChildren().add(item);
                 for (TareaDTO tarea : proyecto.getListTareas()) {
                     TreeItem<String> itemTarea = new TreeItem<>(tarea.getDescripcion());
-                    itemTarea.setGraphic(imgAdmin);
+//                    itemTarea.setGraphic(imgAdmin);
                     item.getChildren().add(itemTarea);
 
                 }
