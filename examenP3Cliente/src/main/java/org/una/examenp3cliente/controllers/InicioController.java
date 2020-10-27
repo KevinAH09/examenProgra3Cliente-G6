@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import org.una.examenp3cliente.utils.FlowController;
 
 /**
  * FXML Controller class
@@ -32,6 +33,7 @@ public class InicioController extends Controller implements Initializable {
 
     @FXML
     private void actionTareas(ActionEvent event) {
+        FlowController.getInstance().goView("tarea/Tarea");
     }
 
     @FXML

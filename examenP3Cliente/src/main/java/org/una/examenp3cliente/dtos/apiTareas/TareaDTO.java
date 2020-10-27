@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.una.examenp3cliente.dtos;
+package org.una.examenp3cliente.dtos.apiTareas;
 
 import java.util.Date;
-import org.una.examenp3cliente.dtos.ProyectoDTO;
+import org.una.examenp3cliente.dtos.apiTareas.ProyectoDTO;
 
 /**
  *
@@ -97,4 +97,9 @@ public class TareaDTO {
         this.fechaFinalizacion = fechaFinalizacion;
     }
 
+    @Override
+    public String toString() {
+        return "TareaDTO{" + "id=" + id + ", descripcion=" + descripcion + ", importancia=" + importancia + ", urgencia=" + urgencia + ", procentajeAvance=" + procentajeAvance + ", proyectoId=" + proyectoId + ", fechaInicio=" + fechaInicio + ", fechaFinalizacion=" + fechaFinalizacion + '}';
+    }
+    
 }
