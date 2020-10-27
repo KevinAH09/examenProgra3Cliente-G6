@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.stage.StageStyle;
+import org.una.examenp3cliente.utils.FlowController;
 
 /**
  * JavaFX App
@@ -17,9 +19,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+        System.out.println("org.una.examenp3cliente.utils.FlowController.goMain()");
+        FlowController.getInstance().InitializeFlow(stage, null);
+        stage.initStyle(StageStyle.DECORATED);
+        FlowController.getInstance().goMain();
+        FlowController.getInstance().goView("inicio/Inicio");
     }
 
     static void setRoot(String fxml) throws IOException {
