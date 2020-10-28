@@ -1,15 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 
-<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.TareaController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.TareaController">
    <children>
       <BorderPane prefHeight="560.0" prefWidth="793.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="Proyecto" />
+                              <HBox alignment="CENTER" prefHeight="66.0" prefWidth="610.0" spacing="10.0">
+                                 <children>
+                                    <JFXTextField fx:id="txtNombreProyecto" alignment="CENTER" disable="true" prefHeight="29.0" prefWidth="190.0" promptText="Nombre" />
+                                    <JFXTextField fx:id="txtPorcentajeAvanceProyecto" disable="true" prefWidth="200.0" promptText="Porcentaje de avance" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="29.0" prefWidth="610.0">
+                                 <children>
+                                    <JFXTextArea fx:id="txtdescripcionProyecto" disable="true" prefHeight="47.0" prefWidth="404.0" promptText="Descripcion" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="610.0" spacing="20.0">
+                                 <children>
+                                    <JFXButton fx:id="btnCrearTarea" onAction="#accionCrearTarea" prefHeight="29.0" prefWidth="115.0" text="Crear tarea" />
+                                    <JFXButton fx:id="btnEditarProeycto" onAction="#actionEditarGuadrarProyecto" text="Editar proyecto" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <Label text="Tarea" />
+                              <HBox alignment="CENTER" prefHeight="52.0" prefWidth="503.0" spacing="20.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <JFXTextField fx:id="txtNombreTarea" alignment="CENTER" disable="true" prefHeight="29.0" prefWidth="200.0" promptText="Nombre" />
+                                    <JFXTextField fx:id="txtPorcentajeTarea" disable="true" prefHeight="29.0" prefWidth="200.0" promptText="Porcentaje de avance" />
+                                 </children></HBox>
+                              <HBox alignment="CENTER" prefHeight="0.0" prefWidth="503.0" spacing="20.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <DatePicker fx:id="fechaInicio" disable="true" prefWidth="200.0" promptText="Fecha inicio" />
+                                    <DatePicker fx:id="fechaFinalizacion" disable="true" prefWidth="200.0" promptText="Fecha Finalizacion" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="61.0" prefWidth="610.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <JFXTextField fx:id="txtImportancia" alignment="CENTER" disable="true" onMouseClicked="#actionMensageImportancia" prefHeight="29.0" prefWidth="122.0" promptText="Importancia" />
+                                    <Label text="*" />
+                                    <JFXTextField fx:id="txtUrgancia" alignment="CENTER" disable="true" onAction="#actionMensageUrgencia" prefHeight="29.0" prefWidth="130.0" promptText="Urgencia" />
+                                    <Label text="=" />
+                                    <JFXTextField fx:id="txtPrioridad" alignment="CENTER" disable="true" prefHeight="29.0" prefWidth="130.0" promptText="Prioridad" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="46.0" prefWidth="610.0" spacing="20.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <JFXTextArea fx:id="txtdescripcionTarea" disable="true" prefHeight="43.0" prefWidth="428.0" promptText="Descripcion" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0">
+                                 <children>
+                                    <JFXButton fx:id="btnEditarTarea" onAction="#actionGuardarEditarTarea" text="Editar tarea" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </center>
+         <top>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="67.0" prefWidth="793.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Separator prefWidth="200.0" />
+               </children>
+            </VBox>
+         </top>
          <left>
-            <JFXTreeView fx:id="treeView" BorderPane.alignment="CENTER" />
+            <VBox alignment="CENTER" prefHeight="493.0" prefWidth="274.0" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXTextField fx:id="txtnombreProyecto" alignment="CENTER" labelFloat="true" onKeyPressed="#actionFilterproyecto" promptText="Buscar por nombre del proyecto">
+                     <focusColor>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="BLACK" />
+                              <Stop color="WHITE" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </focusColor>
+                  </JFXTextField>
+                  <JFXTreeView fx:id="treeView" VBox.vgrow="ALWAYS" />
+               </children>
+               <BorderPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </VBox>
          </left>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="793.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="btnProyectoNuevo" onAction="#actionProyectoNuevo" text="Proyecto nuevo" />
+               </children>
+            </HBox>
+         </bottom>
       </BorderPane>
    </children>
 </AnchorPane>

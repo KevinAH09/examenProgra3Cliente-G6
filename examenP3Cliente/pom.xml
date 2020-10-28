@@ -17,10 +17,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <mainClass>org.una.examenp3cliente.App</mainClass>
+        <moduleName>org.una.examenp3cliente.</moduleName>
         <java.version>11</java.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>11.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>11.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>16-ea+1</version>
+        </dependency>
         <dependency>
             <groupId>com.jfoenix</groupId>
             <artifactId>jfoenix</artifactId>
@@ -79,11 +96,6 @@
             <version>2.26</version>
         </dependency>
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>13</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
@@ -131,6 +143,18 @@
                 <version>0.0.4</version>
                 <configuration>
                     <mainClass>org.una.examenp3cliente.App</mainClass>
+                    <options>
+                        <option>--add-exports</option>
+                        <option>javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix</option>
+                        <option>--add-exports</option>
+                        <option>javafx.controls/com.sun.javafx.scene.control=com.jfoenix</option>
+                        <option>--add-exports</option>
+                        <option>javafx.base/com.sun.javafx.binding=com.jfoenix</option>
+                        <option>--add-exports</option>
+                        <option>javafx.graphics/com.sun.javafx.stage=com.jfoenix</option>
+                        <option>--add-exports</option>
+                        <option>javafx.base/com.sun.javafx.event=com.jfoenix</option>
+                    </options>
                 </configuration>
                 <executions>
                     <execution>
@@ -153,7 +177,19 @@
                         <id>ide-debug</id>
                         <configuration>
                             <options>
-                                <option>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</option>
+                                <options>
+                                    <option>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</option>
+                                    <option>--add-exports</option>
+                                    <option>javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix</option>
+                                    <option>--add-exports</option>
+                                    <option>javafx.controls/com.sun.javafx.scene.control=com.jfoenix</option>
+                                    <option>--add-exports</option>
+                                    <option>javafx.base/com.sun.javafx.binding=com.jfoenix</option>
+                                    <option>--add-exports</option>
+                                    <option>javafx.graphics/com.sun.javafx.stage=com.jfoenix</option>
+                                    <option>--add-exports</option>
+                                    <option>javafx.base/com.sun.javafx.event=com.jfoenix</option>
+                                </options>
                             </options>
                         </configuration>
                     </execution>

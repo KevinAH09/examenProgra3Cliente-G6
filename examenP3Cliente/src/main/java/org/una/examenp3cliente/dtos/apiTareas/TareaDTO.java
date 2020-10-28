@@ -16,6 +16,8 @@ public class TareaDTO {
 
     private Long id;
 
+    private String nombre;
+
     private String descripcion;
 
     private double importancia;
@@ -97,9 +99,17 @@ public class TareaDTO {
         this.fechaFinalizacion = fechaFinalizacion;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     @Override
     public String toString() {
-        return "TareaDTO{" + "id=" + id + ", descripcion=" + descripcion + ", importancia=" + importancia + ", urgencia=" + urgencia + ", procentajeAvance=" + procentajeAvance + ", proyectoId=" + proyectoId + ", fechaInicio=" + fechaInicio + ", fechaFinalizacion=" + fechaFinalizacion + '}';
+        return "TareaDTO{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", importancia=" + importancia + ", urgencia=" + urgencia + ", procentajeAvance=" + procentajeAvance + ", proyectoId=" + proyectoId + ", fechaInicio=" + fechaInicio + ", fechaFinalizacion=" + fechaFinalizacion + '}';
     }
-    
+
 }
