@@ -207,14 +207,18 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionProyectoNuevo(ActionEvent event) {
+        proyectoSelect = new ProyectoDTO();
+        tareaSelect = new TareaDTO();
     }
 
     @FXML
     private void accionCrearTarea(ActionEvent event) {
+        tareaSelect = new TareaDTO();
     }
 
     @FXML
     private void actionEditarGuadrarProyecto(ActionEvent event) {
+
         if (proyectoSelect != null) {
             if (btnEditarProeycto.getText().equals("Editar proyecto")) {
                 btnEditarProeycto.setText("Guardar proyecto");
@@ -223,24 +227,27 @@ public class TareaController extends Controller implements Initializable {
                 txtdescripcionProyecto.setDisable(false);
             } else {
                 if (txtNombreProyecto.getText() != null && txtdescripcionProyecto.getText() != null) {
-                    btnEditarProeycto.setText("Editar proyecto");
-                    btnCrearTarea.setText("Crear tarea");
-                    txtNombreProyecto.setDisable(true);
-                    txtdescripcionProyecto.setDisable(true);
                     proyectoSelect.setDescripcion(txtdescripcionProyecto.getText());
                     proyectoSelect.setNombre(txtNombreProyecto.getText());
-                    ProyectoService.updateProyecto(proyectoSelect);
+                    if (ProyectoService.updateProyecto(proyectoSelect) == 200) {
+                        llenarProyectos();
+                        new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Proyecto guardado correctamente");
+                        btnEditarProeycto.setText("Editar proyecto");
+                        btnCrearTarea.setText("Crear tarea");
+                        txtNombreProyecto.setDisable(true);
+                        txtdescripcionProyecto.setDisable(true);
+                    }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de edicion de proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
                 }
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de edicion de proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor seleccione un proyecto");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor seleccione un proyecto");
         }
     }
 
     @FXML
-    private void actionMensageUrgencia(ActionEvent event) {
+    private void actionMensageUrgencia(MouseEvent event) {
         if (txtUrgancia.getText().equals("")) {
             urgenciaValidator.getItems().clear();
             urgenciaValidator.getItems().add(
@@ -262,14 +269,7 @@ public class TareaController extends Controller implements Initializable {
             fechaFinalizacion.setDisable(false);
         } else {
             if (txtNombreTarea.getText() != null && txtdescripcionTarea.getText() != null && txtPorcentajeTarea.getText() != null && txtImportancia.getText() != null && txtUrgancia.getText() != null) {
-                btnEditarTarea.setText("Editar tarea");
-                txtNombreTarea.setDisable(true);
-                txtdescripcionTarea.setDisable(true);
-                txtPorcentajeTarea.setDisable(true);
-                txtImportancia.setDisable(true);
-                txtUrgancia.setDisable(true);
-                fechaInicio.setDisable(true);
-                fechaFinalizacion.setDisable(true);
+
                 tareaSelect.setDescripcion(txtdescripcionTarea.getText());
                 tareaSelect.setNombre(txtNombreTarea.getText());
                 tareaSelect.setProcentajeAvance(Double.valueOf(txtPorcentajeTarea.getText()));
@@ -277,8 +277,22 @@ public class TareaController extends Controller implements Initializable {
                 tareaSelect.setImportancia(Double.valueOf(txtImportancia.getText()));
                 tareaSelect.setFechaInicio(Date.from(fechaInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
                 tareaSelect.setFechaFinalizacion(Date.from(fechaFinalizacion.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                System.out.println(tareaSelect.getFechaInicio());
-                TareaService.updateTarea(tareaSelect);
+                if (TareaService.updateTarea(tareaSelect) == 200) {
+                    llenarProyectos();
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Tarea guardada correctamente");
+                    btnEditarTarea.setText("Editar tarea");
+                    txtNombreTarea.setDisable(true);
+                    txtdescripcionTarea.setDisable(true);
+                    txtPorcentajeTarea.setDisable(true);
+                    txtImportancia.setDisable(true);
+                    txtUrgancia.setDisable(true);
+                    fechaInicio.setDisable(true);
+                    fechaFinalizacion.setDisable(true);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Ocurrio un error al guardar la tarea");
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
             }
         }
     }
@@ -301,4 +315,12 @@ public class TareaController extends Controller implements Initializable {
     private void actionSalir(ActionEvent event) {
         FlowController.getInstance().goView("inicio/Inicio");
     }
+
+    @FXML
+    private void actionPrioridad(KeyEvent event) {
+        if (!txtImportancia.getText().isEmpty() && !txtUrgancia.getText().isEmpty()) {
+            txtPrioridad.setText(String.valueOf((Double.valueOf(txtImportancia.getText()) * Double.valueOf(txtUrgancia.getText()))));
+        }
+    }
+
 }

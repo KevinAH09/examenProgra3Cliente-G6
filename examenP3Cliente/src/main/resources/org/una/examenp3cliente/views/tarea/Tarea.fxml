@@ -41,8 +41,8 @@
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="610.0" spacing="20.0">
                                  <children>
-                                    <JFXButton fx:id="btnCrearTarea" onAction="#accionCrearTarea" prefHeight="29.0" prefWidth="115.0" text="Crear tarea" />
-                                    <JFXButton fx:id="btnEditarProeycto" onAction="#actionEditarGuadrarProyecto" text="Editar proyecto" />
+                                    <JFXButton fx:id="btnCrearTarea" onAction="#accionCrearTarea" prefHeight="29.0" prefWidth="120.0" text="Crear tarea" />
+                                    <JFXButton fx:id="btnEditarProeycto" onAction="#actionEditarGuadrarProyecto" prefHeight="29.0" prefWidth="140.0" text="Editar proyecto" />
                                  </children>
                                  <padding>
                                     <Insets right="20.0" />
@@ -63,9 +63,9 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="61.0" prefWidth="610.0" spacing="5.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <JFXTextField fx:id="txtImportancia" alignment="CENTER" disable="true" onMouseClicked="#actionMensageImportancia" prefHeight="29.0" prefWidth="122.0" promptText="Importancia" />
+                                    <JFXTextField fx:id="txtImportancia" alignment="CENTER" disable="true" onKeyReleased="#actionPrioridad" onMouseClicked="#actionMensageImportancia" prefHeight="29.0" prefWidth="122.0" promptText="Importancia" />
                                     <Label text="*" />
-                                    <JFXTextField fx:id="txtUrgancia" alignment="CENTER" disable="true" onAction="#actionMensageUrgencia" prefHeight="29.0" prefWidth="130.0" promptText="Urgencia" />
+                                    <JFXTextField fx:id="txtUrgancia" alignment="CENTER" disable="true" onKeyReleased="#actionPrioridad" onMouseClicked="#actionMensageUrgencia" prefHeight="29.0" prefWidth="130.0" promptText="Urgencia" />
                                     <Label text="=" />
                                     <JFXTextField fx:id="txtPrioridad" alignment="CENTER" disable="true" prefHeight="29.0" prefWidth="130.0" promptText="Prioridad" />
                                  </children>
@@ -81,7 +81,7 @@
                               <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="20.0">
                                  <children>
                                     <Button fx:id="btnCancelarTarea" mnemonicParsing="false" onAction="#actionCancelarTarea" prefHeight="29.0" prefWidth="120.0" text="Cancelar" />
-                                    <JFXButton fx:id="btnEditarTarea" onAction="#actionGuardarEditarTarea" prefWidth="120.0" text="Editar tarea" />
+                                    <JFXButton fx:id="btnEditarTarea" onAction="#actionGuardarEditarTarea" prefHeight="29.0" prefWidth="140.0" text="Editar tarea" />
                                  </children>
                                  <padding>
                                     <Insets right="20.0" />
