@@ -5,8 +5,8 @@
  */
 package org.una.examenp3cliente.dtos.apiProvincias;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.una.examenp3cliente.dtos.apiTareas.DistritoDTO;
 
 /**
  *
@@ -21,6 +21,10 @@ public class CantonDTO {
     private String codigo;
     
     private List<DistritoDTO> listDistritos;
+    
+    public CantonDTO() {
+        listDistritos = new ArrayList();
+    }
 
     public Long getId() {
         return id;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.una.examenp3cliente.dtos.apiTareas.CantonDTO;
+import org.una.examenp3cliente.dtos.apiProvincias.CantonDTO;
 import org.una.examenp3cliente.sharedServices.Conection;
 
 /**

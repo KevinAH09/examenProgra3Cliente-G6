@@ -7,7 +7,6 @@ package org.una.examenp3cliente.dtos.apiProvincias;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.una.examenp3cliente.dtos.apiTareas.UnidadDTO;
 
 /**
  *
