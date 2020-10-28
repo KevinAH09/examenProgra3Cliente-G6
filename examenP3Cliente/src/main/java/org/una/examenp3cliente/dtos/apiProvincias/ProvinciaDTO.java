@@ -59,6 +59,6 @@ public class ProvinciaDTO {
 
     @Override
     public String toString() {
-        return "ProvinciaDTO{" + "id=" + id + ", nombreProvincia=" + nombreProvincia + ", codigo=" + codigo + '}';
+        return  nombreProvincia;
     }
 }
