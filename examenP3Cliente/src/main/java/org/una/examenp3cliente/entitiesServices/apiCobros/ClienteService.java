@@ -47,6 +47,18 @@ public class ClienteService {
         }
         return ClienteDTO;
     }
+    public static ClienteDTO identificacionCliente(String identificacion) {
+
+        ClienteDTO ClienteDTO = new ClienteDTO();
+        try {
+            ClienteDTO = (ClienteDTO) Conection.oneConnection("clientes/identificacion/" + identificacion, new TypeToken<ClienteDTO>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ClienteDTO;
+    }
 
     public static ClienteDTO createProyecto(ClienteDTO createCliente) {
         ClienteDTO cliente = new ClienteDTO();
