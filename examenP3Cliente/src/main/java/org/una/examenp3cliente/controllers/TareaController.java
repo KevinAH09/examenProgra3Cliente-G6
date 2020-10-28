@@ -22,16 +22,21 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.una.examenp3cliente.dtos.apiTareas.ProyectoDTO;
 import org.una.examenp3cliente.dtos.apiTareas.TareaDTO;
 import org.una.examenp3cliente.entitiesServices.apiTareas.ProyectoService;
 import org.una.examenp3cliente.entitiesServices.apiTareas.TareaService;
+import org.una.examenp3cliente.utils.FlowController;
+import org.una.examenp3cliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -82,6 +87,8 @@ public class TareaController extends Controller implements Initializable {
 
     final ContextMenu importanciaValidator = new ContextMenu();
     final ContextMenu urgenciaValidator = new ContextMenu();
+    @FXML
+    private Button btnCancelarTarea;
 
     /**
      * Initializes the controller class.
@@ -207,6 +214,28 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionEditarGuadrarProyecto(ActionEvent event) {
+        if (proyectoSelect != null) {
+            if (btnEditarProeycto.getText().equals("Editar proyecto")) {
+                btnEditarProeycto.setText("Guardar proyecto");
+                btnCrearTarea.setText("Cancelar");
+                txtNombreProyecto.setDisable(false);
+                txtdescripcionProyecto.setDisable(false);
+            } else {
+                if (txtNombreProyecto.getText() != null && txtdescripcionProyecto.getText() != null) {
+                    btnEditarProeycto.setText("Editar proyecto");
+                    btnCrearTarea.setText("Crear tarea");
+                    txtNombreProyecto.setDisable(true);
+                    txtdescripcionProyecto.setDisable(true);
+                    proyectoSelect.setDescripcion(txtdescripcionProyecto.getText());
+                    proyectoSelect.setNombre(txtNombreProyecto.getText());
+                    ProyectoService.updateProyecto(proyectoSelect);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de edicion de proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
+                }
+            }
+        }else{
+             new Mensaje().showModal(Alert.AlertType.ERROR, "Error de edicion de proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor seleccione un proyecto");
+        }
     }
 
     @FXML
@@ -231,5 +260,14 @@ public class TareaController extends Controller implements Initializable {
                     new MenuItem("Campo numero del 1 al 10, con el fin de evaluar la importancia del proyecto"));
             importanciaValidator.show(txtImportancia, Side.RIGHT, 10, 0);
         }
+    }
+
+    @FXML
+    private void actionCancelarTarea(ActionEvent event) {
+    }
+
+    @FXML
+    private void actionSalir(ActionEvent event) {
+        FlowController.getInstance().goView("inicio/Inicio");
     }
 }
