@@ -14,6 +14,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -233,8 +234,8 @@ public class TareaController extends Controller implements Initializable {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error de edicion de proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
                 }
             }
-        }else{
-             new Mensaje().showModal(Alert.AlertType.ERROR, "Error de edicion de proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor seleccione un proyecto");
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de edicion de proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor seleccione un proyecto");
         }
     }
 
@@ -250,6 +251,36 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionGuardarEditarTarea(ActionEvent event) {
+        if (btnEditarTarea.getText().equals("Editar tarea")) {
+            btnEditarTarea.setText("Guardar tarea");
+            txtNombreTarea.setDisable(false);
+            txtdescripcionTarea.setDisable(false);
+            txtPorcentajeTarea.setDisable(false);
+            txtImportancia.setDisable(false);
+            txtUrgancia.setDisable(false);
+            fechaInicio.setDisable(false);
+            fechaFinalizacion.setDisable(false);
+        } else {
+            if (txtNombreTarea.getText() != null && txtdescripcionTarea.getText() != null && txtPorcentajeTarea.getText() != null && txtImportancia.getText() != null && txtUrgancia.getText() != null) {
+                btnEditarTarea.setText("Editar tarea");
+                txtNombreTarea.setDisable(true);
+                txtdescripcionTarea.setDisable(true);
+                txtPorcentajeTarea.setDisable(true);
+                txtImportancia.setDisable(true);
+                txtUrgancia.setDisable(true);
+                fechaInicio.setDisable(true);
+                fechaFinalizacion.setDisable(true);
+                tareaSelect.setDescripcion(txtdescripcionTarea.getText());
+                tareaSelect.setNombre(txtNombreTarea.getText());
+                tareaSelect.setProcentajeAvance(Double.valueOf(txtPorcentajeTarea.getText()));
+                tareaSelect.setUrgencia(Double.valueOf(txtUrgancia.getText()));
+                tareaSelect.setImportancia(Double.valueOf(txtImportancia.getText()));
+                tareaSelect.setFechaInicio(Date.from(fechaInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                tareaSelect.setFechaFinalizacion(Date.from(fechaFinalizacion.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                System.out.println(tareaSelect.getFechaInicio());
+                TareaService.updateTarea(tareaSelect);
+            }
+        }
     }
 
     @FXML
