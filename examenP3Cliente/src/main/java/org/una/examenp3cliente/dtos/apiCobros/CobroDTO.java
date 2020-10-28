@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author cfugu
  */
-public class CobroPendienteDTO {
+public class CobroDTO {
 
     private Long id;
 
