@@ -20,11 +20,18 @@ public class CantonDTO {
 
     private String codigo;
     
-    private List<DistritoDTO> listDistritos;
-    
-    public CantonDTO() {
-        listDistritos = new ArrayList();
+    private ProvinciaDTO provinciaId;
+
+    public ProvinciaDTO getProvinciaId() {
+        return provinciaId;
     }
+
+    public void setProvinciaId(ProvinciaDTO provinciaId) {
+        this.provinciaId = provinciaId;
+    }
+    
+    
+   
 
     public Long getId() {
         return id;
@@ -50,14 +57,5 @@ public class CantonDTO {
         this.codigo = codigo;
     }
 
-    public List<DistritoDTO> getListDistritos() {
-        return listDistritos;
-    }
-
-    public void setListDistritos(List<DistritoDTO> listDistritos) {
-        this.listDistritos = listDistritos;
-    }
-    
-    
     
 }

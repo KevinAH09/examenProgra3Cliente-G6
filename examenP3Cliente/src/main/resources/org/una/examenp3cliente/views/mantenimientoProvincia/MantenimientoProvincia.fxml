@@ -35,6 +35,8 @@
                   </VBox>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="133.0" prefWidth="793.0">
                      <children>
+                        <JFXButton onAction="#regresar" prefHeight="29.0" prefWidth="146.0" text="Regresar al menú" />
+                        <JFXButton prefHeight="29.0" prefWidth="508.0" text="Button" visible="false" />
                         <JFXButton fx:id="btnGuardar" onAction="#guardar" prefHeight="29.0" prefWidth="146.0" text="Guardar" />
                      </children>
                   </HBox>

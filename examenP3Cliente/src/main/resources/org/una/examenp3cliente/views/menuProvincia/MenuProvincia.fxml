@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.una.examenp3cliente.controllers.MenuProvinciaController">
+   <children>
+      <StackPane prefHeight="560.0" prefWidth="793.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="99.0" prefWidth="793.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="110.0" text="Menú" />
+                     </children>
+                  </HBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+                     <children>
+                        <JFXButton onAction="#irProvincia" prefHeight="45.0" prefWidth="317.0" text="Agregar Provincias" />
+                        <JFXButton onAction="#irCantone" prefHeight="45.0" prefWidth="317.0" text="Agregar Cantones" />
+                        <JFXButton onAction="#irDistritos" prefHeight="45.0" prefWidth="316.0" text="Agregar Distritos" />
+                        <JFXButton onAction="#irUnidades" prefHeight="45.0" prefWidth="316.0" text="Agregar Unidades" />
+                        <JFXButton onAction="#irMostrar" prefHeight="45.0" prefWidth="316.0" text="Mostrar" />
+                        <JFXButton onAction="#irMenuPrincipal" prefHeight="45.0" prefWidth="316.0" text="Regresar al menú principal" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

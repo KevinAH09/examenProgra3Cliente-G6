@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.una.examenp3cliente.controllers.MantenimientoCantonesController">
+<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.MantenimientoCantonesController">
    <children>
       <StackPane layoutX="10.0" layoutY="10.0" prefHeight="560.0" prefWidth="793.0">
          <children>
@@ -42,6 +41,8 @@
                   </VBox>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="133.0" prefWidth="793.0">
                      <children>
+                        <JFXButton onAction="#regresar" prefHeight="29.0" prefWidth="146.0" text="Regresar al menú" />
+                        <JFXButton prefHeight="29.0" prefWidth="500.0" text="Regresar al menú" visible="false" />
                         <JFXButton fx:id="btnGuardar" onAction="#guardar" prefHeight="29.0" prefWidth="146.0" text="Guardar" />
                      </children>
                   </HBox>

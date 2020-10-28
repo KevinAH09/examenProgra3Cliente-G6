@@ -30,6 +30,7 @@ public class ProvinciaService {
         } catch (IOException ex) {
             Logger.getLogger(ProvinciaService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("holaService"+listProvinciaDTOs);
         return listProvinciaDTOs;
     }
 

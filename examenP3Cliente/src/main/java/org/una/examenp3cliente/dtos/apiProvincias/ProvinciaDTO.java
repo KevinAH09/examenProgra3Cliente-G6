@@ -19,20 +19,6 @@ public class ProvinciaDTO {
 
     private String codigo;
     
-    private List<CantonDTO> listCantones;
-
-    public ProvinciaDTO() {
-        listCantones = new ArrayList();
-    }
-
-    public List<CantonDTO> getListCantones() {
-        return listCantones;
-    }
-
-    public void setListCantones(List<CantonDTO> listCantones) {
-        this.listCantones = listCantones;
-    }
-    
     public Long getId() {
         return id;
     }

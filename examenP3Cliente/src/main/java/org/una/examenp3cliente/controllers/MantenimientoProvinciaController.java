@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.una.examenp3cliente.dtos.apiProvincias.ProvinciaDTO;
 import org.una.examenp3cliente.entitiesServices.apiProvincias.ProvinciaService;
+import org.una.examenp3cliente.utils.FlowController;
 import org.una.examenp3cliente.utils.Mensaje;
 
 /**
@@ -65,6 +66,11 @@ public class MantenimientoProvinciaController extends Controller implements Init
     @Override
     public void initialize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @FXML
+    private void regresar(ActionEvent event) {
+        FlowController.getInstance().goView("menuProvincia/MenuProvincia");
     }
 
 }

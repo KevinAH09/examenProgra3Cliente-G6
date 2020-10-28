@@ -58,7 +58,7 @@ public class CantonService {
 //        return listCantonDTOs;
 //    }
 
-    public static CantonDTO createProvincias(CantonDTO create) {
+    public static CantonDTO createCantones(CantonDTO create) {
         CantonDTO proCreado = new CantonDTO();
         try {
             proCreado = (CantonDTO) Conection.createObjectToConnectionReturnObject("cantones/", create, new TypeToken<CantonDTO>() {
@@ -69,7 +69,7 @@ public class CantonService {
         return proCreado;
     }
 
-    public static int updateTarea(CantonDTO update) {
+    public static int updateCanton(CantonDTO update) {
         int codeResponse = 0;
         try {
             codeResponse = Conection.updateObjectToConnection("cantones/" + update.getId(), update);

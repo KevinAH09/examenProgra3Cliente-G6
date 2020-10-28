@@ -38,7 +38,7 @@ public class InicioController extends Controller implements Initializable {
 
     @FXML
     private void actionProvincias(ActionEvent event) {
-        FlowController.getInstance().goView("Cantones/MantenimientoCantones");
+        FlowController.getInstance().goView("menuProvincia/MenuProvincia");
     }
 
     @FXML
