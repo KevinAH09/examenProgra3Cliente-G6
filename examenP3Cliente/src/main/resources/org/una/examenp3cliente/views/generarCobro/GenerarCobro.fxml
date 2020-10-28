@@ -83,7 +83,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="62.0" prefWidth="378.0">
                            <children>
-                              <Label prefHeight="40.0" prefWidth="378.0" text="Tipo de servico para poder generar un cobro" />
+                              <Label prefHeight="40.0" prefWidth="378.0" text="Seleccione un servicio para poder generar un cobro" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">

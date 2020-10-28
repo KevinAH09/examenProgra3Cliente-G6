@@ -12,10 +12,12 @@ package org.una.examenp3cliente.dtos.apiCobros;
 public class ClienteDTO {
 
     private Long id;
-    
+
     private String identificacion;
 
     private String telefono;
+
+    private String nombre;
 
     private MembresiaDTO membresiasId;
 
@@ -49,6 +51,14 @@ public class ClienteDTO {
 
     public void setMembresiasId(MembresiaDTO membresiasId) {
         this.membresiasId = membresiasId;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @Override
