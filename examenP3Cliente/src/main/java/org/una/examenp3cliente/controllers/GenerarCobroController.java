@@ -10,6 +10,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -62,13 +64,14 @@ public class GenerarCobroController extends Controller implements Initializable 
     @FXML
     private JFXTextField txtMonto;
     @FXML
-    private JFXComboBox<String> cmbTipoServicio;
-    @FXML
     private JFXButton btnVolver;
     @FXML
     private JFXButton btnCobro;
     public List<ClienteDTO> clientesList = new ArrayList<ClienteDTO>();
     public ClienteDTO clientesFilt = new ClienteDTO();
+    Date date=new Date();
+    @FXML
+    private JFXTextField txtTipoServicio;
 
     /**
      * Initializes the controller class.
@@ -83,6 +86,7 @@ public class GenerarCobroController extends Controller implements Initializable 
         txtDescripcion.setDisable(true);
         txtPeridiocidad.setDisable(true);
         txtMonto.setDisable(true);
+        txtTipoServicio.setDisable(true);
         cmbBusqueda.setItems(FXCollections.observableArrayList("Todos", "Identificacion"));
         notificar(1);
     }
@@ -102,7 +106,7 @@ public class GenerarCobroController extends Controller implements Initializable 
                 notificar(0);
             }
         }
-        if (cmbBusqueda.getValue().equals("Identificacion")&&!txtBusqueda.getText().isEmpty()) {
+        if (cmbBusqueda.getValue().equals("Identificacion") && !txtBusqueda.getText().isEmpty()) {
             clientesFilt = ClienteService.identificacionCliente(txtBusqueda.getText());
             if (clientesFilt != null) {
                 tableView.getItems().clear();
@@ -124,6 +128,8 @@ public class GenerarCobroController extends Controller implements Initializable 
 
     @FXML
     private void onActionGenerar(ActionEvent event) {
+        FechaVencimiento(60);
+        System.out.println(date);
     }
 
     private void InicializarTableView() {
@@ -207,6 +213,14 @@ public class GenerarCobroController extends Controller implements Initializable 
         txtDescripcion.setText(cliente.getMembresiasId().getDescripcion());
         txtPeridiocidad.setText(cliente.getMembresiasId().getPeriodicidad());
         txtMonto.setText(cliente.getMembresiasId().getMonto().toString());
+        txtTipoServicio.setText(cliente.getMembresiasId().getTipo());
+    }
+
+    public void FechaVencimiento(int dias) {   
+         Calendar hoy = Calendar.getInstance();
+         hoy.setTime(date);
+         hoy.add(Calendar.DATE, dias);
+         date=hoy.getTime();
     }
 
     @Override

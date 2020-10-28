@@ -19,6 +19,8 @@ public class MembresiaDTO {
 
     private String periodicidad;
 
+    private String tipo;
+
     public Long getId() {
         return id;
     }
@@ -49,6 +51,14 @@ public class MembresiaDTO {
 
     public void setPeriodicidad(String periodicidad) {
         this.periodicidad = periodicidad;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override

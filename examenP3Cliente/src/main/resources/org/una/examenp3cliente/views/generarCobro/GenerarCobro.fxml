@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="790.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.examenp3cliente.controllers.GenerarCobroController">
+<AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="790.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.GenerarCobroController">
    <children>
       <VBox prefHeight="540.0" prefWidth="819.0">
          <children>
@@ -20,9 +19,9 @@
                <children>
                   <VBox prefHeight="491.0" prefWidth="437.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="44.0" prefWidth="396.0">
+                        <HBox alignment="CENTER" prefHeight="66.0" prefWidth="426.0">
                            <children>
-                              <Label text="Clientes" />
+                              <Label prefHeight="20.0" prefWidth="72.0" text="Clientes" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
@@ -45,51 +44,44 @@
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
                   <VBox prefHeight="491.0" prefWidth="379.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="43.0" prefWidth="378.0">
+                        <HBox alignment="CENTER" prefHeight="85.0" prefWidth="378.0">
                            <children>
-                              <Label text="Información del cliente" />
+                              <Label prefHeight="20.0" prefWidth="178.0" text="Información del cliente" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="378.0" spacing="10.0">
+                        <HBox alignment="CENTER" prefHeight="113.0" prefWidth="378.0" spacing="10.0">
                            <children>
                               <JFXTextField fx:id="txtId" promptText="Id" />
                               <JFXTextField fx:id="txtIdentificacion" promptText="Identificación" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="378.0" spacing="10.0">
+                        <HBox alignment="CENTER" prefHeight="83.0" prefWidth="378.0" spacing="10.0">
                            <children>
                               <JFXTextField fx:id="txtNombre" promptText="Nombre" />
                               <JFXTextField fx:id="txtTelefono" promptText="Teléfono" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="57.0" prefWidth="378.0">
+                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="378.0">
                            <children>
                               <Label text="Información de membresía" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="81.0" prefWidth="378.0" spacing="10.0">
+                        <HBox alignment="CENTER" prefHeight="92.0" prefWidth="378.0" spacing="10.0">
                            <children>
                               <JFXTextField fx:id="txtDescripcion" promptText="Descripcion" />
                               <JFXTextField fx:id="txtPeridiocidad" promptText="Periodicidad" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="378.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="92.0" prefWidth="378.0" spacing="10.0">
                            <children>
-                              <JFXTextField fx:id="txtMonto" promptText="Monto" />
+                              <JFXTextField fx:id="txtMonto" promptText="Monto en ₡" />
+                              <JFXTextField fx:id="txtTipoServicio" promptText="Tipo de servicio" />
                            </children>
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="378.0">
-                           <children>
-                              <Label prefHeight="40.0" prefWidth="378.0" text="Seleccione un servicio para poder generar un cobro" />
-                           </children>
-                        </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <JFXComboBox fx:id="cmbTipoServicio" prefHeight="26.0" prefWidth="194.0" promptText="Tipo de servicio" />
-                           </children>
                            <padding>
                               <Insets left="5.0" />
                            </padding>
