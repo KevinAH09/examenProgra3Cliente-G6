@@ -1,11 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.GenerarCobroController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="790.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.examenp3cliente.controllers.GenerarCobroController">
+   <children>
+      <VBox prefHeight="540.0" prefWidth="819.0">
+         <children>
+            <HBox prefHeight="542.0" prefWidth="819.0">
+               <children>
+                  <VBox prefHeight="491.0" prefWidth="437.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="44.0" prefWidth="396.0">
+                           <children>
+                              <Label text="Clientes" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <JFXTextField fx:id="txtBusqueda" promptText="Ingrese la busqueda" />
+                              <JFXComboBox fx:id="cmbBusqueda" promptText="Seleccione" />
+                              <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" text="Filtrar" />
+                           </children>
+                        </HBox>
+                        <TableView fx:id="tableView" prefHeight="320.0" prefWidth="396.0">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <VBox prefHeight="491.0" prefWidth="379.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="43.0" prefWidth="378.0">
+                           <children>
+                              <Label text="Información del cliente" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="84.0" prefWidth="378.0" spacing="10.0">
+                           <children>
+                              <JFXTextField fx:id="txtId" promptText="Id" />
+                              <JFXTextField fx:id="txtIdentificacion" promptText="Identificación" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="378.0" spacing="10.0">
+                           <children>
+                              <JFXTextField fx:id="txtNombre" promptText="Nombre" />
+                              <JFXTextField fx:id="txtTelefono" promptText="Teléfono" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="57.0" prefWidth="378.0">
+                           <children>
+                              <Label text="Información de membresía" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="81.0" prefWidth="378.0" spacing="10.0">
+                           <children>
+                              <JFXTextField fx:id="txtDescripcion" promptText="Descripcion" />
+                              <JFXTextField fx:id="txtPeridiocidad" promptText="Periodicidad" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="378.0">
+                           <children>
+                              <JFXTextField fx:id="txtMonto" promptText="Monto" />
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="378.0">
+                           <children>
+                              <Label prefHeight="40.0" prefWidth="378.0" text="Tipo de servico para poder generar un cobro" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <JFXComboBox fx:id="cmbTipoServicio" prefHeight="26.0" prefWidth="194.0" promptText="Tipo de servicio" />
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <JFXButton fx:id="btnVolver" onAction="#onActionVolver" text="Volver al menú" />
+                  <JFXButton fx:id="btnCobro" onAction="#onActionGenerar" prefHeight="29.0" prefWidth="160.0" text="Generar cobro" />
+               </children>
+               <VBox.margin>
+                  <Insets right="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>

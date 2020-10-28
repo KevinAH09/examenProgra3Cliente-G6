@@ -5,9 +5,16 @@
  */
 package org.una.examenp3cliente.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableView;
+import org.una.examenp3cliente.dtos.apiCobros.ClienteDTO;
 
 /**
  * FXML Controller class
@@ -16,6 +23,35 @@ import javafx.fxml.Initializable;
  */
 public class GenerarCobroController implements Initializable {
 
+    @FXML
+    private JFXTextField txtBusqueda;
+    @FXML
+    private JFXComboBox<String> cmbBusqueda;
+    @FXML
+    private JFXButton btnFiltrar;
+    @FXML
+    private TableView<ClienteDTO> tableView;
+    @FXML
+    private JFXTextField txtId;
+    @FXML
+    private JFXTextField txtIdentificacion;
+    @FXML
+    private JFXTextField txtNombre;
+    @FXML
+    private JFXTextField txtTelefono;
+    @FXML
+    private JFXTextField txtDescripcion;
+    @FXML
+    private JFXTextField txtPeridiocidad;
+    @FXML
+    private JFXTextField txtMonto;
+    @FXML
+    private JFXComboBox<String> cmbTipoServicio;
+    @FXML
+    private JFXButton btnVolver;
+    @FXML
+    private JFXButton btnCobro;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +59,17 @@ public class GenerarCobroController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void onActionFiltrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionVolver(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionGenerar(ActionEvent event) {
+    }
     
 }
