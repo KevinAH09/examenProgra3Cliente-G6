@@ -48,9 +48,7 @@ public class MantenimientoCantonesController extends Controller implements Initi
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("org.una.examenp3cliente.controllers.MantenimientoCantonesController.initialize()");
         provinciaList = ProvinciaService.allProvincia();
-        System.out.println("hola"+provinciaList);
         combProvincia.setItems(FXCollections.observableArrayList(provinciaList));
         
         

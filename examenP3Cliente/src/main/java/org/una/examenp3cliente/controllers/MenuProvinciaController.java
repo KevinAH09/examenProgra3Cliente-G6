@@ -39,6 +39,7 @@ public class MenuProvinciaController extends Controller implements Initializable
 
     @FXML
     private void irDistritos(ActionEvent event) {
+        FlowController.getInstance().goView("Distritos/MantenimientoDistritos");
     }
 
     @FXML

@@ -5,9 +5,6 @@
  */
 package org.una.examenp3cliente.dtos.apiProvincias;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author Bosco
@@ -16,16 +13,20 @@ public class DistritoDTO {
     
     private Long id;
 
-    private String nombreCanton;
+    private String nombreDistrito;
 
     private String codigo;
     
-    private List<UnidadDTO> listUnidades;
-    
-    public DistritoDTO() {
-        listUnidades = new ArrayList();
+    private CantonDTO cantonId;
+
+    public CantonDTO getCantonId() {
+        return cantonId;
     }
 
+    public void setCantonId(CantonDTO cantonId) {
+        this.cantonId = cantonId;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -34,12 +35,12 @@ public class DistritoDTO {
         this.id = id;
     }
 
-    public String getNombreCanton() {
-        return nombreCanton;
+    public String getNombreDistrito() {
+        return nombreDistrito;
     }
 
-    public void setNombreCanton(String nombreCanton) {
-        this.nombreCanton = nombreCanton;
+    public void setNombreDistrito(String nombreDistrito) {
+        this.nombreDistrito = nombreDistrito;
     }
 
     public String getCodigo() {
@@ -50,12 +51,6 @@ public class DistritoDTO {
         this.codigo = codigo;
     }
 
-    public List<UnidadDTO> getListUnidades() {
-        return listUnidades;
-    }
-
-    public void setListUnidades(List<UnidadDTO> listUnidades) {
-        this.listUnidades = listUnidades;
-    }
+    
     
 }

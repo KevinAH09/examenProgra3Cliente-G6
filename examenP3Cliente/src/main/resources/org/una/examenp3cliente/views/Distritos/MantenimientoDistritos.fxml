@@ -9,22 +9,23 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.MantenimientoCantonesController">
+
+<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.una.examenp3cliente.controllers.MantenimientoDistritosController">
    <children>
-      <StackPane prefHeight="570.0" prefWidth="803.0">
+      <StackPane prefHeight="580.0" prefWidth="813.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Mantenimiento de cantones" />
+                        <Label text="Mantenimiento de distritos" />
                      </children>
                   </HBox>
                   <VBox alignment="CENTER" prefHeight="322.0" prefWidth="793.0" spacing="50.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <JFXTextField fx:id="txtNombreCanton" alignment="CENTER" labelFloat="true" prefHeight="27.0" prefWidth="350.0" promptText="Nombre del cantón" />
+                              <JFXTextField fx:id="txtNombreDistrito" alignment="CENTER" labelFloat="true" prefHeight="27.0" prefWidth="350.0" promptText="Nombre del distrito" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -34,16 +35,16 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <JFXComboBox fx:id="combProvincia" labelFloat="true" prefHeight="31.0" prefWidth="355.0" promptText="Provincia" />
+                              <JFXComboBox fx:id="combCantones" labelFloat="true" prefHeight="31.0" prefWidth="355.0" promptText="Cantón" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox alignment="BOTTOM_RIGHT" prefHeight="149.0" prefWidth="803.0">
+                  <HBox alignment="BOTTOM_RIGHT" prefHeight="160.0" prefWidth="813.0">
                      <children>
                         <JFXButton onAction="#regresar" prefHeight="29.0" prefWidth="146.0" text="Regresar al menú" />
                         <JFXButton prefHeight="29.0" prefWidth="500.0" text="Regresar al menú" visible="false" />
-                        <JFXButton fx:id="btnGuardar" onAction="#guardar" prefHeight="29.0" prefWidth="146.0" text="Guardar" />
+                        <JFXButton onAction="#guardar" prefHeight="29.0" prefWidth="146.0" text="Guardar" />
                      </children>
                   </HBox>
                </children>

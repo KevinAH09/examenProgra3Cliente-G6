@@ -29,10 +29,12 @@ public class CantonDTO {
     public void setProvinciaId(ProvinciaDTO provinciaId) {
         this.provinciaId = provinciaId;
     }
-    
-    
-   
 
+    @Override
+    public String toString() {
+        return nombreCanton;
+    }
+    
     public Long getId() {
         return id;
     }
