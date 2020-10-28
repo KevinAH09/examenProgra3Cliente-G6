@@ -18,12 +18,14 @@ import org.una.examenp3cliente.utils.FlowController;
  *
  * @author cfugu
  */
-public class MenuCobrosPendientesController implements Initializable {
+public class MenuCobrosPendientesController extends Controller implements Initializable {
 
     @FXML
     private JFXButton btnVisualizar;
     @FXML
     private JFXButton btnGenerar;
+    @FXML
+    private JFXButton btnRegresar;
 
     /**
      * Initializes the controller class.
@@ -31,8 +33,7 @@ public class MenuCobrosPendientesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-
+    }
 
     @FXML
     private void actionGenerarCobros(ActionEvent event) {
@@ -43,5 +44,15 @@ public class MenuCobrosPendientesController implements Initializable {
     private void actionVisualizarCobros(ActionEvent event) {
         FlowController.getInstance().goView("tarea/Tarea");
     }
-    
+
+    @FXML
+    private void actionVolverMenu(ActionEvent event) {
+        FlowController.getInstance().goView("inicio/Inicio");
+    }
+
+    @Override
+    public void initialize() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

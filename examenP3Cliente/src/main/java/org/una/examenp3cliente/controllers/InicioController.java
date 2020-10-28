@@ -24,7 +24,7 @@ public class InicioController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
+
     }
 
     @Override
@@ -43,6 +43,7 @@ public class InicioController extends Controller implements Initializable {
 
     @FXML
     private void actionCobros(ActionEvent event) {
+        FlowController.getInstance().goView("cobro/MenuCobrosPendientes");
     }
 
 }

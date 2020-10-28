@@ -44,6 +44,15 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
+                  <JFXButton fx:id="btnRegresar" contentDisplay="TOP" layoutX="233.0" layoutY="137.0" onAction="#actionVolverMenu" text="Ir a vista principal">
+                     <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@return-arrow.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
                </children>
                <padding>
                   <Insets left="20.0" right="20.0" />
