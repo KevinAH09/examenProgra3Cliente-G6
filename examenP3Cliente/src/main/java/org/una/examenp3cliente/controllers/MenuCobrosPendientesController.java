@@ -37,7 +37,7 @@ public class MenuCobrosPendientesController extends Controller implements Initia
 
     @FXML
     private void actionGenerarCobros(ActionEvent event) {
-        FlowController.getInstance().goView("tarea/Tarea");
+        FlowController.getInstance().goView("generarCobro/GenerarCobro");
     }
 
     @FXML
