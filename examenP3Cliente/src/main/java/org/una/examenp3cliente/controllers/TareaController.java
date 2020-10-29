@@ -90,12 +90,20 @@ public class TareaController extends Controller implements Initializable {
     final ContextMenu urgenciaValidator = new ContextMenu();
     @FXML
     private Button btnCancelarTarea;
+    @FXML
+    private JFXButton brnCancelarProyecto;
+    @FXML
+    private JFXButton brnGuardarProyecto;
+    @FXML
+    private JFXButton brnGuardarTarea;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        proyectoSelect = new ProyectoDTO();
+        tareaSelect = new TareaDTO();
         llenarProyectos();
         llenarTreeVeew(listProyectos);
         actionTreeView();
@@ -110,6 +118,7 @@ public class TareaController extends Controller implements Initializable {
     }
 
     private void llenarProyectos() {
+        listProyectos = new ArrayList<>();
         List<TareaDTO> listTareas = new ArrayList<>();
         listProyectos = ProyectoService.allProyecto();
         for (ProyectoDTO proyecto : listProyectos) {
@@ -207,39 +216,55 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionProyectoNuevo(ActionEvent event) {
+        btnEditarProeycto.setDisable(true);
+        btnCrearTarea.setDisable(true);
+        btnEditarTarea.setDisable(true);
+        btnCancelarTarea.setDisable(true);
+        brnGuardarProyecto.setVisible(true);
+        txtNombreProyecto.setDisable(false);
+        txtdescripcionProyecto.setDisable(false);
         proyectoSelect = new ProyectoDTO();
         tareaSelect = new TareaDTO();
+        txtNombreProyecto.setText("");
+        txtdescripcionProyecto.setText("");
+        
+        txtNombreTarea.setText("");
+        txtdescripcionTarea.setText("");
+        txtPorcentajeTarea.setText("");
+        txtImportancia.setText("");
+        txtUrgancia.setText("");
+        txtPrioridad.setText("");
+        fechaInicio.setValue(null);
+        fechaFinalizacion.setValue(null);
+
     }
 
     @FXML
     private void accionCrearTarea(ActionEvent event) {
-        if (proyectoSelect != null) {
-            if (btnCrearTarea.getText().equals("Cancelar")) {
-                btnEditarProeycto.setText("Editar proyecto");
-                btnCrearTarea.setText("Crear tarea");
-                txtNombreProyecto.setDisable(true);
-                txtdescripcionProyecto.setDisable(true);
-                txtNombreProyecto.setText(proyectoSelect.getNombre());
-                txtdescripcionProyecto.setText(proyectoSelect.getDescripcion());
-            } else {
-                tareaSelect = new TareaDTO();
-                txtNombreTarea.setText("");
-                txtdescripcionTarea.setText("");
-                txtPorcentajeTarea.setText("");
-                txtImportancia.setText("");
-                txtUrgancia.setText("");
-                txtPrioridad.setText("");
-                fechaInicio.setValue(null);
-                fechaFinalizacion.setValue(null);
-                btnEditarTarea.setText("Guardar tarea");
-                txtNombreTarea.setDisable(false);
-                txtdescripcionTarea.setDisable(false);
-                txtPorcentajeTarea.setDisable(false);
-                txtImportancia.setDisable(false);
-                txtUrgancia.setDisable(false);
-                fechaInicio.setDisable(false);
-                fechaFinalizacion.setDisable(false);
-            }
+        if (proyectoSelect.getId() != null) {
+
+            tareaSelect = new TareaDTO();
+            txtNombreTarea.setText("");
+            txtdescripcionTarea.setText("");
+            txtPorcentajeTarea.setText("");
+            txtImportancia.setText("");
+            txtUrgancia.setText("");
+            txtPrioridad.setText("");
+            fechaInicio.setValue(null);
+            fechaFinalizacion.setValue(null);
+            txtNombreTarea.setDisable(false);
+            txtdescripcionTarea.setDisable(false);
+            txtPorcentajeTarea.setDisable(false);
+            txtImportancia.setDisable(false);
+            txtUrgancia.setDisable(false);
+            fechaInicio.setDisable(false);
+            fechaFinalizacion.setDisable(false);
+            btnEditarProeycto.setDisable(true);
+            brnCancelarProyecto.setDisable(true);
+            btnEditarTarea.setDisable(true);
+            btnProyectoNuevo.setDisable(true);
+            brnGuardarTarea.setVisible(true);
+
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Seleccione un proyecto");
 
@@ -249,28 +274,15 @@ public class TareaController extends Controller implements Initializable {
     @FXML
     private void actionEditarGuadrarProyecto(ActionEvent event) {
 
-        if (proyectoSelect != null) {
-            if (btnEditarProeycto.getText().equals("Editar proyecto")) {
-                btnEditarProeycto.setText("Guardar proyecto");
-                btnCrearTarea.setText("Cancelar");
-                txtNombreProyecto.setDisable(false);
-                txtdescripcionProyecto.setDisable(false);
-            } else {
-                if (txtNombreProyecto.getText() != null && txtdescripcionProyecto.getText() != null) {
-                    proyectoSelect.setDescripcion(txtdescripcionProyecto.getText());
-                    proyectoSelect.setNombre(txtNombreProyecto.getText());
-                    if (ProyectoService.updateProyecto(proyectoSelect) == 200) {
-                        llenarProyectos();
-                        new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Proyecto guardado correctamente");
-                        btnEditarProeycto.setText("Editar proyecto");
-                        btnCrearTarea.setText("Crear tarea");
-                        txtNombreProyecto.setDisable(true);
-                        txtdescripcionProyecto.setDisable(true);
-                    }
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
-                }
-            }
+        if (proyectoSelect.getId() != null) {
+            btnProyectoNuevo.setDisable(true);
+            btnCrearTarea.setDisable(true);
+            btnEditarTarea.setDisable(true);
+            btnCancelarTarea.setDisable(true);
+            brnGuardarProyecto.setVisible(true);
+            txtNombreProyecto.setDisable(false);
+            txtdescripcionProyecto.setDisable(false);
+
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor seleccione un proyecto");
         }
@@ -288,61 +300,27 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionGuardarEditarTarea(ActionEvent event) {
-        if (btnEditarTarea.getText().equals("Editar tarea")) {
-            btnEditarTarea.setText("Guardar tarea");
-            txtNombreTarea.setDisable(false);
-            txtdescripcionTarea.setDisable(false);
-            txtPorcentajeTarea.setDisable(false);
-            txtImportancia.setDisable(false);
-            txtUrgancia.setDisable(false);
-            fechaInicio.setDisable(false);
-            fechaFinalizacion.setDisable(false);
-        } else {
-            if (txtNombreTarea.getText() != null && txtdescripcionTarea.getText() != null && txtPorcentajeTarea.getText() != null && txtImportancia.getText() != null && txtUrgancia.getText() != null && fechaInicio.getValue() != null && fechaFinalizacion.getValue() != null) {
-                tareaSelect.setProyectoId(proyectoSelect);
-                tareaSelect.setDescripcion(txtdescripcionTarea.getText());
-                tareaSelect.setNombre(txtNombreTarea.getText());
-                tareaSelect.setProcentajeAvance(Double.valueOf(txtPorcentajeTarea.getText()));
-                tareaSelect.setUrgencia(Double.valueOf(txtUrgancia.getText()));
-                tareaSelect.setImportancia(Double.valueOf(txtImportancia.getText()));
-                tareaSelect.setFechaInicio(Date.from(fechaInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                tareaSelect.setFechaFinalizacion(Date.from(fechaFinalizacion.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                if (tareaSelect.getId() != null) {
-                    if (TareaService.updateTarea(tareaSelect) == 200) {
-                        llenarProyectos();
-                        new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Tarea guardada correctamente");
-                        btnEditarTarea.setText("Editar tarea");
-                        txtNombreTarea.setDisable(true);
-                        txtdescripcionTarea.setDisable(true);
-                        txtPorcentajeTarea.setDisable(true);
-                        txtImportancia.setDisable(true);
-                        txtUrgancia.setDisable(true);
-                        fechaInicio.setDisable(true);
-                        fechaFinalizacion.setDisable(true);
-                    } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Ocurrio un error al guardar la tarea");
-                    }
-                } else {
-                    tareaSelect = TareaService.createTarea(tareaSelect);
-                    if (tareaSelect.getId() != null) {
-                        llenarProyectos();
-                        llenarTreeVeew(listProyectos);
-                        new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Tarea guardada correctamente");
-                        btnEditarTarea.setText("Crear tarea");
-                        txtNombreTarea.setDisable(true);
-                        txtdescripcionTarea.setDisable(true);
-                        txtPorcentajeTarea.setDisable(true);
-                        txtImportancia.setDisable(true);
-                        txtUrgancia.setDisable(true);
-                        fechaInicio.setDisable(true);
-                        fechaFinalizacion.setDisable(true);
-                    } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Ocurrio un error al guardar la tarea");
-                    }
-                }
+        if (proyectoSelect.getId() != null) {
+
+            if (tareaSelect.getId() != null) {
+                btnEditarProeycto.setDisable(true);
+                brnCancelarProyecto.setDisable(true);
+                btnCrearTarea.setDisable(true);
+                btnProyectoNuevo.setDisable(true);
+                brnGuardarTarea.setVisible(true);
+                txtNombreTarea.setDisable(false);
+                txtdescripcionTarea.setDisable(false);
+                txtPorcentajeTarea.setDisable(false);
+                txtImportancia.setDisable(false);
+                txtUrgancia.setDisable(false);
+                fechaInicio.setDisable(false);
+                fechaFinalizacion.setDisable(false);
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Seleccione una tarea");
             }
+
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Seleccione un proyecto");
         }
     }
 
@@ -358,9 +336,24 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionCancelarTarea(ActionEvent event) {
+        btnEditarProeycto.setDisable(false);
+        btnCrearTarea.setDisable(false);
+        btnProyectoNuevo.setDisable(false);
+        brnGuardarTarea.setVisible(false);
+        brnCancelarProyecto.setDisable(false);
+        if (tareaSelect.getId() != null) {
+            txtNombreTarea.setText(tareaSelect.getNombre());
+            txtdescripcionTarea.setText(tareaSelect.getDescripcion());
+            txtPorcentajeTarea.setText(String.valueOf(tareaSelect.getProcentajeAvance()));
+            txtImportancia.setText(String.valueOf(tareaSelect.getImportancia()));
+            txtUrgancia.setText(String.valueOf(tareaSelect.getUrgencia()));
+            txtPrioridad.setText(String.valueOf(tareaSelect.getUrgencia() * tareaSelect.getImportancia()));
+            fechaInicio.setValue(tareaSelect.getFechaInicio().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            fechaFinalizacion.setValue(tareaSelect.getFechaFinalizacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
+
     }
 
-    @FXML
     private void actionSalir(ActionEvent event) {
         FlowController.getInstance().goView("inicio/Inicio");
     }
@@ -369,6 +362,119 @@ public class TareaController extends Controller implements Initializable {
     private void actionPrioridad(KeyEvent event) {
         if (!txtImportancia.getText().isEmpty() && !txtUrgancia.getText().isEmpty()) {
             txtPrioridad.setText(String.valueOf((Double.valueOf(txtImportancia.getText()) * Double.valueOf(txtUrgancia.getText()))));
+        }
+    }
+
+    @FXML
+    private void actionGuardarProyecto(ActionEvent event) {
+        if (!txtNombreProyecto.getText().isEmpty() && !txtdescripcionProyecto.getText().isEmpty()) {
+            proyectoSelect.setDescripcion(txtdescripcionProyecto.getText());
+            proyectoSelect.setNombre(txtNombreProyecto.getText());
+            if (proyectoSelect.getId() != null) {
+                if (ProyectoService.updateProyecto(proyectoSelect) == 200) {
+                    llenarProyectos();
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Proyecto guardado correctamente");
+
+                    txtNombreProyecto.setDisable(true);
+                    txtdescripcionProyecto.setDisable(true);
+                    btnEditarProeycto.setDisable(false);
+                    btnCrearTarea.setDisable(false);
+                    btnEditarTarea.setDisable(false);
+                    brnGuardarProyecto.setVisible(false);
+                    btnCancelarTarea.setDisable(false);
+                }
+            } else {
+                proyectoSelect = ProyectoService.createProyecto(proyectoSelect);
+                if (proyectoSelect != null) {
+                    llenarProyectos();
+                    llenarTreeVeew(listProyectos);
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Crear Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Proyecto guardado correctamente");
+
+                    txtNombreProyecto.setDisable(true);
+                    txtdescripcionProyecto.setDisable(true);
+                    btnEditarProeycto.setDisable(false);
+                    btnCrearTarea.setDisable(false);
+                    btnEditarTarea.setDisable(false);
+                    brnGuardarProyecto.setVisible(false);
+                    btnCancelarTarea.setDisable(false);
+                }
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
+        }
+    }
+
+    @FXML
+    private void actionGuardarTarea(ActionEvent event) {
+        if (!txtNombreTarea.getText().isEmpty() && !txtdescripcionTarea.getText().isEmpty() && !txtPorcentajeTarea.getText().isEmpty() && !txtImportancia.getText().isEmpty() && !txtUrgancia.getText().isEmpty() && fechaInicio.getValue() != null && fechaFinalizacion.getValue() != null) {
+            tareaSelect.setProyectoId(proyectoSelect);
+            tareaSelect.setDescripcion(txtdescripcionTarea.getText());
+            tareaSelect.setNombre(txtNombreTarea.getText());
+            tareaSelect.setProcentajeAvance(Double.valueOf(txtPorcentajeTarea.getText()));
+            tareaSelect.setUrgencia(Double.valueOf(txtUrgancia.getText()));
+            tareaSelect.setImportancia(Double.valueOf(txtImportancia.getText()));
+            tareaSelect.setFechaInicio(Date.from(fechaInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            tareaSelect.setFechaFinalizacion(Date.from(fechaFinalizacion.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            if (tareaSelect.getId() != null) {
+                if (TareaService.updateTarea(tareaSelect) == 200) {
+                    llenarProyectos();
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Tarea guardada correctamente");
+
+                    txtNombreTarea.setDisable(true);
+                    txtdescripcionTarea.setDisable(true);
+                    txtPorcentajeTarea.setDisable(true);
+                    txtImportancia.setDisable(true);
+                    txtUrgancia.setDisable(true);
+                    fechaInicio.setDisable(true);
+                    fechaFinalizacion.setDisable(true);
+                    btnEditarProeycto.setDisable(false);
+                    btnCrearTarea.setDisable(false);
+                    btnProyectoNuevo.setDisable(false);
+                    brnGuardarTarea.setVisible(false);
+                    brnCancelarProyecto.setDisable(false);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Ocurrio un error al guardar la tarea");
+                }
+            } else {
+                tareaSelect = TareaService.createTarea(tareaSelect);
+                if (tareaSelect.getId() != null) {
+                    llenarProyectos();
+                    llenarTreeVeew(listProyectos);
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Tarea guardada correctamente");
+             
+                    txtNombreTarea.setDisable(true);
+                    txtdescripcionTarea.setDisable(true);
+                    txtPorcentajeTarea.setDisable(true);
+                    txtImportancia.setDisable(true);
+                    txtUrgancia.setDisable(true);
+                    fechaInicio.setDisable(true);
+                    fechaFinalizacion.setDisable(true);
+                    btnEditarProeycto.setDisable(false);
+                    btnCrearTarea.setDisable(false);
+                    btnProyectoNuevo.setDisable(false);
+                    brnGuardarTarea.setVisible(false);
+                    brnCancelarProyecto.setDisable(false);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Ocurrio un error al guardar la tarea");
+                }
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Por favor complete todos los campos");
+        }
+    }
+
+    @FXML
+    private void actionCancelarProyecto(ActionEvent event) {
+        btnEditarProeycto.setDisable(false);
+        btnCrearTarea.setDisable(false);
+        btnEditarTarea.setDisable(false);
+        brnGuardarProyecto.setVisible(false);
+        txtNombreProyecto.setDisable(true);
+        txtdescripcionProyecto.setDisable(true);
+        btnCancelarTarea.setDisable(false);
+        if (proyectoSelect.getId() != null) {
+            txtNombreProyecto.setText(proyectoSelect.getNombre());
+            txtdescripcionProyecto.setText(proyectoSelect.getDescripcion());
         }
     }
 

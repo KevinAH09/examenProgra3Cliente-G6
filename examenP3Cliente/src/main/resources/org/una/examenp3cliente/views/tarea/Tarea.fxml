@@ -31,18 +31,20 @@
                               <HBox alignment="CENTER" prefHeight="66.0" prefWidth="610.0" spacing="10.0">
                                  <children>
                                     <JFXTextField fx:id="txtNombreProyecto" alignment="CENTER" disable="true" prefHeight="29.0" prefWidth="190.0" promptText="Nombre" />
-                                    <JFXTextField fx:id="txtPorcentajeAvanceProyecto" disable="true" prefWidth="200.0" promptText="Porcentaje de avance" />
+                                    <JFXTextField fx:id="txtPorcentajeAvanceProyecto" alignment="CENTER" disable="true" prefWidth="200.0" promptText="Porcentaje de avance" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="29.0" prefWidth="610.0">
                                  <children>
-                                    <JFXTextArea fx:id="txtdescripcionProyecto" disable="true" prefHeight="47.0" prefWidth="404.0" promptText="Descripcion" />
+                                    <JFXTextArea fx:id="txtdescripcionProyecto" disable="true" prefHeight="43.0" prefWidth="398.0" promptText="Descripcion" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="610.0" spacing="20.0">
+                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="20.0">
                                  <children>
-                                    <JFXButton fx:id="btnCrearTarea" onAction="#accionCrearTarea" prefHeight="29.0" prefWidth="120.0" text="Crear tarea" />
+                                    <JFXButton fx:id="brnCancelarProyecto" onAction="#actionCancelarProyecto" prefHeight="29.0" prefWidth="119.0" text="Cancelar" />
+                                    <JFXButton fx:id="btnProyectoNuevo" onAction="#actionProyectoNuevo" text="Crear proyecto" />
                                     <JFXButton fx:id="btnEditarProeycto" onAction="#actionEditarGuadrarProyecto" prefHeight="29.0" prefWidth="140.0" text="Editar proyecto" />
+                                    <JFXButton fx:id="brnGuardarProyecto" onAction="#actionGuardarProyecto" text="Guardar" visible="false" />
                                  </children>
                                  <padding>
                                     <Insets right="20.0" />
@@ -81,7 +83,9 @@
                               <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="20.0">
                                  <children>
                                     <Button fx:id="btnCancelarTarea" mnemonicParsing="false" onAction="#actionCancelarTarea" prefHeight="29.0" prefWidth="120.0" text="Cancelar" />
+                                    <JFXButton fx:id="btnCrearTarea" onAction="#accionCrearTarea" prefHeight="29.0" prefWidth="120.0" text="Crear tarea" />
                                     <JFXButton fx:id="btnEditarTarea" onAction="#actionGuardarEditarTarea" prefHeight="29.0" prefWidth="140.0" text="Editar tarea" />
+                                    <JFXButton fx:id="brnGuardarTarea" onAction="#actionGuardarTarea" text="Guardar" visible="false" />
                                  </children>
                                  <padding>
                                     <Insets right="20.0" />
@@ -124,14 +128,6 @@
                </padding>
             </VBox>
          </left>
-         <bottom>
-            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="793.0" spacing="20.0" BorderPane.alignment="CENTER">
-               <children>
-                  <JFXButton onAction="#actionSalir" prefHeight="29.0" prefWidth="117.0" text="Salir" />
-                  <JFXButton fx:id="btnProyectoNuevo" onAction="#actionProyectoNuevo" text="Crear proyecto" />
-               </children>
-            </HBox>
-         </bottom>
       </BorderPane>
    </children>
 </AnchorPane>
