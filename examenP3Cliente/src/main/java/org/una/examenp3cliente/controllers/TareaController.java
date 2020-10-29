@@ -118,6 +118,7 @@ public class TareaController extends Controller implements Initializable {
     }
 
     private void llenarProyectos() {
+        List<ProyectoDTO> listProyecto = new ArrayList<>();
         listProyectos = new ArrayList<>();
         List<TareaDTO> listTareas = new ArrayList<>();
         listProyectos = ProyectoService.allProyecto();
@@ -373,6 +374,7 @@ public class TareaController extends Controller implements Initializable {
             if (proyectoSelect.getId() != null) {
                 if (ProyectoService.updateProyecto(proyectoSelect) == 200) {
                     llenarProyectos();
+                    llenarTreeVeew(listProyectos);
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Proyecto", ((Stage) btnCancelarTarea.getScene().getWindow()), "Proyecto guardado correctamente");
 
                     txtNombreProyecto.setDisable(true);
@@ -418,6 +420,7 @@ public class TareaController extends Controller implements Initializable {
             if (tareaSelect.getId() != null) {
                 if (TareaService.updateTarea(tareaSelect) == 200) {
                     llenarProyectos();
+                    llenarTreeVeew(listProyectos);
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Editar Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Tarea guardada correctamente");
 
                     txtNombreTarea.setDisable(true);
@@ -450,6 +453,7 @@ public class TareaController extends Controller implements Initializable {
                     fechaFinalizacion.setDisable(true);
                     btnEditarProeycto.setDisable(false);
                     btnCrearTarea.setDisable(false);
+                    btnEditarTarea.setDisable(false);
                     btnProyectoNuevo.setDisable(false);
                     brnGuardarTarea.setVisible(false);
                     brnCancelarProyecto.setDisable(false);
@@ -484,10 +488,28 @@ public class TareaController extends Controller implements Initializable {
                 for (TareaDTO listTarea : proyectoSelect.getListTareas()) {
                     TareaService.deleteTarea(listTarea.getId());
                 }
-                if (TareaService.deleteTarea(proyectoSelect.getId()) == 200) {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar proyecto", (Stage) btnCancelarTarea.getScene().getWindow(), "Proyecto eliminada con exito");
+                if (ProyectoService.deleteProyecto(proyectoSelect.getId()) == 200) {
                     llenarProyectos();
                     llenarTreeVeew(listProyectos);
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar proyecto", (Stage) btnCancelarTarea.getScene().getWindow(), "Proyecto eliminada con exito");
+                    txtNombreProyecto.setDisable(true);
+                    txtdescripcionProyecto.setDisable(true);
+                    txtNombreTarea.setDisable(true);
+                    txtdescripcionTarea.setDisable(true);
+                    txtPorcentajeTarea.setDisable(true);
+                    txtImportancia.setDisable(true);
+                    txtUrgancia.setDisable(true);
+                    fechaInicio.setDisable(true);
+                    fechaFinalizacion.setDisable(true);
+                    txtNombreTarea.setText("");
+                    txtdescripcionTarea.setText("");
+                    txtPorcentajeTarea.setText("");
+                    txtImportancia.setText("");
+                    txtUrgancia.setText("");
+                    fechaInicio.setValue(null);
+                    fechaFinalizacion.setValue(null);
+                    txtNombreProyecto.setText("");
+                    txtdescripcionProyecto.setText("");
                 }
             }
         } else {
@@ -503,6 +525,20 @@ public class TareaController extends Controller implements Initializable {
                     llenarProyectos();
                     llenarTreeVeew(listProyectos);
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar tarea", (Stage) btnCancelarTarea.getScene().getWindow(), "Tarea eliminada con exito");
+                    txtNombreTarea.setDisable(true);
+                    txtdescripcionTarea.setDisable(true);
+                    txtPorcentajeTarea.setDisable(true);
+                    txtImportancia.setDisable(true);
+                    txtUrgancia.setDisable(true);
+                    fechaInicio.setDisable(true);
+                    fechaFinalizacion.setDisable(true);
+                    txtNombreTarea.setText("");
+                    txtdescripcionTarea.setText("");
+                    txtPorcentajeTarea.setText("");
+                    txtImportancia.setText("");
+                    txtUrgancia.setText("");
+                    fechaInicio.setValue(null);
+                    fechaFinalizacion.setValue(null);
                 }
 
             }
