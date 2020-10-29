@@ -72,9 +72,9 @@ public class TareaController extends Controller implements Initializable {
     @FXML
     private JFXTextField txtPorcentajeTarea;
     @FXML
-    private DatePicker fechaInicio;
+    private JFXDatePicker fechaInicio;
     @FXML
-    private DatePicker fechaFinalizacion;
+    private JFXDatePicker fechaFinalizacion;
     @FXML
     private JFXTextField txtImportancia;
     @FXML
@@ -545,6 +545,11 @@ public class TareaController extends Controller implements Initializable {
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar tarea", (Stage) btnCancelarTarea.getScene().getWindow(), "Seleccione una tarea");
         }
+    }
+
+    @FXML
+    private void actionRangos(ActionEvent event) {
+        FlowController.getInstance().goView("crearRango/CrearRango");
     }
 
 }
