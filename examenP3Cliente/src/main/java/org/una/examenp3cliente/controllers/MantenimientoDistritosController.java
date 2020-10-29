@@ -77,7 +77,7 @@ public class MantenimientoDistritosController extends Controller implements Init
         colCanton.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getCantonId().getNombreCanton()));
         tableView.getColumns().addAll(colNombre, colCodigo, colCanton);
 
-        distritoList = DistritoService.allDistrito();
+        distritoList = DistritoService.estado(true);
         if (distritoList != null && !distritoList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(distritoList));
         } else {
@@ -109,6 +109,7 @@ public class MantenimientoDistritosController extends Controller implements Init
                 distrito.setNombreDistrito(txtNombreDistrito.getText());
                 distrito.setCodigo(txtCodigo.getText());
                 distrito.setCantonId(combCantones.getValue());
+                distrito.setEstado(true);
                 if (DistritoService.createDistrito(distrito) != null) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Distrito", ((Stage) txtNombreDistrito.getScene().getWindow()), "Se guardó correctamente");
                     txtNombreDistrito.setText("");
@@ -152,6 +153,19 @@ public class MantenimientoDistritosController extends Controller implements Init
 
     @FXML
     private void eliminar(ActionEvent event) {
+        if (distrito.getId() != null) {
+            if (new Mensaje().showConfirmation("Eliminar Distrito", (Stage) txtNombreDistrito.getScene().getWindow(), "Desea eliminar el Distrito ")) {
+               distrito.setEstado(false);
+                if (DistritoService.updateDistrito(distrito) == 200) {                  
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Distrito", (Stage) txtNombreDistrito.getScene().getWindow(), "Distrito eliminado con exito");
+                    llenarDistrito();
+                }
+
+            }
+            
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al eliminar el Distrito", ((Stage) txtNombreDistrito.getScene().getWindow()), "Elija en el tableView un Distrito");
+        }
     }
 
 }

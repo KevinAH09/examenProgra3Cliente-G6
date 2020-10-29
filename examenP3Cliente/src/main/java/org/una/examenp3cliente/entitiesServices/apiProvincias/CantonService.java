@@ -45,18 +45,18 @@ public class CantonService {
         return CantonDTO;
     }
     
-//    public static List<CantonDTO> provinciaIdCanton(Long id) {
-//
-//        List<CantonDTO> listCantonDTOs = new ArrayList<>();
-//        try {
-//            listCantonDTOs = (List<CantonDTO>) Conection.listFromConnection("cantones/proyectoID/" + id, new TypeToken<ArrayList<CantonDTO>>() {
-//            }.getType());
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(CantonService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return listCantonDTOs;
-//    }
+    public static List<CantonDTO> estado(boolean estado) {
+
+        List<CantonDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<CantonDTO>) Conection.listFromConnection("cantones/estado/" +estado, new TypeToken<ArrayList<CantonDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(CantonService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
 
     public static CantonDTO createCantones(CantonDTO create) {
         CantonDTO proCreado = new CantonDTO();

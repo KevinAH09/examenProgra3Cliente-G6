@@ -55,6 +55,19 @@ public class DistritoService {
         }
         return proCreado;
     }
+    
+    public static List<DistritoDTO> estado(boolean estado) {
+
+        List<DistritoDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<DistritoDTO>) Conection.listFromConnection("distritos/estado/" +estado, new TypeToken<ArrayList<DistritoDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(DistritoService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
 
     public static int updateDistrito(DistritoDTO update) {
         int codeResponse = 0;

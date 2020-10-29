@@ -77,7 +77,7 @@ public class MantenimientoCantonesController extends Controller implements Initi
         colProvincia.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getProvinciaId().getNombreProvincia()));
         tableView.getColumns().addAll(colNombre, colCodigo, colProvincia);
 
-        cantonList = CantonService.allCanton();
+        cantonList = CantonService.estado(true);
         if (cantonList != null && !cantonList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(cantonList));
         } else {
@@ -110,6 +110,7 @@ public class MantenimientoCantonesController extends Controller implements Initi
                 canton.setNombreCanton(txtNombreCanton.getText());
                 canton.setCodigo(txtCodigo.getText());
                 canton.setProvinciaId(combProvincia.getValue());
+                canton.setEstado(true);
                 if (CantonService.createCantones(canton) != null) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "Se guardó correctamente");
                     txtNombreCanton.setText("");
@@ -159,6 +160,19 @@ public class MantenimientoCantonesController extends Controller implements Initi
 
     @FXML
     private void eliminar(ActionEvent event) {
+        if (canton.getId() != null) {
+            if (new Mensaje().showConfirmation("Eliminar Cantón", (Stage) txtNombreCanton.getScene().getWindow(), "Desea eliminar el Cantón ")) {
+               canton.setEstado(false);
+                if (CantonService.updateCanton(canton) == 200) {                  
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Cantón", (Stage) txtNombreCanton.getScene().getWindow(), "Cantón eliminado con exito");
+                    llenarCanton();
+                }
+
+            }
+            
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al eliminar el Cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "Elija en el tableView un Cantón");
+        }
     }
 
 }

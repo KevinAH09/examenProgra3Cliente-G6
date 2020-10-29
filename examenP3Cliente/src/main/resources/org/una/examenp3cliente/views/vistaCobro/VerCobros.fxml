@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="790.0" stylesheets="@Style3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.VerCobrosController">
+   <children>
+      <VBox layoutX="-6.0" prefHeight="540.0" prefWidth="837.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="81.0" prefWidth="837.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="216.0" text="Vista de cobros pendientes" />
+               </children>
+            </HBox>
+            <HBox fx:id="txtBusqueda" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <JFXTextField prefHeight="29.0" prefWidth="252.0" promptText="Ingrese la identificacion del cliente" />
+                  <JFXComboBox fx:id="cmbBusqueda" prefHeight="26.0" prefWidth="158.0" promptText="Seleccione un item" />
+                  <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" text="Filtrar" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Pane prefHeight="367.0" prefWidth="774.0" style="-fx-background-color: red;">
+                     <children>
+                        <JFXTreeView fx:id="treeview" layoutX="4.0" layoutY="4.0" prefHeight="333.0" prefWidth="763.0" style="-fx-background-color: black;">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </JFXTreeView>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

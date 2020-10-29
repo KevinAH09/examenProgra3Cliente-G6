@@ -55,6 +55,19 @@ public class UnidadService {
         }
         return proCreado;
     }
+    
+    public static List<UnidadDTO> estado(boolean estado) {
+
+        List<UnidadDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<UnidadDTO>) Conection.listFromConnection("unidades/estado/" +estado, new TypeToken<ArrayList<UnidadDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(UnidadService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
 
     public static int updateUnidad(UnidadDTO update) {
         int codeResponse = 0;
