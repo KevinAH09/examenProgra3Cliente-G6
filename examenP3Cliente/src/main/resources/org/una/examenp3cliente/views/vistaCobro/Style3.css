@@ -42,7 +42,9 @@ and open the template in the editor.
 .tree-cell:sub-tree-item {
     -fx-padding: 0.25em ;
 }
-
+.tree-cell:sub-tree-item{
+     -fx-indent: 22;
+}
 
 
 
