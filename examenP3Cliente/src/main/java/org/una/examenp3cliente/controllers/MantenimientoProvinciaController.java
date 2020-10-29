@@ -67,14 +67,13 @@ public class MantenimientoProvinciaController extends Controller implements Init
         colCodigo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCodigo()));
         tableView.getColumns().addAll(colNombre, colCodigo);
 
-        provinciaList = ProvinciaService.allProvincia();
+        provinciaList = ProvinciaService.estado(true);
         if (provinciaList != null && !provinciaList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(provinciaList));
         } else {
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error en Provincias", ((Stage) txtNombreProvincia.getScene().getWindow()), "No existen Provincias");
 
         }
-
     }
 
     private void actionAvionClick() {
@@ -85,19 +84,20 @@ public class MantenimientoProvinciaController extends Controller implements Init
                     provincia = (ProvinciaDTO) tableView.selectionModelProperty().get().getSelectedItem();
                     txtNombreProvincia.setText(provincia.getNombreProvincia());
                     txtCodigo.setText(provincia.getCodigo());
-                    
+
                 }
             }
         });
     }
-    
+
     @FXML
     private void guardar(ActionEvent event) {
 
-        if (provincia==null) {
+        if (provincia == null) {
             if (!txtNombreProvincia.getText().isEmpty() && !txtCodigo.getText().isEmpty()) {
                 provincia = new ProvinciaDTO();
                 provincia.setNombreProvincia(txtNombreProvincia.getText());
+                provincia.setEstado(true);
                 provincia.setCodigo(txtCodigo.getText());
                 if (ProvinciaService.createProvincias(provincia) != null) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Provincia", ((Stage) txtNombreProvincia.getScene().getWindow()), "Se guardó correctamente");
@@ -118,7 +118,7 @@ public class MantenimientoProvinciaController extends Controller implements Init
                 if (ProvinciaService.updateProvincia(provincia) == 200) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Provincia", ((Stage) txtNombreProvincia.getScene().getWindow()), "Se editó correctamente");
                     tableView.getItems().clear();
-                    provincia=null;
+                    provincia = null;
                     llenarProvincia();
                     txtNombreProvincia.setText("");
                     txtCodigo.setText("");
@@ -143,7 +143,19 @@ public class MantenimientoProvinciaController extends Controller implements Init
 
     @FXML
     private void eliminar(ActionEvent event) {
-        
+        if (provincia.getId() != null) {
+            if (new Mensaje().showConfirmation("Eliminar Provincia", (Stage) txtNombreProvincia.getScene().getWindow(), "Desea eliminar la Provincia ")) {
+               provincia.setEstado(false);
+                if (ProvinciaService.updateProvincia(provincia) == 200) {                  
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Provincia", (Stage) txtNombreProvincia.getScene().getWindow(), "Provincia eliminada con exito");
+                    llenarProvincia();
+                }
+
+            }
+            
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al eliminar la Provincia", ((Stage) txtNombreProvincia.getScene().getWindow()), "Elija en el tableView una provincia");
+        }
     }
 
 }

@@ -94,7 +94,7 @@ public class MantenimientoUnidadesController extends Controller implements Initi
         colDistrito.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getDistritoId().getNombreDistrito()));
         tableView.getColumns().addAll(colNombre, colCodigo, colTipo, colPoblacion, colAreaCuadrada, colDistrito);
 
-        unidadList = UnidadService.allUnidad();
+        unidadList = UnidadService.estado(true);
         if (unidadList != null && !unidadList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(unidadList));
         } else {
@@ -130,6 +130,7 @@ public class MantenimientoUnidadesController extends Controller implements Initi
                 unidad.setCodigo(txtCodigo.getText());
                 unidad.setPoblacion(new Long(txtPoblacion.getText()));
                 unidad.setAreaCuadrada(new Double(txtAreaCuadrada.getText()));
+                unidad.setEstado(true);
                 unidad.setDistritoId(combDistrito.getValue());
                 if (combTipoUnidad.getValue().equals("Calle")) {
                     unidad.setTipo("Calle");
@@ -196,6 +197,19 @@ public class MantenimientoUnidadesController extends Controller implements Initi
 
     @FXML
     private void eliminar(ActionEvent event) {
+        if (unidad.getId() != null) {
+            if (new Mensaje().showConfirmation("Eliminar Unidad", (Stage) txtNombreUnidad.getScene().getWindow(), "Desea eliminar la Unidad ")) {
+                unidad.setEstado(false);
+                if (UnidadService.updateUnidad(unidad) == 200) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Unidad", (Stage) txtNombreUnidad.getScene().getWindow(), "Unidad eliminada con exito");
+                    llenarUnidad();
+                }
+
+            }
+
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al eliminar la Unidad", ((Stage) txtNombreUnidad.getScene().getWindow()), "Elija en el tableView una Unidad");
+        }
     }
 
 }

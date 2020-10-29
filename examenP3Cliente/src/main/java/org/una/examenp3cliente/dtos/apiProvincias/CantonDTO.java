@@ -21,6 +21,16 @@ public class CantonDTO {
     private String codigo;
     
     private ProvinciaDTO provinciaId;
+    
+    private boolean estado;
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
 
     public ProvinciaDTO getProvinciaId() {
         return provinciaId;

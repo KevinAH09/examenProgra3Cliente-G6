@@ -32,6 +32,30 @@ public class ProvinciaService {
         }
         return listProvinciaDTOs;
     }
+    
+    public static List<ProvinciaDTO> estado(boolean estado) {
+
+        List<ProvinciaDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<ProvinciaDTO>) Conection.listFromConnection("provincias/estado/" +estado, new TypeToken<ArrayList<ProvinciaDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(ProvinciaService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    
+    public static int deleteProvincia(Long id) {
+
+        try {
+            return Conection.deleteObjetcConnection("provincias/" + id);
+
+        } catch (IOException ex) {
+            Logger.getLogger(ProvinciaService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 
     public static ProvinciaDTO idProvincia(Long id) {
 

@@ -22,6 +22,18 @@ public class UnidadDTO {
     private Long poblacion;
     
     private Double areaCuadrada;
+    
+    private boolean estado;
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
 
     public DistritoDTO getDistritoId() {
         return distritoId;

@@ -18,6 +18,18 @@ public class DistritoDTO {
     private String codigo;
     
     private CantonDTO cantonId;
+    
+    private boolean estado;
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
 
     public CantonDTO getCantonId() {
         return cantonId;
