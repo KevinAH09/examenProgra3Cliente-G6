@@ -33,7 +33,7 @@
                               <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" text="Filtrar" />
                            </children>
                         </HBox>
-                        <TableView fx:id="tableView" prefHeight="320.0" prefWidth="396.0" stylesheets="@../shared/table.css">
+                        <TableView fx:id="tableView" prefHeight="320.0" prefWidth="396.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
