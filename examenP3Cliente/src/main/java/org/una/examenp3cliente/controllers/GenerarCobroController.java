@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,12 +28,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import org.una.examenp3cliente.dtos.apiCobros.ClienteDTO;
+import org.una.examenp3cliente.dtos.apiCobros.CobroDTO;
+import org.una.examenp3cliente.dtos.apiCobros.MembresiaDTO;
 import org.una.examenp3cliente.entitiesServices.apiCobros.ClienteService;
+import org.una.examenp3cliente.entitiesServices.apiCobros.CobrosService;
+import org.una.examenp3cliente.entitiesServices.apiCobros.MembresiaService;
 import org.una.examenp3cliente.utils.FlowController;
 
 /**
@@ -68,10 +75,16 @@ public class GenerarCobroController extends Controller implements Initializable 
     @FXML
     private JFXButton btnCobro;
     public List<ClienteDTO> clientesList = new ArrayList<ClienteDTO>();
+    public List<MembresiaDTO> membresiaList = new ArrayList<MembresiaDTO>();
+    public List<CobroDTO> cobroList = new ArrayList<CobroDTO>();
     public ClienteDTO clientesFilt = new ClienteDTO();
-    Date date=new Date();
+    public ClienteDTO data = new ClienteDTO();
+    public MembresiaDTO membresiaFilt = new MembresiaDTO();
+    Date date = new Date();
     @FXML
-    private JFXTextField txtTipoServicio;
+    private JFXComboBox<MembresiaDTO> cmbMembresia;
+    @FXML
+    private Pane paneNotificar;
 
     /**
      * Initializes the controller class.
@@ -82,13 +95,27 @@ public class GenerarCobroController extends Controller implements Initializable 
         txtNombre.setDisable(true);
         txtTelefono.setDisable(true);
         txtIdentificacion.setDisable(true);
+        paneNotificar.setVisible(false);
 
         txtDescripcion.setDisable(true);
         txtPeridiocidad.setDisable(true);
         txtMonto.setDisable(true);
-        txtTipoServicio.setDisable(true);
         cmbBusqueda.setItems(FXCollections.observableArrayList("Todos", "Identificacion"));
         notificar(1);
+
+        cmbMembresia.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MembresiaDTO>() {
+
+            @Override
+            public void changed(ObservableValue<? extends MembresiaDTO> ov, MembresiaDTO t, MembresiaDTO t1) {
+                txtDescripcion.setText(t1.getDescripcion());
+                txtPeridiocidad.setText(t1.getPeriodicidad());
+                txtMonto.setText(t1.getMonto().toString());
+                membresiaFilt = t1;
+                verificar(data.getIdentificacion(), t1.getDescripcion());
+            }
+
+        }
+        );
     }
 
     @FXML
@@ -178,7 +205,7 @@ public class GenerarCobroController extends Controller implements Initializable 
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
-                            ClienteDTO data = getTableView().getItems().get(getIndex());
+                            data = getTableView().getItems().get(getIndex());
                             seleccionar(data);
                             System.out.println("selectedData: " + data.getNombre());
                         });
@@ -209,18 +236,32 @@ public class GenerarCobroController extends Controller implements Initializable 
         txtNombre.setText(cliente.getNombre());
         txtTelefono.setText(cliente.getTelefono());
         txtIdentificacion.setText(cliente.getIdentificacion());
+        membresiaList = MembresiaService.idClienteMembresia(Long.valueOf(cliente.getId()));
+        System.out.println(membresiaList.size());
+        if (membresiaList != null) {
+            cmbMembresia.setItems(FXCollections.observableArrayList(membresiaList));
+        }
 
-        txtDescripcion.setText(cliente.getMembresiasId().getDescripcion());
-        txtPeridiocidad.setText(cliente.getMembresiasId().getPeriodicidad());
-        txtMonto.setText(cliente.getMembresiasId().getMonto().toString());
-        txtTipoServicio.setText(cliente.getMembresiasId().getTipo());
     }
 
-    public void FechaVencimiento(int dias) {   
-         Calendar hoy = Calendar.getInstance();
-         hoy.setTime(date);
-         hoy.add(Calendar.DATE, dias);
-         date=hoy.getTime();
+    public void FechaVencimiento(int dias) {
+        Calendar hoy = Calendar.getInstance();
+        hoy.setTime(date);
+        hoy.add(Calendar.DATE, dias);
+        date = hoy.getTime();
+    }
+
+    public void verificar(String identificacion, String tipo) {
+        cobroList = null;
+        cobroList = CobrosService.identificacionTipoClienteCobros(identificacion, tipo);
+        if (cobroList.size() >0) {
+            btnCobro.setDisable(true);
+            paneNotificar.setVisible(true);
+        } else {
+            btnCobro.setDisable(false);
+            paneNotificar.setVisible(false);
+        }
+        System.out.println("Lista tamaño:" + cobroList.size());
     }
 
     @Override

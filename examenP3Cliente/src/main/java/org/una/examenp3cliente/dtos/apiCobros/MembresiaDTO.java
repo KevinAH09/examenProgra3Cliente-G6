@@ -19,7 +19,7 @@ public class MembresiaDTO {
 
     private String periodicidad;
 
-    private String tipo;
+    private ClienteDTO clientesId;
 
     public Long getId() {
         return id;
@@ -53,17 +53,17 @@ public class MembresiaDTO {
         this.periodicidad = periodicidad;
     }
 
-    public String getTipo() {
-        return tipo;
+    public ClienteDTO getClientesId() {
+        return clientesId;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setClientesId(ClienteDTO clientesId) {
+        this.clientesId = clientesId;
     }
 
     @Override
     public String toString() {
-        return "MembresiaDTO{" + "id=" + id + ", monto=" + monto + ", descripcion=" + descripcion + ", periodicidad=" + periodicidad + '}';
+        return descripcion ;
     }
 
 }

@@ -19,8 +19,6 @@ public class ClienteDTO {
 
     private String nombre;
 
-    private MembresiaDTO membresiasId;
-
     public Long getId() {
         return id;
     }
@@ -45,14 +43,6 @@ public class ClienteDTO {
         this.telefono = telefono;
     }
 
-    public MembresiaDTO getMembresiasId() {
-        return membresiasId;
-    }
-
-    public void setMembresiasId(MembresiaDTO membresiasId) {
-        this.membresiasId = membresiasId;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -63,6 +53,8 @@ public class ClienteDTO {
 
     @Override
     public String toString() {
-        return "ClienteDTO{" + "id=" + id + ", identificacion=" + identificacion + ", telefono=" + telefono + ", membresiasId=" + membresiasId + '}';
+        return "ClienteDTO{" + "id=" + id + ", identificacion=" + identificacion + ", telefono=" + telefono + ", nombre=" + nombre + '}';
     }
+
+    
 }

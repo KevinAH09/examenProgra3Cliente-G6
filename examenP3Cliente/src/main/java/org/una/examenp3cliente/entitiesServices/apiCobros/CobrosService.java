@@ -22,15 +22,52 @@ import org.una.examenp3cliente.sharedServices.Conection;
 public class CobrosService {
      public static List<CobroDTO> allCobros() {
 
-        List<CobroDTO> listMembresiaDTOs = new ArrayList<>();
+        List<CobroDTO> cobrosDTOs = new ArrayList<>();
         try {
-            listMembresiaDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/", new TypeToken<ArrayList<CobroDTO>>() {
+            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/", new TypeToken<ArrayList<CobroDTO>>() {
             }.getType());
 
         } catch (IOException ex) {
             Logger.getLogger(CobrosService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return listMembresiaDTOs;
+        return cobrosDTOs;
+    }
+     
+     public static List<CobroDTO> idClienteCobros(Long id) {
+
+        List<CobroDTO> cobrosDTOs = new ArrayList<>();
+        try {
+            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/cliente/"+id, new TypeToken<ArrayList<CobroDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(CobrosService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cobrosDTOs;
+    }
+     public static List<CobroDTO> identificacionClienteCobros(String identificacion) {
+
+        List<CobroDTO> cobrosDTOs = new ArrayList<>();
+        try {
+            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/identificacion/"+identificacion, new TypeToken<ArrayList<CobroDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(CobrosService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cobrosDTOs;
+    }
+     public static List<CobroDTO> identificacionTipoClienteCobros(String identificacion,String tipo) {
+
+        List<CobroDTO> cobrosDTOs = new ArrayList<>();
+        try {
+            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/identificacion-tipo/"+identificacion+"/"+tipo, new TypeToken<ArrayList<CobroDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(CobrosService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cobrosDTOs;
     }
 
     public static CobroDTO idCobro(Long id) {

@@ -37,19 +37,7 @@ public class MembresiaService {
 
         List<MembresiaDTO> listMembresiaDTOs = new ArrayList<>();
         try {
-            listMembresiaDTOs = (List<MembresiaDTO>) Conection.listFromConnection("membresias/cliente/"+id, new TypeToken<ArrayList<MembresiaDTO>>() {
-            }.getType());
-
-        } catch (IOException ex) {
-            Logger.getLogger(MembresiaService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return listMembresiaDTOs;
-    }
-    public static List<MembresiaDTO> identificacionClienteMembresia(String id) {
-
-        List<MembresiaDTO> listMembresiaDTOs = new ArrayList<>();
-        try {
-            listMembresiaDTOs = (List<MembresiaDTO>) Conection.listFromConnection("membresias/identificacion/"+id, new TypeToken<ArrayList<MembresiaDTO>>() {
+            listMembresiaDTOs = (List<MembresiaDTO>) Conection.listFromConnection("membresias/cliente/" + id, new TypeToken<ArrayList<MembresiaDTO>>() {
             }.getType());
 
         } catch (IOException ex) {
