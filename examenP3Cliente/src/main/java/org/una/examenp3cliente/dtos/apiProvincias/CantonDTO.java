@@ -24,8 +24,8 @@ public class CantonDTO {
     
     private boolean estado;
 
-    public boolean isEstado() {
-        return estado;
+   public boolean getEstado() {
+        return this.estado;
     }
 
     public void setEstado(boolean estado) {

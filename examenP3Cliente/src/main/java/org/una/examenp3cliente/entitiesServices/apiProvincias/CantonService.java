@@ -31,6 +31,19 @@ public class CantonService {
         }
         return listCantonDTOs;
     }
+    
+    public static List<CantonDTO> provinciaIdCanton(Long id) {
+
+        List<CantonDTO> listcantonesDTOs = new ArrayList<>();
+        try {
+            listcantonesDTOs = (List<CantonDTO>) Conection.listFromConnection("cantones/provinciaId/" + id, new TypeToken<ArrayList<CantonDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(CantonService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listcantonesDTOs;
+    }
 
     public static CantonDTO idCanton(Long id) {
 

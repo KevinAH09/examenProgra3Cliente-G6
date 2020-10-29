@@ -78,4 +78,17 @@ public class UnidadService {
         }
         return codeResponse;
     }
+    
+    public static List<UnidadDTO> distritoIdUnidad(Long id) {
+
+        List<UnidadDTO> listUnidadDTOs = new ArrayList<>();
+        try {
+            listUnidadDTOs = (List<UnidadDTO>) Conection.listFromConnection("unidades/distritoId/" + id, new TypeToken<ArrayList<UnidadDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(UnidadService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listUnidadDTOs;
+    }
 }

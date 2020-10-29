@@ -7,13 +7,22 @@ package org.una.examenp3cliente.controllers;
 
 import com.jfoenix.controls.JFXTreeView;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseEvent;
+import org.una.examenp3cliente.dtos.apiProvincias.CantonDTO;
+import org.una.examenp3cliente.dtos.apiProvincias.DistritoDTO;
+import org.una.examenp3cliente.dtos.apiProvincias.ProvinciaDTO;
+import org.una.examenp3cliente.dtos.apiProvincias.UnidadDTO;
+import org.una.examenp3cliente.entitiesServices.apiProvincias.CantonService;
+import org.una.examenp3cliente.entitiesServices.apiProvincias.DistritoService;
+import org.una.examenp3cliente.entitiesServices.apiProvincias.ProvinciaService;
+import org.una.examenp3cliente.entitiesServices.apiProvincias.UnidadService;
 import org.una.examenp3cliente.utils.FlowController;
 
 /**
@@ -25,39 +34,86 @@ public class ProvinciaController extends Controller implements Initializable {
 
     @FXML
     private JFXTreeView<String> treeView;
+    public List<ProvinciaDTO> provinciaList = new ArrayList<ProvinciaDTO>();
+
+    public List<CantonDTO> cantonList = new ArrayList<CantonDTO>();
+    public List<CantonDTO> cantonList2 = new ArrayList<CantonDTO>();
+
+    public List<DistritoDTO> distritonList = new ArrayList<DistritoDTO>();
+    public List<DistritoDTO> distritonList2 = new ArrayList<DistritoDTO>();
+
+    public List<UnidadDTO> unidadnList = new ArrayList<UnidadDTO>();
+    public List<UnidadDTO> unidadnList2 = new ArrayList<UnidadDTO>();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        actionAerolineaClick
-                ();
-        TreeItem<String> root = new TreeItem<>("Provincias");
-        root.setExpanded(true);
-        root.getChildren().add(new TreeItem<>("Cantones"));
-        treeView.setRoot(root);
-    }    
-    
+        provinciaList = ProvinciaService.estado(true);
+
+        TreeItem<String> root1 = new TreeItem<>("Provincias");
+        root1.setExpanded(false);
+
+        for (int i = 0; i < provinciaList.size(); i++) {
+            TreeItem<String> root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia]");
+            cantonList = CantonService.provinciaIdCanton(provinciaList.get(i).getId());
+            cantonList2 = new ArrayList<CantonDTO>();
+            for (CantonDTO CantonDTO : cantonList) {
+                if (CantonDTO.getEstado() == true) {
+                    cantonList2.add(CantonDTO);
+                }
+            }
+            for (int j = 0; j < cantonList2.size(); j++) {
+                TreeItem<String> item = new TreeItem<>(cantonList2.get(j).getNombreCanton() + " [Cantón]");
+                distritonList = DistritoService.cantonesIddistrito(cantonList2.get(j).getId());
+                distritonList2 = new ArrayList<DistritoDTO>();
+                for (DistritoDTO DistritoDTO : distritonList) {
+                    if (DistritoDTO.isEstado()== true) {
+                        distritonList2.add(DistritoDTO);
+                    }
+                }
+                for (int k = 0; k < distritonList2.size(); k++) {
+                    TreeItem<String> item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito()+ " [Distrito]");
+                    unidadnList = UnidadService.distritoIdUnidad(distritonList2.get(k).getId());
+                    unidadnList2 = new ArrayList<UnidadDTO>();
+                    for (UnidadDTO UnidadDTO : unidadnList) {
+                    if (UnidadDTO.isEstado()== true) {
+                        unidadnList2.add(UnidadDTO);
+                    }
+                    for (int f = 0; f < unidadnList2.size(); f++) {
+                    TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad()+ " [Unidad] " + "Población:"+unidadnList2.get(f).getPoblacion());
+                    item1.getChildren().addAll(item2);
+                    }
+                }
+                item.getChildren().addAll(item1);
+                }
+            root.getChildren().addAll(item);
+            }
+
+            root1.getChildren().add(root);
+        }
+        treeView.setRoot(root1);
+    }
+
     private void actionAerolineaClick() {
 
         treeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                
-                    if (mouseEvent.getClickCount() == 2 && treeView.selectionModelProperty().get().getSelectedItem() != null) {
-                        TreeItem<String> aerolinea =  treeView.selectionModelProperty().get().getSelectedItem();
-                        FlowController.getInstance().goView("inicio/Inicio");
-                    }
 
-                
+                if (mouseEvent.getClickCount() == 2 && treeView.selectionModelProperty().get().getSelectedItem() != null) {
+                    TreeItem<String> aerolinea = treeView.selectionModelProperty().get().getSelectedItem();
+                    FlowController.getInstance().goView("inicio/Inicio");
+                }
+
             }
         });
     }
-    
+
     @Override
     public void initialize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

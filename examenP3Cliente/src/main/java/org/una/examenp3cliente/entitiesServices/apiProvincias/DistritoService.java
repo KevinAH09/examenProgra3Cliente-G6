@@ -44,6 +44,19 @@ public class DistritoService {
         }
         return DistritoDTO;
     }
+    
+    public static List<DistritoDTO> cantonesIddistrito(Long id) {
+
+        List<DistritoDTO> listdistritoDTOs = new ArrayList<>();
+        try {
+            listdistritoDTOs = (List<DistritoDTO>) Conection.listFromConnection("distritos/cantonId/" + id, new TypeToken<ArrayList<DistritoDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(DistritoService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listdistritoDTOs;
+    }
 
     public static DistritoDTO createDistrito(DistritoDTO create) {
         DistritoDTO proCreado = new DistritoDTO();
