@@ -51,6 +51,11 @@ public class DistritoDTO {
         this.codigo = codigo;
     }
 
+    @Override
+    public String toString() {
+        return  nombreDistrito;
+    }
+
     
     
 }

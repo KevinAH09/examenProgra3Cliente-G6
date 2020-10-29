@@ -23,6 +23,16 @@ public class UnidadDTO {
     
     private Double areaCuadrada;
 
+    public DistritoDTO getDistritoId() {
+        return distritoId;
+    }
+
+    public void setDistritoId(DistritoDTO distritoId) {
+        this.distritoId = distritoId;
+    }
+    
+    private DistritoDTO distritoId;
+
     public Long getId() {
         return id;
     }
