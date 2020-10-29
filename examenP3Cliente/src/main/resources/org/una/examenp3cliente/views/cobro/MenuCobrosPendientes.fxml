@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="790.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.MenuCobrosPendientesController">
    <children>
-      <VBox prefHeight="540.0" prefWidth="806.0">
+      <VBox prefHeight="540.0" prefWidth="806.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="206.0" prefWidth="806.0">
                <children>

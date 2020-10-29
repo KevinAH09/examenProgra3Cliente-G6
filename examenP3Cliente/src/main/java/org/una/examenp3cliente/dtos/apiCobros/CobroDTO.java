@@ -15,7 +15,7 @@ public class CobroDTO {
 
     private Long id;
 
-    private int periodo;
+    private String periodo;
 
     private String anno;
 
@@ -67,11 +67,11 @@ public class CobroDTO {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public int getPeriodo() {
+    public String getPeriodo() {
         return periodo;
     }
 
-    public void setPeriodo(int periodo) {
+    public void setPeriodo(String periodo) {
         this.periodo = periodo;
     }
 
