@@ -57,7 +57,7 @@ public class ProvinciaService {
         return proCreado;
     }
 
-    public static int updateTarea(ProvinciaDTO update) {
+    public static int updateProvincia(ProvinciaDTO update) {
         int codeResponse = 0;
         try {
             codeResponse = Conection.updateObjectToConnection("provincias/" + update.getId(), update);
