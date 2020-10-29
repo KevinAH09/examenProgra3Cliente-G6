@@ -15,13 +15,13 @@ public class CobroDTO {
 
     private Long id;
 
-    private String tipo;
+    private int periodo;
 
-    private String periodo;
-
-    private String ano;
+    private String anno;
 
     private Double monto;
+
+    private String tipo;
 
     private ClienteDTO clientesId;
 
@@ -41,22 +41,6 @@ public class CobroDTO {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public String getAno() {
-        return ano;
-    }
-
-    public void setAno(String ano) {
-        this.ano = ano;
     }
 
     public Double getMonto() {
@@ -83,10 +67,27 @@ public class CobroDTO {
         this.fechaVencimiento = fechaVencimiento;
     }
 
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
+
+    public String getAnno() {
+        return anno;
+    }
+
+    public void setAnno(String anno) {
+        this.anno = anno;
+    }
+
     @Override
     public String toString() {
-        return "CobroPendienteDTO{" + "id=" + id + ", tipo=" + tipo + ", periodo=" + periodo + ", ano=" + ano + ", monto=" + monto + ", clientesId=" + clientesId + ", fechaVencimiento=" + fechaVencimiento + '}';
+        return "CobroDTO{" + "id=" + id + ", periodo=" + periodo + ", anno=" + anno + ", monto=" + monto + ", tipo=" + tipo + ", clientesId=" + clientesId + ", fechaVencimiento=" + fechaVencimiento + '}';
     }
+
     
 
 }
