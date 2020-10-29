@@ -42,7 +42,7 @@ public class MenuCobrosPendientesController extends Controller implements Initia
 
     @FXML
     private void actionVisualizarCobros(ActionEvent event) {
-        FlowController.getInstance().goView("tarea/Tarea");
+        FlowController.getInstance().goView("vistaCobro/VerCobros");
     }
 
     @FXML
