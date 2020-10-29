@@ -376,6 +376,7 @@ public class GenerarCobroController extends Controller implements Initializable 
         }
         if (cobroDTO2 != null) {
             new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "Se guardó el cobro correctamente");
+            limpiar();
         }
 
     }
@@ -402,6 +403,17 @@ public class GenerarCobroController extends Controller implements Initializable 
             cmbPeriodos.setItems(FXCollections.observableArrayList("Mensual"));
         }
 
+    }
+    public void limpiar(){
+        txtDescripcion.clear();
+        txtId.clear();
+        txtIdentificacion.clear();
+        txtMonto.clear();
+        txtNombre.clear();
+        txtPeridiocidad.clear();
+        txtTelefono.clear();
+        cmbMembresia.getItems().clear();
+        cmbPeriodos.getItems().clear();
     }
 
     @Override
