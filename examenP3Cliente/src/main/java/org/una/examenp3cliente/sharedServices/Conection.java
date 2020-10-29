@@ -103,6 +103,16 @@ public class Conection {
         }
     }
 
+    public static <T> int deleteObjetcConnection(String urlstring) throws MalformedURLException, IOException {
+
+        URL url = new URL(urlBase + urlstring);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("DELETE");
+        con.setRequestProperty("Accept", "application/json");
+        con.connect();
+        return con.getResponseCode();
+    }
+
     public static int updateObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
         URL url = new URL(urlBase + urlstring);

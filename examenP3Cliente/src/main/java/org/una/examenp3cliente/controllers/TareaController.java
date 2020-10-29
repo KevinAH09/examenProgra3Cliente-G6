@@ -227,7 +227,7 @@ public class TareaController extends Controller implements Initializable {
         tareaSelect = new TareaDTO();
         txtNombreProyecto.setText("");
         txtdescripcionProyecto.setText("");
-        
+
         txtNombreTarea.setText("");
         txtdescripcionTarea.setText("");
         txtPorcentajeTarea.setText("");
@@ -441,7 +441,6 @@ public class TareaController extends Controller implements Initializable {
                     llenarProyectos();
                     llenarTreeVeew(listProyectos);
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Crear Tarea", ((Stage) btnCancelarTarea.getScene().getWindow()), "Tarea guardada correctamente");
-             
                     txtNombreTarea.setDisable(true);
                     txtdescripcionTarea.setDisable(true);
                     txtPorcentajeTarea.setDisable(true);
@@ -475,6 +474,40 @@ public class TareaController extends Controller implements Initializable {
         if (proyectoSelect.getId() != null) {
             txtNombreProyecto.setText(proyectoSelect.getNombre());
             txtdescripcionProyecto.setText(proyectoSelect.getDescripcion());
+        }
+    }
+
+    @FXML
+    private void actionEliminarProyecto(ActionEvent event) {
+        if (proyectoSelect.getId() != null) {
+            if (new Mensaje().showConfirmation("Eliminar proyecto", (Stage) btnCancelarTarea.getScene().getWindow(), "Desea eliminar la proyecto" + proyectoSelect.getNombre())) {
+                for (TareaDTO listTarea : proyectoSelect.getListTareas()) {
+                    TareaService.deleteTarea(listTarea.getId());
+                }
+                if (TareaService.deleteTarea(proyectoSelect.getId()) == 200) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar proyecto", (Stage) btnCancelarTarea.getScene().getWindow(), "Proyecto eliminada con exito");
+                    llenarProyectos();
+                    llenarTreeVeew(listProyectos);
+                }
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar proyecto", (Stage) btnCancelarTarea.getScene().getWindow(), "Seleccione una proyecto");
+        }
+    }
+
+    @FXML
+    private void actionEliminarTarea(ActionEvent event) {
+        if (tareaSelect.getId() != null) {
+            if (new Mensaje().showConfirmation("Eliminar tarea", (Stage) btnCancelarTarea.getScene().getWindow(), "Desea eliminar la tarea " + tareaSelect.getNombre())) {
+                if (TareaService.deleteTarea(tareaSelect.getId()) == 200) {
+                    llenarProyectos();
+                    llenarTreeVeew(listProyectos);
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar tarea", (Stage) btnCancelarTarea.getScene().getWindow(), "Tarea eliminada con exito");
+                }
+
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar tarea", (Stage) btnCancelarTarea.getScene().getWindow(), "Seleccione una tarea");
         }
     }
 

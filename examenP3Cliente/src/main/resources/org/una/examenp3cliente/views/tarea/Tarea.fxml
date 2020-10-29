@@ -39,15 +39,16 @@
                                     <JFXTextArea fx:id="txtdescripcionProyecto" disable="true" prefHeight="43.0" prefWidth="398.0" promptText="Descripcion" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="20.0">
+                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="10.0">
                                  <children>
+                                    <JFXButton onAction="#actionEliminarProyecto" prefHeight="29.0" prefWidth="98.0" text="Eliminar" />
                                     <JFXButton fx:id="brnCancelarProyecto" onAction="#actionCancelarProyecto" prefHeight="29.0" prefWidth="119.0" text="Cancelar" />
-                                    <JFXButton fx:id="btnProyectoNuevo" onAction="#actionProyectoNuevo" text="Crear proyecto" />
-                                    <JFXButton fx:id="btnEditarProeycto" onAction="#actionEditarGuadrarProyecto" prefHeight="29.0" prefWidth="140.0" text="Editar proyecto" />
+                                    <JFXButton fx:id="btnProyectoNuevo" onAction="#actionProyectoNuevo" prefHeight="29.0" prefWidth="130.0" text="Crear proyecto" />
+                                    <JFXButton fx:id="btnEditarProeycto" onAction="#actionEditarGuadrarProyecto" prefHeight="29.0" prefWidth="130.0" text="Editar proyecto" />
                                     <JFXButton fx:id="brnGuardarProyecto" onAction="#actionGuardarProyecto" text="Guardar" visible="false" />
                                  </children>
                                  <padding>
-                                    <Insets right="20.0" />
+                                    <Insets right="10.0" />
                                  </padding>
                               </HBox>
                               <Separator prefWidth="200.0" />
@@ -63,7 +64,7 @@
                                     <DatePicker fx:id="fechaFinalizacion" disable="true" prefWidth="200.0" promptText="Fecha Finalizacion" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" prefHeight="61.0" prefWidth="610.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                              <HBox alignment="CENTER" prefHeight="37.0" prefWidth="610.0" spacing="5.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <JFXTextField fx:id="txtImportancia" alignment="CENTER" disable="true" onKeyReleased="#actionPrioridad" onMouseClicked="#actionMensageImportancia" prefHeight="29.0" prefWidth="122.0" promptText="Importancia" />
                                     <Label text="*" />
@@ -80,15 +81,16 @@
                                     <JFXTextArea fx:id="txtdescripcionTarea" disable="true" prefHeight="43.0" prefWidth="428.0" promptText="Descripcion" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="20.0">
+                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="10.0">
                                  <children>
+                                    <JFXButton onAction="#actionEliminarTarea" prefHeight="29.0" prefWidth="92.0" text="Eliminar" />
                                     <Button fx:id="btnCancelarTarea" mnemonicParsing="false" onAction="#actionCancelarTarea" prefHeight="29.0" prefWidth="120.0" text="Cancelar" />
                                     <JFXButton fx:id="btnCrearTarea" onAction="#accionCrearTarea" prefHeight="29.0" prefWidth="120.0" text="Crear tarea" />
                                     <JFXButton fx:id="btnEditarTarea" onAction="#actionGuardarEditarTarea" prefHeight="29.0" prefWidth="140.0" text="Editar tarea" />
                                     <JFXButton fx:id="brnGuardarTarea" onAction="#actionGuardarTarea" text="Guardar" visible="false" />
                                  </children>
                                  <padding>
-                                    <Insets right="20.0" />
+                                    <Insets right="10.0" />
                                  </padding>
                               </HBox>
                            </children>

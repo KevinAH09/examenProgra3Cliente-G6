@@ -79,5 +79,15 @@ public class ProyectoService {
         }
         return codeResponse;
     }
+      public static int deleteProyecto(Long id) {
+
+        try {
+            return Conection.deleteObjetcConnection("proyecto/" + id);
+
+        } catch (IOException ex) {
+            Logger.getLogger(TareaService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 
 }

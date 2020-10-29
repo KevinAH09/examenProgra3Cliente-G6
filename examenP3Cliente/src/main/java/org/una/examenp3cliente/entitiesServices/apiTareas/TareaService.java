@@ -46,6 +46,17 @@ public class TareaService {
         return TareaDTO;
     }
 
+    public static int deleteTarea(Long id) {
+
+        try {
+            return Conection.deleteObjetcConnection("tarea/" + id);
+
+        } catch (IOException ex) {
+            Logger.getLogger(TareaService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
     public static List<TareaDTO> proyectoIdTarea(Long id) {
 
         List<TareaDTO> listTareaDTOs = new ArrayList<>();
