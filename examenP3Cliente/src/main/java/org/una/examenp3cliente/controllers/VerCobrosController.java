@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXTreeView;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -73,31 +74,35 @@ public class VerCobrosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        clientesList = new ArrayList<ClienteDTO>();
-        if (cmbBusqueda.getValue().equals("Todos")) {
-            clientesList = ClienteService.allCliente();
-            if (clientesList != null) {
-                box1.setVisible(false);
-                treeview.setVisible(true);
-                llenarTree();
-            } else {
-                treeview.setVisible(false);
-                box2.setVisible(true);
-                box1.setVisible(false);
+        if (cmbBusqueda.getValue() != null) {
+            clientesList = new ArrayList<ClienteDTO>();
+            if (cmbBusqueda.getValue().equals("Todos")) {
+                clientesList = ClienteService.allCliente();
+                if (clientesList != null) {
+                    box1.setVisible(false);
+                    box2.setVisible(false);
+                    treeview.setVisible(true);
+                    llenarTree();
+                } else {
+                    treeview.setVisible(false);
+                    box2.setVisible(true);
+                    box1.setVisible(false);
+                }
             }
-        }
-        if (cmbBusqueda.getValue().equals("Identificacion")) {
-            clientesFilt = ClienteService.identificacionCliente(txtBusqueda.getText());
-            if (clientesFilt != null) {
-                box1.setVisible(false);
-                clientesList.add(clientesFilt);
-                treeview.setVisible(true);
-                llenarTree();
-            } else {
+            if (cmbBusqueda.getValue().equals("Identificacion")) {
+                clientesFilt = ClienteService.identificacionCliente(txtBusqueda.getText());
+                if (clientesFilt != null) {
+                    box1.setVisible(false);
+                    box2.setVisible(false);
+                    clientesList.add(clientesFilt);
+                    treeview.setVisible(true);
+                    llenarTree();
+                } else {
 
-                treeview.setVisible(false);
-                box2.setVisible(true);
-                box1.setVisible(false);
+                    treeview.setVisible(false);
+                    box2.setVisible(true);
+                    box1.setVisible(false);
+                }
             }
         }
     }
@@ -107,6 +112,7 @@ public class VerCobrosController extends Controller implements Initializable {
         treeview.setRoot(root);
         TreeItem<String> inicio = new TreeItem<>("Cliente");
         root.getChildren().add(inicio);
+        clientesList.sort(Comparator.comparing(ClienteDTO::getNombre));
         for (ClienteDTO clienteDTO : clientesList) {
             String title = clienteDTO.getNombre();
             TreeItem<String> item = new TreeItem<>(title);
@@ -133,6 +139,7 @@ public class VerCobrosController extends Controller implements Initializable {
             item.getChildren().add(item4);
 
             cobrosList = CobrosService.idClienteCobros(Long.valueOf(clienteDTO.getId()));
+            cobrosList.sort(Comparator.comparing(CobroDTO::getFechaVencimiento));
             for (CobroDTO cobroDTO : cobrosList) {
                 TreeItem<String> itemCobro = new TreeItem<>("Fecha vencimiento: " + formatter.format(cobroDTO.getFechaVencimiento()));
                 item4.getChildren().add(itemCobro);
@@ -151,9 +158,9 @@ public class VerCobrosController extends Controller implements Initializable {
     private void notificar() {
         treeview.setVisible(false);
 
-        ImageView imageView = new ImageView(new Image("org/una/examenp3cliente/views/shared/info.png"));
+        ImageView imageView = new ImageView(new Image("org/una/examenp3cliente/views/shared/info2.png"));
         Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
-        lab.setFill(Color.web("BLACK"));
+        lab.setFill(Color.web("#ffffff"));
         box1 = new VBox();
         box1.setAlignment(Pos.CENTER);
         box1.getChildren().add(imageView);
@@ -161,9 +168,9 @@ public class VerCobrosController extends Controller implements Initializable {
         stack.getChildren().add(box1);
         StackPane.setAlignment(box1, Pos.CENTER_LEFT);
 
-        ImageView imageView2 = new ImageView(new Image("org/una/examenp3cliente/views/shared/warning.png"));
+        ImageView imageView2 = new ImageView(new Image("org/una/examenp3cliente/views/shared/hazard.png"));
         Text lab2 = new Text("No se encontro coincidencias");
-        lab.setFill(Color.web("BLACK"));
+        lab2.setFill(Color.web("#ffffff"));
         box2 = new VBox();
         box2.setAlignment(Pos.CENTER);
         box2.getChildren().add(imageView2);
