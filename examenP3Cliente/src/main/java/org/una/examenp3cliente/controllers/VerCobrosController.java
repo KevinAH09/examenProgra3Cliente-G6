@@ -108,7 +108,7 @@ public class VerCobrosController extends Controller implements Initializable {
     }
 
     private void llenarTree() {
-        TreeItem<String> root = new TreeItem<>("Datos Generales");
+        TreeItem<String> root = new TreeItem<>("Datos Generales de cobros");
         treeview.setRoot(root);
         TreeItem<String> inicio = new TreeItem<>("Cliente");
         root.getChildren().add(inicio);

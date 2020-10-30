@@ -20,7 +20,8 @@ import org.una.examenp3cliente.sharedServices.Conection;
  * @author cfugu
  */
 public class CobrosService {
-     public static List<CobroDTO> allCobros() {
+
+    public static List<CobroDTO> allCobros() {
 
         List<CobroDTO> cobrosDTOs = new ArrayList<>();
         try {
@@ -32,12 +33,12 @@ public class CobrosService {
         }
         return cobrosDTOs;
     }
-     
-     public static List<CobroDTO> idClienteCobros(Long id) {
+
+    public static List<CobroDTO> idClienteCobros(Long id) {
 
         List<CobroDTO> cobrosDTOs = new ArrayList<>();
         try {
-            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/cliente/"+id, new TypeToken<ArrayList<CobroDTO>>() {
+            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/cliente/" + id, new TypeToken<ArrayList<CobroDTO>>() {
             }.getType());
 
         } catch (IOException ex) {
@@ -45,11 +46,12 @@ public class CobrosService {
         }
         return cobrosDTOs;
     }
-     public static List<CobroDTO> identificacionClienteCobros(String identificacion) {
+
+    public static List<CobroDTO> identificacionClienteCobros(String identificacion) {
 
         List<CobroDTO> cobrosDTOs = new ArrayList<>();
         try {
-            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/identificacion/"+identificacion, new TypeToken<ArrayList<CobroDTO>>() {
+            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/identificacion/" + identificacion, new TypeToken<ArrayList<CobroDTO>>() {
             }.getType());
 
         } catch (IOException ex) {
@@ -57,11 +59,12 @@ public class CobrosService {
         }
         return cobrosDTOs;
     }
-     public static List<CobroDTO> identificacionTipoClienteCobros(String identificacion,String tipo) {
+
+    public static List<CobroDTO> identificacionTipoClienteCobros(String identificacion, String tipo) {
 
         List<CobroDTO> cobrosDTOs = new ArrayList<>();
         try {
-            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/identificacion-tipo/"+identificacion+"/"+tipo, new TypeToken<ArrayList<CobroDTO>>() {
+            cobrosDTOs = (List<CobroDTO>) Conection.listFromConnection("cobros_pendientes/identificacion-tipo/" + identificacion + "/" + tipo, new TypeToken<ArrayList<CobroDTO>>() {
             }.getType());
 
         } catch (IOException ex) {
@@ -82,6 +85,7 @@ public class CobrosService {
         }
         return CobroPendienteDTO;
     }
+
     public static CobroDTO createCobros(CobroDTO createCobros) {
         CobroDTO cobro = new CobroDTO();
         try {
