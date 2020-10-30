@@ -437,6 +437,7 @@ public class TareaController extends Controller implements Initializable {
                     btnEditarTarea.setDisable(false);
                     brnGuardarProyecto.setVisible(false);
                     btnCancelarTarea.setDisable(false);
+                    btnProyectoNuevo.setDisable(false);
                 }
             } else {
                 proyectoSelect = ProyectoService.createProyecto(proyectoSelect);
@@ -471,6 +472,7 @@ public class TareaController extends Controller implements Initializable {
             tareaSelect.setFechaInicio(Date.from(fechaInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             tareaSelect.setFechaFinalizacion(Date.from(fechaFinalizacion.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             if (tareaSelect.getId() != null) {
+                tareaSelect.getProyectoId().getListTareas().clear();
                 if (TareaService.updateTarea(tareaSelect) == 200) {
                     llenarProyectos();
                     llenarTreeVeew(listProyectos);

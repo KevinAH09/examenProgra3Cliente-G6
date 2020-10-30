@@ -69,9 +69,9 @@ public class ProyectoDTO {
         this.procentajeAvanzeCalculado = procentajeAvanzeCalculado;
     }
 
-    @Override
-    public String toString() {
-        return "ProyectoDTO{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", listTareas=" + listTareas + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "ProyectoDTO{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", listTareas=" + listTareas + '}';
+//    }
 
 }

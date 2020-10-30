@@ -112,4 +112,6 @@ public class TareaDTO {
         return "TareaDTO{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", importancia=" + importancia + ", urgencia=" + urgencia + ", procentajeAvance=" + procentajeAvance + ", proyectoId=" + proyectoId + ", fechaInicio=" + fechaInicio + ", fechaFinalizacion=" + fechaFinalizacion + '}';
     }
 
+    
+
 }
