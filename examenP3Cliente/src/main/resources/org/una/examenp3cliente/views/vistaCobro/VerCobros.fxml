@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="540.0" prefWidth="790.0" stylesheets="@Style3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.VerCobrosController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@Style3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.VerCobrosController">
    <children>
       <VBox layoutX="-6.0" prefHeight="540.0" prefWidth="837.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="62.0" prefWidth="781.0">
+            <HBox alignment="CENTER" prefHeight="63.0" prefWidth="906.0">
                <children>
                   <Label prefHeight="20.0" prefWidth="216.0" text="Vista de cobros pendientes" />
                </children>
@@ -27,11 +27,11 @@
                   <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" text="Filtrar" />
                </children>
             </HBox>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="396.0" prefWidth="906.0">
                <children>
                   <StackPane fx:id="stack">
                      <children>
-                        <JFXTreeView fx:id="treeview" prefHeight="333.0" prefWidth="763.0" style="-fx-background-color: black;">
+                        <JFXTreeView fx:id="treeview" prefHeight="385.0" prefWidth="763.0" style="-fx-background-color: black;">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -40,7 +40,7 @@
                   </StackPane>
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="796.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="105.0" prefWidth="906.0">
                <children>
                   <JFXButton onAction="#onActionVolverMenu" text="Volver al menu de cobros" />
                </children>

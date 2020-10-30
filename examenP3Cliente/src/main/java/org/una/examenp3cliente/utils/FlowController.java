@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import org.una.examenp3cliente.App;
 import org.una.examenp3cliente.controllers.Controller;
@@ -179,6 +180,27 @@ public class FlowController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(parentStage);
+        stage.centerOnScreen();
+        stage.showAndWait();
+
+    }
+    public void goViewInWindowModal2(String viewName, Stage parentStage, Boolean resizable) { //muestra una ventana modal
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        controller.initialize();
+        Stage stage = new Stage();
+        stage.setResizable(resizable);
+        stage.setOnHidden((WindowEvent event) -> {
+            controller.getStage().getScene().setRoot(new Pane());
+            controller.setStage(null);
+        });
+        controller.setStage(stage);
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.initOwner(parentStage);
         stage.centerOnScreen();
         stage.showAndWait();

@@ -8,18 +8,12 @@ package org.una.examenp3cliente.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URL;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -33,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -46,7 +41,6 @@ import org.una.examenp3cliente.entitiesServices.apiCobros.ClienteService;
 import org.una.examenp3cliente.entitiesServices.apiCobros.CobrosService;
 import org.una.examenp3cliente.entitiesServices.apiCobros.MembresiaService;
 import org.una.examenp3cliente.utils.FlowController;
-import org.una.examenp3cliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -85,19 +79,15 @@ public class GenerarCobroController extends Controller implements Initializable 
     private JFXComboBox<MembresiaDTO> cmbMembresia;
     @FXML
     private Pane paneNotificar;
+    @FXML
+    private HBox hboxProgress;
+    
     public List<ClienteDTO> clientesList = new ArrayList<ClienteDTO>();
     public List<MembresiaDTO> membresiaList = new ArrayList<MembresiaDTO>();
     public List<CobroDTO> cobroList = new ArrayList<CobroDTO>();
     public ClienteDTO clientesFilt = new ClienteDTO();
     public ClienteDTO data = new ClienteDTO();
     public MembresiaDTO membresiaFilt = new MembresiaDTO();
-    public CobroDTO cobroDTO = new CobroDTO();
-    public CobroDTO cobroDTO2 = new CobroDTO();
-    Date date = new Date();
-    public List<ClienteDTO> clientesListCobro = new ArrayList<ClienteDTO>();
-    public List<MembresiaDTO> membresiaListCobro = new ArrayList<MembresiaDTO>();
-    public MembresiaDTO membresiaFilt2 = new MembresiaDTO();
-    public ClienteDTO clientesFilt2 = new ClienteDTO();
 
     /**
      * Initializes the controller class.
@@ -127,32 +117,36 @@ public class GenerarCobroController extends Controller implements Initializable 
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (cmbBusqueda.getValue().equals("Todos")) {
-            clientesList = ClienteService.allCliente();
-            if (clientesList != null) {
-                tableView.getItems().clear();
-                tableView.getColumns().clear();
+        if (cmbBusqueda.getValue() != null) {
+            if (cmbBusqueda.getValue().equals("Todos")) {
+                clientesList = ClienteService.allCliente();
+                clientesList.sort(Comparator.comparing(ClienteDTO::getNombre));
+                if (clientesList != null) {
+                    tableView.getItems().clear();
+                    tableView.getColumns().clear();
 
-                InicializarTableView();
-                tableView.setItems(FXCollections.observableArrayList(clientesList));
-                addButtonToTable();
-            } else {
-                notificar(0);
+                    InicializarTableView();
+                    tableView.setItems(FXCollections.observableArrayList(clientesList));
+                    addButtonToTable();
+                } else {
+                    notificar(0);
+                }
+            }
+            if (cmbBusqueda.getValue().equals("Identificacion") && !txtBusqueda.getText().isEmpty()) {
+                clientesFilt = ClienteService.identificacionCliente(txtBusqueda.getText());
+                if (clientesFilt != null) {
+                    tableView.getItems().clear();
+                    tableView.getColumns().clear();
+
+                    InicializarTableView();
+                    tableView.setItems(FXCollections.observableArrayList(clientesFilt));
+                    addButtonToTable();
+                } else {
+                    notificar(0);
+                }
             }
         }
-        if (cmbBusqueda.getValue().equals("Identificacion") && !txtBusqueda.getText().isEmpty()) {
-            clientesFilt = ClienteService.identificacionCliente(txtBusqueda.getText());
-            if (clientesFilt != null) {
-                tableView.getItems().clear();
-                tableView.getColumns().clear();
 
-                InicializarTableView();
-                tableView.setItems(FXCollections.observableArrayList(clientesFilt));
-                addButtonToTable();
-            } else {
-                notificar(0);
-            }
-        }
     }
 
     @FXML
@@ -167,44 +161,10 @@ public class GenerarCobroController extends Controller implements Initializable 
         ButtonType result = alert.showAndWait().orElse(ButtonType.YES);
 
         if (ButtonType.YES.equals(result)) {
-            clientesListCobro = ClienteService.allCliente();
-            System.out.println("Generó");
-            for (ClienteDTO clienteDTO : clientesListCobro) {
-                clientesFilt2 = clienteDTO;
-                membresiaListCobro = MembresiaService.idClienteMembresia(Long.valueOf(clienteDTO.getId()));
-                for (MembresiaDTO membresiaDTO : membresiaListCobro) {
-                    membresiaFilt2 = membresiaDTO;
-                    if (verificaficacion(clienteDTO.getIdentificacion(), membresiaDTO.getDescripcion())) {
-                        if (membresiaDTO.getPeriodicidad().equals("Anual")) {
-                            date = new Date();
-                            guardarCobros(date, 1, 12, membresiaDTO.getMonto(), "Anual");
-                        }
-                        if (membresiaDTO.getPeriodicidad().equals("Mensual")) {
-                            date = new Date();
-                            guardarCobros(date, 12, 1, (membresiaDTO.getMonto() / 12), "Mensual");
-                        }
-                        if (membresiaDTO.getPeriodicidad().equals("Bimestral")) {
-                            date = new Date();
-                            guardarCobros(date, 6, 2, (membresiaDTO.getMonto() / 6), "Bimestral");
-                        }
-                        if (membresiaDTO.getPeriodicidad().equals("Trimestral")) {
-                            date = new Date();
-                            guardarCobros(date, 4, 3, (membresiaDTO.getMonto() / 4), "Trimestral");
-
-                        }
-                        if (membresiaDTO.getPeriodicidad().equals("Cuatrimestral")) {
-                            date = new Date();
-                            guardarCobros(date, 3, 4, (membresiaDTO.getMonto() / 3), "Cuatrimestral");
-                        }
-                        if (membresiaDTO.getPeriodicidad().equals("Semestral")) {
-                            date = new Date();
-                            guardarCobros(date, 2, 6, (membresiaDTO.getMonto() / 2), "Semestral");
-                        }
-                    }
-                }
-            }
-            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "Se guardó el cobro correctamente");
+            btnCobro.setDisable(true);
+            FlowController.getInstance().goViewInWindowModal2("auxiliarCobros/AuxiliarCobros", ((Stage) txtNombre.getScene().getWindow()), false);
         }
+        btnCobro.setDisable(false);
 
     }
 
@@ -293,13 +253,6 @@ public class GenerarCobroController extends Controller implements Initializable 
 
     }
 
-    public void FechaVencimiento(Date dat, int dias) {
-        Calendar hoy = Calendar.getInstance();
-        hoy.setTime(date);
-        hoy.add(Calendar.DATE, dias);
-        date = hoy.getTime();
-    }
-
     public void verificar(String identificacion, String tipo) {
         cobroList = null;
         cobroList = CobrosService.identificacionTipoClienteCobros(identificacion, tipo);
@@ -307,49 +260,6 @@ public class GenerarCobroController extends Controller implements Initializable 
             paneNotificar.setVisible(true);
         } else {
             paneNotificar.setVisible(false);
-        }
-    }
-
-    public boolean verificaficacion(String identificacion, String tipo) {
-        cobroList = null;
-        cobroList = CobrosService.identificacionTipoClienteCobros(identificacion, tipo);
-        if (cobroList.size() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void guardarCobros(Date dates, int cantidad, int cantDias, Double monto, String periodo) {
-        BigDecimal formatNumber = new BigDecimal(monto);
-        formatNumber = formatNumber.setScale(2, RoundingMode.UP);
-
-        Calendar fecha = Calendar.getInstance();
-        boolean band = true;
-        for (int i = 0; i < cantidad && band == true; i++) {
-            if (i == 0) {
-                int dias = 30 * cantDias;
-                FechaVencimiento(dates, dias);
-                cobroDTO = new CobroDTO();
-                fecha.setTime(dates);
-            } else {
-                int dias = 30 * cantDias;
-                FechaVencimiento(date, dias);
-                cobroDTO = new CobroDTO();
-                fecha.setTime(date);
-            }
-            cobroDTO.setAnno(String.valueOf(fecha.get(Calendar.YEAR)));
-            cobroDTO.setClientesId(clientesFilt2);
-            cobroDTO.setFechaVencimiento(date);
-            cobroDTO.setMonto(formatNumber.doubleValue());
-            cobroDTO.setPeriodo(periodo);
-            cobroDTO.setTipo(membresiaFilt2.getDescripcion());
-            cobroDTO2 = CobrosService.createCobros(cobroDTO);
-            if (cobroDTO2 == null) {
-                band = false;
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "No se guardó el cobro correctamente");
-            }
-            System.out.println(cobroDTO);
         }
     }
 
