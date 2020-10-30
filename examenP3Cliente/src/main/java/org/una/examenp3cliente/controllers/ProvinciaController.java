@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,45 +49,57 @@ public class ProvinciaController extends Controller implements Initializable {
     public List<UnidadDTO> unidadnList = new ArrayList<UnidadDTO>();
     public List<UnidadDTO> unidadnList2 = new ArrayList<UnidadDTO>();
 
-    public List<TreeItem> listaItemUnidad = new ArrayList<TreeItem>();
+    public List<TreeItem> listaItemDistrito = new ArrayList<TreeItem>();
+    public List<TreeItem> listaItemCanton = new ArrayList<TreeItem>();
+    public List<TreeItem> listaItemProvincia = new ArrayList<TreeItem>();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cargarTreeView();
 
+    }
+
+    public void cargarTreeView() {
         provinciaList = ProvinciaService.estado(true);
 
         TreeItem<String> root1 = new TreeItem<>("Provincias");
         root1.setExpanded(false);
-
+        int cont111 = 0;
+        double cont222 = 0;
         for (int i = 0; i < provinciaList.size(); i++) {
-            TreeItem<String> root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia]");
+            TreeItem<String> root;
             cantonList = CantonService.provinciaIdCanton(provinciaList.get(i).getId());
             cantonList2 = new ArrayList<CantonDTO>();
+            listaItemProvincia = new ArrayList<TreeItem>();
             for (CantonDTO CantonDTO : cantonList) {
                 if (CantonDTO.getEstado() == true) {
                     cantonList2.add(CantonDTO);
                 }
             }
+            int contt = 0;
+            double cont22 = 0;
             for (int j = 0; j < cantonList2.size(); j++) {
-                TreeItem<String> item = new TreeItem<>(cantonList2.get(j).getNombreCanton() + " [Cantón]");
+
+                TreeItem<String> item;
                 distritonList = DistritoService.cantonesIddistrito(cantonList2.get(j).getId());
                 distritonList2 = new ArrayList<DistritoDTO>();
+                listaItemCanton = new ArrayList<TreeItem>();
                 for (DistritoDTO DistritoDTO : distritonList) {
                     if (DistritoDTO.isEstado() == true) {
                         distritonList2.add(DistritoDTO);
                     }
                 }
-
+                int cont = 0;
+                double cont2 = 0;
                 for (int k = 0; k < distritonList2.size(); k++) {
-                    int cont = 0;
-                    double cont2 = 0;
+
                     TreeItem<String> item1;
                     unidadnList = UnidadService.distritoIdUnidad(distritonList2.get(k).getId());
                     unidadnList2 = new ArrayList<UnidadDTO>();
-                    listaItemUnidad = new ArrayList<TreeItem>();
+                    listaItemDistrito = new ArrayList<TreeItem>();
                     for (UnidadDTO UnidadDTO : unidadnList) {
                         if (UnidadDTO.isEstado() == true) {
                             unidadnList2.add(UnidadDTO);
@@ -94,21 +107,36 @@ public class ProvinciaController extends Controller implements Initializable {
                     }
                     for (int f = 0; f < unidadnList2.size(); f++) {
                         TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad() + " [Unidad] " + "Población:" + unidadnList2.get(f).getPoblacion() + " Área Cuadrada:" + unidadnList2.get(f).getAreaCuadrada());
-                        listaItemUnidad.add(item2);
+                        listaItemDistrito.add(item2);
                         cont = (int) (cont + unidadnList2.get(f).getPoblacion());
                         cont2 = cont2 + unidadnList2.get(f).getAreaCuadrada();
                     }
-
                     item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito() + " [Distrito] " + "Población:" + cont + " Área Cuadrada:" + cont2);
-                    for (TreeItem tree : listaItemUnidad) {
+                    for (TreeItem tree : listaItemDistrito) {
                         item1.getChildren().addAll(tree);
                     }
-
-                    item.getChildren().addAll(item1);
+                    listaItemCanton.add(item1);
+                    contt = (int) (contt + cont);
+                    cont22 = cont22 + cont2;
+                    cont = 0;
+                    cont2 = 0;
                 }
-                root.getChildren().addAll(item);
+                item = new TreeItem<>(cantonList2.get(j).getNombreCanton() + " [Cantón] " + "Población:" + contt + " Área Cuadrada:" + cont22);
+                for (TreeItem tree : listaItemCanton) {
+                    item.getChildren().addAll(tree);
+                }
+                listaItemProvincia.add(item);
+                cont111 = (int) (cont111 + contt);
+                cont222 = cont222 + cont22;
+                contt = 0;
+                cont22 = 0;
             }
-
+            root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia] "+ "Población:" + cont111 + " Área Cuadrada:" + cont222);
+            for (TreeItem tree : listaItemProvincia) {
+                root.getChildren().addAll(tree);
+            }
+            cont111=0;
+            cont222=0;
             root1.getChildren().add(root);
         }
         treeView.setRoot(root1);
@@ -132,6 +160,11 @@ public class ProvinciaController extends Controller implements Initializable {
     @Override
     public void initialize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @FXML
+    private void regresar(ActionEvent event) {
+        FlowController.getInstance().goView("menuProvincia/MenuProvincia");
     }
 
 }

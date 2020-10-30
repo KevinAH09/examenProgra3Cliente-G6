@@ -54,6 +54,7 @@ public class MenuProvinciaController extends Controller implements Initializable
 
     @FXML
     private void irMenuPrincipal(ActionEvent event) {
+        FlowController.getInstance().goView("inicio/Inicio");
     }
 
     @Override
