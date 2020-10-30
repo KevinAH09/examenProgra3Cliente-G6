@@ -57,6 +57,7 @@ public class ProvinciaController extends Controller implements Initializable {
     public List<TreeItem> listaItemDistrito = new ArrayList<TreeItem>();
     public List<TreeItem> listaItemCanton = new ArrayList<TreeItem>();
     public List<TreeItem> listaItemProvincia = new ArrayList<TreeItem>();
+    public List<TreeItem> padre = new ArrayList<TreeItem>();
     @FXML
     private JFXComboBox<String> combMayoMenor;
     @FXML
@@ -153,7 +154,9 @@ public class ProvinciaController extends Controller implements Initializable {
     }
 
     public void CargarTreeViewMayor(String MayorMenor, int valor) {
+
         if (MayorMenor.equals("menor")) {
+            int cont1111 = 0;
             provinciaList = ProvinciaService.estado(true);
             Collections.sort(provinciaList, (o1, o2) -> o1.getCodigo().compareTo(o2.getCodigo()));
             TreeItem<String> root1 = new TreeItem<>("Provincias");
@@ -198,49 +201,140 @@ public class ProvinciaController extends Controller implements Initializable {
                         }
                         for (int f = 0; f < unidadnList2.size(); f++) {
 
-                            
                             if (unidadnList2.get(f).getPoblacion() < valor) {
-                               TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad() + " [Unidad] " + "Población:" + unidadnList2.get(f).getPoblacion() + " Área Cuadrada:" + unidadnList2.get(f).getAreaCuadrada());
+                                TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad() + " [Unidad] " + "Población:" + unidadnList2.get(f).getPoblacion() + " Área Cuadrada:" + unidadnList2.get(f).getAreaCuadrada());
                                 listaItemDistrito.add(item2);
                                 cont = (int) (cont + unidadnList2.get(f).getPoblacion());
                                 cont2 = cont2 + unidadnList2.get(f).getAreaCuadrada();
                             }
                         }
-                        item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito() + " [Distrito] " + "Población:" + cont + " Área Cuadrada:" + cont2);
-                        for (TreeItem tree : listaItemDistrito) {
-                            item1.getChildren().addAll(tree);
-                        }
 
-                        
-                        //if (contt < valor) {
-                        listaItemCanton.add(item1);
                         contt = (int) (contt + cont);
                         cont22 = cont22 + cont2;
+                        if (cont < valor && cont != 0) {
+                            item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito() + " [Distrito] " + "Población:" + cont + " Área Cuadrada:" + cont2);
+                            for (TreeItem tree : listaItemDistrito) {
+                                item1.getChildren().addAll(tree);
+                            }
+                            listaItemCanton.add(item1);
+                        }
                         cont = 0;
                         cont2 = 0;
-                        //}
                     }
-
-                    item = new TreeItem<>(cantonList2.get(j).getNombreCanton() + " [Cantón] " + "Población:" + contt + " Área Cuadrada:" + cont22);
-                    for (TreeItem tree : listaItemCanton) {
-                        item.getChildren().addAll(tree);
-                    }
-
                     cont111 = (int) (cont111 + contt);
                     cont222 = cont222 + cont22;
+                    if (contt < valor && contt != 0) {
+                        item = new TreeItem<>(cantonList2.get(j).getNombreCanton() + " [Cantón] " + "Población:" + contt + " Área Cuadrada:" + cont22);
+                        for (TreeItem tree : listaItemCanton) {
+                            item.getChildren().addAll(tree);
+                        }
+                        listaItemProvincia.add(item);
+                    }
                     contt = 0;
                     cont22 = 0;
-                    // if (cont111 > valor) {
-                    listaItemProvincia.add(item);
-                    //}
                 }
-                root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia] " + "Población:" + cont111 + " Área Cuadrada:" + cont222);
-                for (TreeItem tree : listaItemProvincia) {
-                    root.getChildren().addAll(tree);
+                cont1111 = (int) (cont1111 + contt);
+                if (cont111 < valor && cont111 != 0) {
+                    root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia] " + "Población:" + cont111 + " Área Cuadrada:" + cont222);
+                    for (TreeItem tree : listaItemProvincia) {
+                        root.getChildren().addAll(tree);
+                    }
+                    root1.getChildren().addAll(root);
                 }
                 cont111 = 0;
                 cont222 = 0;
-                root1.getChildren().add(root);
+
+            }
+            treeView.setRoot(root1);
+        } else {
+            int cont1111 = 0;
+            provinciaList = ProvinciaService.estado(true);
+            Collections.sort(provinciaList, (o1, o2) -> o1.getCodigo().compareTo(o2.getCodigo()));
+            TreeItem<String> root1 = new TreeItem<>("Provincias");
+            root1.setExpanded(false);
+            int cont111 = 0;
+            double cont222 = 0;
+            for (int i = 0; i < provinciaList.size(); i++) {
+                TreeItem<String> root;
+                cantonList = CantonService.provinciaIdCanton(provinciaList.get(i).getId());
+                cantonList2 = new ArrayList<CantonDTO>();
+                listaItemProvincia = new ArrayList<TreeItem>();
+                for (CantonDTO CantonDTO : cantonList) {
+                    if (CantonDTO.getEstado() == true) {
+                        cantonList2.add(CantonDTO);
+                    }
+                }
+                int contt = 0;
+                double cont22 = 0;
+                for (int j = 0; j < cantonList2.size(); j++) {
+
+                    TreeItem<String> item;
+                    distritonList = DistritoService.cantonesIddistrito(cantonList2.get(j).getId());
+                    distritonList2 = new ArrayList<DistritoDTO>();
+                    listaItemCanton = new ArrayList<TreeItem>();
+                    for (DistritoDTO DistritoDTO : distritonList) {
+                        if (DistritoDTO.isEstado() == true) {
+                            distritonList2.add(DistritoDTO);
+                        }
+                    }
+                    int cont = 0;
+                    double cont2 = 0;
+                    for (int k = 0; k < distritonList2.size(); k++) {
+
+                        TreeItem<String> item1;
+                        unidadnList = UnidadService.distritoIdUnidad(distritonList2.get(k).getId());
+                        unidadnList2 = new ArrayList<UnidadDTO>();
+                        listaItemDistrito = new ArrayList<TreeItem>();
+                        for (UnidadDTO UnidadDTO : unidadnList) {
+                            if (UnidadDTO.isEstado() == true) {
+                                unidadnList2.add(UnidadDTO);
+                            }
+                        }
+                        for (int f = 0; f < unidadnList2.size(); f++) {
+
+                            if (unidadnList2.get(f).getPoblacion() > valor) {
+                                TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad() + " [Unidad] " + "Población:" + unidadnList2.get(f).getPoblacion() + " Área Cuadrada:" + unidadnList2.get(f).getAreaCuadrada());
+                                listaItemDistrito.add(item2);
+                                cont = (int) (cont + unidadnList2.get(f).getPoblacion());
+                                cont2 = cont2 + unidadnList2.get(f).getAreaCuadrada();
+                            }
+                        }
+
+                        contt = (int) (contt + cont);
+                        cont22 = cont22 + cont2;
+                        if (cont > valor && cont != 0) {
+                            item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito() + " [Distrito] " + "Población:" + cont + " Área Cuadrada:" + cont2);
+                            for (TreeItem tree : listaItemDistrito) {
+                                item1.getChildren().addAll(tree);
+                            }
+                            listaItemCanton.add(item1);
+                        }
+                        cont = 0;
+                        cont2 = 0;
+                    }
+                    cont111 = (int) (cont111 + contt);
+                    cont222 = cont222 + cont22;
+                    if (contt > valor && contt != 0) {
+                        item = new TreeItem<>(cantonList2.get(j).getNombreCanton() + " [Cantón] " + "Población:" + contt + " Área Cuadrada:" + cont22);
+                        for (TreeItem tree : listaItemCanton) {
+                            item.getChildren().addAll(tree);
+                        }
+                        listaItemProvincia.add(item);
+                    }
+                    contt = 0;
+                    cont22 = 0;
+                }
+                cont1111 = (int) (cont1111 + contt);
+                if (cont111 > valor && cont111 != 0) {
+                    root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia] " + "Población:" + cont111 + " Área Cuadrada:" + cont222);
+                    for (TreeItem tree : listaItemProvincia) {
+                        root.getChildren().addAll(tree);
+                    }
+                    root1.getChildren().addAll(root);
+                }
+                cont111 = 0;
+                cont222 = 0;
+
             }
             treeView.setRoot(root1);
         }
@@ -259,10 +353,12 @@ public class ProvinciaController extends Controller implements Initializable {
     @FXML
     private void filtrar(ActionEvent event) {
         int numEntero = Integer.parseInt(txtValor.getText());
-        if (combMayoMenor.getValue().equals("mayor")) {
-            CargarTreeViewMayor("mayor", numEntero);
-        } else {
-            CargarTreeViewMayor("menor", numEntero);
+        if (combMayoMenor.getValue().isEmpty() || txtValor.getText().isEmpty()){
+            if (combMayoMenor.getValue().equals("mayor")) {
+                CargarTreeViewMayor("mayor", numEntero);
+            } else {
+                CargarTreeViewMayor("menor", numEntero);
+            }
         }
     }
 
