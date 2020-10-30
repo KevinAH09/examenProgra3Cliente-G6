@@ -23,6 +23,8 @@ public class ProyectoDTO {
 
     private List<TareaDTO> listTareas;
 
+    private double procentajeAvanzeCalculado;
+
     public ProyectoDTO() {
         listTareas = new ArrayList();
     }
@@ -59,11 +61,17 @@ public class ProyectoDTO {
         this.descripcion = descripcion;
     }
 
+    public double getProcentajeAvanzeCalculado() {
+        return procentajeAvanzeCalculado;
+    }
+
+    public void setProcentajeAvanzeCalculado(double procentajeAvanzeCalculado) {
+        this.procentajeAvanzeCalculado = procentajeAvanzeCalculado;
+    }
+
     @Override
     public String toString() {
         return "ProyectoDTO{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", listTareas=" + listTareas + '}';
     }
-
-    
 
 }

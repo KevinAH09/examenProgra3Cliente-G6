@@ -23,6 +23,7 @@
                   <Label fx:id="lblIni" prefHeight="20.0" prefWidth="37.0" />
                   <Label text="Valor Fin:" />
                   <Label fx:id="lblfin" prefHeight="20.0" prefWidth="35.0" />
+                  <Label text="Color:" />
                   <JFXColorPicker fx:id="colorPicker" prefHeight="31.0" prefWidth="106.0" />
                   <JFXButton fx:id="btnCrear" onAction="#actionCrearRango" text="Crear rango" />
                </children>
@@ -54,8 +55,9 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="57.0" prefWidth="900.0" spacing="20.0">
                <children>
-                  <JFXButton onAction="#actionCancelarCambios" text="Cancelar cambios" />
-                  <JFXButton onAction="#actionGuardarCambios" text="Guardar cambios" />
+                  <JFXButton onAction="#actionCancelarCambios" text="Salir" />
+                  <JFXButton onAction="#actionLimpiarCambio" text="Limpiar" />
+                  <JFXButton onAction="#actionGuardarCambios" text="Guardar" />
                </children>
             </HBox>
          </children>

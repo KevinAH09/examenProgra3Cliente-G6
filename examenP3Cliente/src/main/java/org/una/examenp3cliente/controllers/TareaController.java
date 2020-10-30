@@ -137,6 +137,13 @@ public class TareaController extends Controller implements Initializable {
         for (ProyectoDTO proyecto : listProyectos) {
             listTareas = new ArrayList<>();
             listTareas = TareaService.proyectoIdTarea(proyecto.getId());
+            double sum = 0;
+            for (TareaDTO listTarea : listTareas) {
+                sum += listTarea.getProcentajeAvance();
+            }
+            if (sum != 0 && listTareas.size() != 0) {
+                proyecto.setProcentajeAvanzeCalculado(sum / listTareas.size());
+            }
             proyecto.setListTareas(listTareas);
         }
     }
@@ -153,13 +160,13 @@ public class TareaController extends Controller implements Initializable {
             treeView.setRoot(root);
 
             for (ProyectoDTO proyecto : listProyect) {
-                Label labelPro = new Label("(Proyecto) " + proyecto.getNombre());
+                Label labelPro = new Label("Proyecto " + proyecto.getNombre());
                 labelPro.setId(proyecto.getId().toString());
                 TreeItem<Label> item = new TreeItem<>(labelPro);
 //                item.setGraphic(imgroot);
                 root.getChildren().add(item);
                 for (TareaDTO tarea : proyecto.getListTareas()) {
-                    Label label = new Label("(Tarea) " + tarea.getNombre());
+                    Label label = new Label("Tarea " + tarea.getNombre());
                     label.setId(tarea.getId().toString());
                     label.setBackground(retunrColorTarea(tarea.getProcentajeAvance()));
                     TreeItem<Label> itemTarea = new TreeItem<>(label);
@@ -175,12 +182,14 @@ public class TareaController extends Controller implements Initializable {
 
     private Background retunrColorTarea(double porcentaje) {
         if (AppContext.getInstance().get("listRangos") != null) {
+
             listrangoExtendsAnchor = (List<RangoExtendsAnchor>) AppContext.getInstance().get("listRangos");
             for (int i = 0; i < listrangoExtendsAnchor.size(); i++) {
                 if (listrangoExtendsAnchor.get(i).getValorIni() <= porcentaje && listrangoExtendsAnchor.get(i).getValorFin() >= porcentaje) {
                     return new Background(new BackgroundFill(listrangoExtendsAnchor.get(i).getColor(), null, null));
                 }
             }
+
         }
         return new Background(new BackgroundFill(Color.BLACK, null, null));
     }
@@ -212,6 +221,7 @@ public class TareaController extends Controller implements Initializable {
                 if (tareaSelect != null) {
                     txtNombreProyecto.setText(proyectoSelect.getNombre());
                     txtdescripcionProyecto.setText(proyectoSelect.getDescripcion());
+                    txtPorcentajeAvanceProyecto.setText(String.format("%.0f", proyectoSelect.getProcentajeAvanzeCalculado()));
                     txtNombreTarea.setText(tareaSelect.getNombre());
                     txtdescripcionTarea.setText(tareaSelect.getDescripcion());
                     txtPorcentajeTarea.setText(String.valueOf(tareaSelect.getProcentajeAvance()));
@@ -227,6 +237,7 @@ public class TareaController extends Controller implements Initializable {
             proyectoSelect = listProyectos.stream().filter(x -> x.getId().equals(Long.valueOf(idTarea))).findFirst().get();
             txtNombreProyecto.setText(proyectoSelect.getNombre());
             txtdescripcionProyecto.setText(proyectoSelect.getDescripcion());
+            txtPorcentajeAvanceProyecto.setText(String.format("%.0f", proyectoSelect.getProcentajeAvanzeCalculado()));
             txtNombreTarea.setText("");
             txtdescripcionTarea.setText("");
             txtPorcentajeTarea.setText("");
@@ -261,6 +272,7 @@ public class TareaController extends Controller implements Initializable {
         tareaSelect = new TareaDTO();
         txtNombreProyecto.setText("");
         txtdescripcionProyecto.setText("");
+        txtPorcentajeAvanceProyecto.setText("");
 
         txtNombreTarea.setText("");
         txtdescripcionTarea.setText("");
@@ -370,11 +382,11 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionCancelarTarea(ActionEvent event) {
-        btnEditarProeycto.setDisable(false);
-        btnCrearTarea.setDisable(false);
-        btnProyectoNuevo.setDisable(false);
-        brnGuardarTarea.setVisible(false);
-        brnCancelarProyecto.setDisable(false);
+        btnEditarProeycto.setDisable(true);
+        btnCrearTarea.setDisable(true);
+        btnProyectoNuevo.setDisable(true);
+        brnGuardarTarea.setVisible(true);
+        brnCancelarProyecto.setDisable(true);
         if (tareaSelect.getId() != null) {
             txtNombreTarea.setText(tareaSelect.getNombre());
             txtdescripcionTarea.setText(tareaSelect.getDescripcion());
@@ -384,6 +396,14 @@ public class TareaController extends Controller implements Initializable {
             txtPrioridad.setText(String.valueOf(tareaSelect.getUrgencia() * tareaSelect.getImportancia()));
             fechaInicio.setValue(tareaSelect.getFechaInicio().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             fechaFinalizacion.setValue(tareaSelect.getFechaFinalizacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        } else {
+            txtNombreTarea.setText("");
+            txtdescripcionTarea.setText("");
+            txtPorcentajeTarea.setText("");
+            txtImportancia.setText("");
+            txtUrgancia.setText("");
+            fechaInicio.setValue(null);
+            fechaFinalizacion.setValue(null);
         }
 
     }
@@ -511,6 +531,18 @@ public class TareaController extends Controller implements Initializable {
         if (proyectoSelect.getId() != null) {
             txtNombreProyecto.setText(proyectoSelect.getNombre());
             txtdescripcionProyecto.setText(proyectoSelect.getDescripcion());
+            txtPorcentajeAvanceProyecto.setText(String.format("%.0f", proyectoSelect.getProcentajeAvanzeCalculado()));
+        } else {
+            txtNombreTarea.setText("");
+            txtdescripcionTarea.setText("");
+            txtPorcentajeTarea.setText("");
+            txtImportancia.setText("");
+            txtUrgancia.setText("");
+            fechaInicio.setValue(null);
+            fechaFinalizacion.setValue(null);
+            txtNombreProyecto.setText("");
+            txtdescripcionProyecto.setText("");
+            txtPorcentajeAvanceProyecto.setText("");
         }
     }
 
@@ -543,6 +575,7 @@ public class TareaController extends Controller implements Initializable {
                     fechaFinalizacion.setValue(null);
                     txtNombreProyecto.setText("");
                     txtdescripcionProyecto.setText("");
+                    txtPorcentajeAvanceProyecto.setText("");
                 }
             }
         } else {
@@ -582,6 +615,7 @@ public class TareaController extends Controller implements Initializable {
 
     @FXML
     private void actionRangos(ActionEvent event) {
+        AppContext.getInstance().set("listRangos", listrangoExtendsAnchor);
         FlowController.getInstance().goView("crearRango/CrearRango");
     }
 

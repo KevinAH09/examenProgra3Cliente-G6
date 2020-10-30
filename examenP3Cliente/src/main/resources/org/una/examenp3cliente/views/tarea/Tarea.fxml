@@ -113,7 +113,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <JFXButton onAction="#actionRangos" text="Crear rangos de porcentaje de avance" />
+                              <JFXButton onAction="#actionRangos" text="Rangos de porcentaje de avance" />
                            </children>
                         </HBox>
                      </children>

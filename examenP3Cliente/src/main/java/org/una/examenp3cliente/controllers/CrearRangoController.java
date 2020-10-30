@@ -24,6 +24,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.una.examenp3cliente.utils.AppContext;
 import org.una.examenp3cliente.utils.FlowController;
@@ -49,13 +50,24 @@ public class CrearRangoController extends Controller implements Initializable {
     @FXML
     private GridPane gripPane;
     List<RangoExtendsAnchor> listrangoExtendsAnchor = new ArrayList();
+    List<RangoExtendsAnchor> listrangoCopia = new ArrayList();
     int colunm = 2;
     int row = 2;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        colorPicker.setValue(Color.BLACK);
         lblIni.setText(String.format("%.0f", slider.getMin()));
         lblfin.setText(String.format("%.0f", slider.getValue()));
+        listrangoExtendsAnchor = (List<RangoExtendsAnchor>) AppContext.getInstance().get("listRangos");
+        for (RangoExtendsAnchor rangoExtendsAnchor : listrangoExtendsAnchor) {
+            listrangoCopia.add(rangoExtendsAnchor);
+        }
+        if (listrangoExtendsAnchor.size() > 0) {
+
+            crearRangos(false);
+        }
+        System.out.println("org.una.examenp3cliente.controllers.CrearRangoController.initialize()");
     }
 
     @Override
@@ -69,24 +81,7 @@ public class CrearRangoController extends Controller implements Initializable {
             if (!Double.valueOf(String.format("%.0f", slider.getValue())).equals(Double.valueOf(String.format("%.0f", slider.getMin())))) {
                 RangoExtendsAnchor rangoExtendsAnchor = new RangoExtendsAnchor(String.format("%.0f", slider.getValue()), String.format("%.0f", slider.getMin()), colorPicker.getValue());
                 listrangoExtendsAnchor.add(rangoExtendsAnchor);
-                while (listrangoExtendsAnchor.size() > colunm * row) {
-                    colunm++;
-                    row++;
-                }
-                gripPane.getChildren().clear();
-                int contList = 0;
-                for (int i = 0; i < colunm; i++) {
-                    for (int j = 0; j < row; j++) {
-                        if (contList < listrangoExtendsAnchor.size()) {
-                            gripPane.add(listrangoExtendsAnchor.get(contList), i, j);
-                        }
-                        contList++;
-                    }
-                }
-
-                slider.setMin(Double.valueOf(String.format("%.0f", slider.getValue())));
-                lblIni.setText(String.format("%.0f", slider.getMin()));
-                lblfin.setText(String.format("%.0f", slider.getValue()));
+                crearRangos(true);
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Crear rango", (Stage) btnCrear.getScene().getWindow(), "Seleccione un rango mayor al anterior");
             }
@@ -95,15 +90,42 @@ public class CrearRangoController extends Controller implements Initializable {
         }
     }
 
+    void crearRangos(boolean aux) {
+        while (listrangoExtendsAnchor.size() > colunm * row) {
+            colunm++;
+            row++;
+        }
+        gripPane.getChildren().clear();
+        int contList = 0;
+        for (int i = 0; i < colunm; i++) {
+            for (int j = 0; j < row; j++) {
+                if (contList < listrangoExtendsAnchor.size()) {
+                    gripPane.add(listrangoExtendsAnchor.get(contList), i, j);
+                }
+                contList++;
+            }
+        }
+        if (aux) {
+            slider.setMin(Double.valueOf(String.format("%.0f", slider.getValue())));
+            lblIni.setText(String.format("%.0f", slider.getMin()));
+            lblfin.setText(String.format("%.0f", slider.getValue()));
+        } else {
+            slider.setMin(listrangoExtendsAnchor.get(listrangoExtendsAnchor.size() - 1).getValorFin());
+            slider.setValue(listrangoExtendsAnchor.get(listrangoExtendsAnchor.size() - 1).getValorFin());
+            lblIni.setText(String.format("%.0f", slider.getMin()));
+            lblfin.setText(String.format("%.0f", slider.getValue()));
+        }
+    }
+
     @FXML
     private void actionCancelarCambios(ActionEvent event) {
-        AppContext.getInstance().set("listRangos", null);
+        if( new Mensaje().showConfirmation("Salir de la ventana rango", (Stage) btnCrear.getScene().getWindow(), "Desea salir sin guardar cambios"))
+        AppContext.getInstance().set("listRangos", listrangoCopia);
         FlowController.getInstance().goView("tarea/Tarea");
     }
 
     @FXML
     private void actionGuardarCambios(ActionEvent event) {
-        System.out.println("org.una.examenp3cliente.controllers.CrearRangoController.actionGuardarCambios() Guardaaaaadddddddddddd");
         AppContext.getInstance().set("listRangos", listrangoExtendsAnchor);
         FlowController.getInstance().goView("tarea/Tarea");
     }
@@ -116,6 +138,16 @@ public class CrearRangoController extends Controller implements Initializable {
     @FXML
     private void actionClick(MouseEvent event) {
         lblfin.setText(String.format("%.0f", slider.getValue()));
+    }
+
+    @FXML
+    private void actionLimpiarCambio(ActionEvent event) {
+        gripPane.getChildren().clear();
+        listrangoExtendsAnchor.clear();
+        slider.setMin(0);
+        slider.setValue(50);
+        lblIni.setText("");
+        lblfin.setText("");
     }
 
 }
