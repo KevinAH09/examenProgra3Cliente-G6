@@ -13,16 +13,17 @@ import java.util.List;
  * @author Bosco
  */
 public class ProvinciaDTO {
+
     private Long id;
 
     private String nombreProvincia;
 
     private String codigo;
-    
+
     private boolean estado;
-    
-    private List<CantonDTO> listCantones ;
-    
+
+    private List<CantonDTO> listCantones;
+
     public ProvinciaDTO() {
         listCantones = new ArrayList();
     }
@@ -34,7 +35,7 @@ public class ProvinciaDTO {
     public void setListCantones(List<CantonDTO> listCantones) {
         this.listCantones = listCantones;
     }
-    
+
     public boolean isEstado() {
         return estado;
     }
@@ -42,7 +43,7 @@ public class ProvinciaDTO {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -69,6 +70,8 @@ public class ProvinciaDTO {
 
     @Override
     public String toString() {
-        return  nombreProvincia;
+        return nombreProvincia;
     }
+
+    
 }
