@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,10 +24,26 @@
                         <Label text="Filtrar" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="490.0" prefWidth="330.0" />
+                  <HBox prefHeight="490.0" prefWidth="330.0">
+                     <children>
+                        <VBox prefHeight="484.0" prefWidth="332.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="124.0" prefWidth="330.0">
+                                 <children>
+                                    <Label prefHeight="20.0" prefWidth="83.0" text="Población" />
+                                    <JFXComboBox fx:id="combMayoMenor" prefHeight="26.0" prefWidth="80.0" />
+                                    <Label prefHeight="20.0" prefWidth="22.0" text="a:" />
+                                    <JFXTextField fx:id="txtValor" prefHeight="27.0" prefWidth="139.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="330.0">
                      <children>
-                        <JFXButton onAction="#regresar" text="Regresar al menú" />
+                        <JFXButton onAction="#regresar" prefHeight="29.0" prefWidth="160.0" text="Regresar al menú" />
+                        <JFXButton onAction="#filtrar" prefHeight="29.0" prefWidth="160.0" text="Filtrar" />
                      </children>
                   </HBox>
                </children>
