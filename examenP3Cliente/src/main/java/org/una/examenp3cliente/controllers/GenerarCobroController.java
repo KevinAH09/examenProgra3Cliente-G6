@@ -94,8 +94,10 @@ public class GenerarCobroController extends Controller implements Initializable 
     public CobroDTO cobroDTO = new CobroDTO();
     public CobroDTO cobroDTO2 = new CobroDTO();
     Date date = new Date();
-    @FXML
-    private JFXComboBox<String> cmbPeriodos;
+    public List<ClienteDTO> clientesListCobro = new ArrayList<ClienteDTO>();
+    public List<MembresiaDTO> membresiaListCobro = new ArrayList<MembresiaDTO>();
+    public MembresiaDTO membresiaFilt2 = new MembresiaDTO();
+    public ClienteDTO clientesFilt2 = new ClienteDTO();
 
     /**
      * Initializes the controller class.
@@ -118,7 +120,6 @@ public class GenerarCobroController extends Controller implements Initializable 
             txtDescripcion.setText(t1.getDescripcion());
             txtPeridiocidad.setText(t1.getPeriodicidad());
             txtMonto.setText(t1.getMonto().toString());
-            cargarPeriodos(t1.getPeriodicidad());
             membresiaFilt = t1;
             verificar(data.getIdentificacion(), t1.getDescripcion());
         });
@@ -161,80 +162,50 @@ public class GenerarCobroController extends Controller implements Initializable 
 
     @FXML
     private void onActionGenerar(ActionEvent event) {
-        if (cmbPeriodos.getValue() != null && cmbMembresia.getValue() != null) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Se va a generar una cantidad grande de cobros, realmente desea generar el cobro?", ButtonType.YES, ButtonType.NO
+        );
+        ButtonType result = alert.showAndWait().orElse(ButtonType.YES);
+
+        if (ButtonType.YES.equals(result)) {
+            clientesListCobro = ClienteService.allCliente();
             System.out.println("Generó");
-            date = new Date();
-            if (membresiaFilt.getPeriodicidad().equals("Anual")) {
-                if (cmbPeriodos.getValue().equals("Anual")) {
-                    guardarCobros(date, 1, 12, membresiaFilt.getMonto());
-                }
-                if (cmbPeriodos.getValue().equals("Mensual")) {
-                    guardarCobros(date, 12, 1, (membresiaFilt.getMonto() / 12));
-                }
-                if (cmbPeriodos.getValue().equals("Bimestral")) {
-                    guardarCobros(date, (6), 2, (membresiaFilt.getMonto() / 6));
-                }
-                if (cmbPeriodos.getValue().equals("Trimestral")) {
-                    guardarCobros(date, (4), 3, (membresiaFilt.getMonto() / 4));
-                }
-                if (cmbPeriodos.getValue().equals("Cuatrimestral")) {
-                    guardarCobros(date, (3), 4, (membresiaFilt.getMonto() / 3));
-                }
-                if (cmbPeriodos.getValue().equals("Semestral")) {
-                    guardarCobros(date, (2), 6, (membresiaFilt.getMonto() / 2));
-                }
-            }
-            if (membresiaFilt.getPeriodicidad().equals("Mensual")) {
-                if (cmbPeriodos.getValue().equals("Mensual")) {
-                    guardarCobros(date, 1, 1, membresiaFilt.getMonto());
-                }
-            }
-            if (membresiaFilt.getPeriodicidad().equals("Bimestral")) {
-                if (cmbPeriodos.getValue().equals("Mensual")) {
-                    guardarCobros(date, 2, 1, (membresiaFilt.getMonto() / 2));
-                }
-                if (cmbPeriodos.getValue().equals("Bimestral")) {
-                    guardarCobros(date, 1, 2, membresiaFilt.getMonto());
-                }
-            }
-            if (membresiaFilt.getPeriodicidad().equals("Trimestral")) {
-                if (cmbPeriodos.getValue().equals("Mensual")) {
-                    guardarCobros(date, 3, 1, (membresiaFilt.getMonto() / 3));
-                }
-                if (cmbPeriodos.getValue().equals("Trimestral")) {
-                    guardarCobros(date, 1, 3, membresiaFilt.getMonto());
-                }
+            for (ClienteDTO clienteDTO : clientesListCobro) {
+                clientesFilt2 = clienteDTO;
+                membresiaListCobro = MembresiaService.idClienteMembresia(Long.valueOf(clienteDTO.getId()));
+                for (MembresiaDTO membresiaDTO : membresiaListCobro) {
+                    membresiaFilt2 = membresiaDTO;
+                    if (verificaficacion(clienteDTO.getIdentificacion(), membresiaDTO.getDescripcion())) {
+                        if (membresiaDTO.getPeriodicidad().equals("Anual")) {
+                            date = new Date();
+                            guardarCobros(date, 1, 12, membresiaDTO.getMonto(), "Anual");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Mensual")) {
+                            date = new Date();
+                            guardarCobros(date, 12, 1, (membresiaDTO.getMonto() / 12), "Mensual");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Bimestral")) {
+                            date = new Date();
+                            guardarCobros(date, 6, 2, (membresiaDTO.getMonto() / 6), "Bimestral");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Trimestral")) {
+                            date = new Date();
+                            guardarCobros(date, 4, 3, (membresiaDTO.getMonto() / 4), "Trimestral");
 
-            }
-            if (membresiaFilt.getPeriodicidad().equals("Cuatrimestral")) {
-                if (cmbPeriodos.getValue().equals("Mensual")) {
-                    guardarCobros(date, 4, 1, (membresiaFilt.getMonto() / 4));
-                }
-                if (cmbPeriodos.getValue().equals("Bimestral")) {
-                    guardarCobros(date, 2, 2, (membresiaFilt.getMonto() / 2));
-                }
-                if (cmbPeriodos.getValue().equals("Cuatrimestral")) {
-                    guardarCobros(date, 1, 4, membresiaFilt.getMonto());
-
-                }
-            }
-            if (membresiaFilt.getPeriodicidad().equals("Semestral")) {
-                if (cmbPeriodos.getValue().equals("Mensual")) {
-                    guardarCobros(date, 6, 1, (membresiaFilt.getMonto() / 6));
-                }
-                if (cmbPeriodos.getValue().equals("Bimestral")) {
-                    guardarCobros(date, 3, 2, (membresiaFilt.getMonto() / 3));
-                }
-                if (cmbPeriodos.getValue().equals("Trimestral")) {
-                    guardarCobros(date, 2, 3, (membresiaFilt.getMonto() / 2));
-                }
-                if (cmbPeriodos.getValue().equals("Semestral")) {
-                    guardarCobros(date, 1, 6, membresiaFilt.getMonto());
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Cuatrimestral")) {
+                            date = new Date();
+                            guardarCobros(date, 3, 4, (membresiaDTO.getMonto() / 3), "Cuatrimestral");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Semestral")) {
+                            date = new Date();
+                            guardarCobros(date, 2, 6, (membresiaDTO.getMonto() / 2), "Semestral");
+                        }
+                    }
                 }
             }
-        } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al generar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "No se generó el cobro correctamente, ya que debe seleccionar una membresia y un período, por favor verifique los datos.");
+            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "Se guardó el cobro correctamente");
         }
+
     }
 
     private void InicializarTableView() {
@@ -333,79 +304,53 @@ public class GenerarCobroController extends Controller implements Initializable 
         cobroList = null;
         cobroList = CobrosService.identificacionTipoClienteCobros(identificacion, tipo);
         if (cobroList.size() > 0) {
-            btnCobro.setDisable(true);
             paneNotificar.setVisible(true);
         } else {
-            btnCobro.setDisable(false);
             paneNotificar.setVisible(false);
         }
     }
 
-    public void guardarCobros(Date dates, int cantidad, int cantDias, Double monto) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Se va a generar " + cantidad + " cobros por un monto de " + monto + " colones, realmente desea generar el cobro?", ButtonType.YES, ButtonType.NO);
-        ButtonType result = alert.showAndWait().orElse(ButtonType.YES);
-
-        if (ButtonType.YES.equals(result)) {
-            Calendar fecha = Calendar.getInstance();
-            boolean band = true;
-            for (int i = 0; i < cantidad && band == true; i++) {
-                if (i == 0) {
-                    int dias = 30 * cantDias;
-                    FechaVencimiento(dates, dias);
-                    cobroDTO = new CobroDTO();
-                    fecha.setTime(dates);
-                } else {
-                    int dias = 30 * cantDias;
-                    FechaVencimiento(date, dias);
-                    cobroDTO = new CobroDTO();
-                    fecha.setTime(date);
-                }
-                BigDecimal formatNumber = new BigDecimal(monto);
-                formatNumber = formatNumber.setScale(2, RoundingMode.UP);
-
-                cobroDTO.setAnno(String.valueOf(fecha.get(Calendar.YEAR)));
-                cobroDTO.setClientesId(data);
-                cobroDTO.setFechaVencimiento(date);
-                cobroDTO.setMonto(formatNumber.doubleValue());
-                cobroDTO.setPeriodo(cmbPeriodos.getValue());
-                cobroDTO.setTipo(membresiaFilt.getDescripcion());
-                cobroDTO2 = CobrosService.createCobros(cobroDTO);
-                if (cobroDTO2 == null) {
-                    band = false;
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "No se guardó el cobro correctamente");
-                }
-                System.out.println(cobroDTO);
-            }
-            if (cobroDTO2 != null) {
-                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "Se guardó el cobro correctamente");
-                limpiar();
-            }
+    public boolean verificaficacion(String identificacion, String tipo) {
+        cobroList = null;
+        cobroList = CobrosService.identificacionTipoClienteCobros(identificacion, tipo);
+        if (cobroList.size() == 0) {
+            return true;
+        } else {
+            return false;
         }
-
     }
 
-    public void cargarPeriodos(String per) {
-        System.out.println("Entró");
-        cmbPeriodos.getItems().clear();
-        if ("Anual".equals(per)) {
-            cmbPeriodos.setItems(FXCollections.observableArrayList("Mensual", "Bimestral", "Trimestral", "Cuatrimestral", "Semestral", "Anual"));
-        }
-        if ("Semestral".equals(per)) {
-            cmbPeriodos.setItems(FXCollections.observableArrayList("Mensual", "Bimestral", "Trimestral", "Semestral"));
-        }
-        if ("Cuatrimestral".equals(per)) {
-            cmbPeriodos.setItems(FXCollections.observableArrayList("Mensual", "Bimestral", "Cuatrimestral"));
-        }
-        if ("Trimestral".equals(per)) {
-            cmbPeriodos.setItems(FXCollections.observableArrayList("Mensual", "Trimestral"));
-        }
-        if ("Bimestral".equals(per)) {
-            cmbPeriodos.setItems(FXCollections.observableArrayList("Mensual", "Bimestral"));
-        }
-        if ("Mensual".equals(per)) {
-            cmbPeriodos.setItems(FXCollections.observableArrayList("Mensual"));
-        }
+    public void guardarCobros(Date dates, int cantidad, int cantDias, Double monto, String periodo) {
+        BigDecimal formatNumber = new BigDecimal(monto);
+        formatNumber = formatNumber.setScale(2, RoundingMode.UP);
 
+        Calendar fecha = Calendar.getInstance();
+        boolean band = true;
+        for (int i = 0; i < cantidad && band == true; i++) {
+            if (i == 0) {
+                int dias = 30 * cantDias;
+                FechaVencimiento(dates, dias);
+                cobroDTO = new CobroDTO();
+                fecha.setTime(dates);
+            } else {
+                int dias = 30 * cantDias;
+                FechaVencimiento(date, dias);
+                cobroDTO = new CobroDTO();
+                fecha.setTime(date);
+            }
+            cobroDTO.setAnno(String.valueOf(fecha.get(Calendar.YEAR)));
+            cobroDTO.setClientesId(clientesFilt2);
+            cobroDTO.setFechaVencimiento(date);
+            cobroDTO.setMonto(formatNumber.doubleValue());
+            cobroDTO.setPeriodo(periodo);
+            cobroDTO.setTipo(membresiaFilt2.getDescripcion());
+            cobroDTO2 = CobrosService.createCobros(cobroDTO);
+            if (cobroDTO2 == null) {
+                band = false;
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "No se guardó el cobro correctamente");
+            }
+            System.out.println(cobroDTO);
+        }
     }
 
     public void limpiar() {
@@ -417,10 +362,7 @@ public class GenerarCobroController extends Controller implements Initializable 
         txtPeridiocidad.clear();
         txtTelefono.clear();
         cmbMembresia.getItems().clear();
-        cmbPeriodos.getItems().clear();
-//        data = null;
-//        membresiaFilt = null;
-//        membresiaList=null;
+
     }
 
     @Override

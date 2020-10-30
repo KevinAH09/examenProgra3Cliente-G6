@@ -96,22 +96,6 @@
                               <Insets left="5.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <padding>
-                              <Insets left="5.0" />
-                           </padding>
-                           <children>
-                              <Label text="Períodos de cobro" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <JFXComboBox fx:id="cmbPeriodos" prefHeight="26.0" prefWidth="252.0" promptText="Seleccione un período" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" />
-                           </padding>
-                        </HBox>
                      </children>
                   </VBox>
                </children>
@@ -138,7 +122,7 @@
                   <HBox alignment="CENTER" prefHeight="32.0" prefWidth="516.0" spacing="10.0">
                      <children>
                         <JFXButton fx:id="btnVolver" onAction="#onActionVolver" prefHeight="29.0" prefWidth="167.0" text="Volver al menú" />
-                        <JFXButton fx:id="btnCobro" onAction="#onActionGenerar" prefHeight="29.0" prefWidth="148.0" text="Generar cobro" />
+                        <JFXButton fx:id="btnCobro" onAction="#onActionGenerar" prefHeight="29.0" prefWidth="148.0" style="-fx-background-color: #0093f4;" text="Generar cobros" />
                      </children>
                   </HBox>
                </children>

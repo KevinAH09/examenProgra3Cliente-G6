@@ -5,11 +5,16 @@
  */
 package org.una.examenp3cliente.controllers;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -52,19 +57,24 @@ public class ProvinciaController extends Controller implements Initializable {
     public List<TreeItem> listaItemDistrito = new ArrayList<TreeItem>();
     public List<TreeItem> listaItemCanton = new ArrayList<TreeItem>();
     public List<TreeItem> listaItemProvincia = new ArrayList<TreeItem>();
+    @FXML
+    private JFXComboBox<String> combMayoMenor;
+    @FXML
+    private JFXTextField txtValor;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        combMayoMenor.setItems(FXCollections.observableArrayList("mayor", "menor"));
         cargarTreeView();
 
     }
 
     public void cargarTreeView() {
         provinciaList = ProvinciaService.estado(true);
-
+        Collections.sort(provinciaList, (o1, o2) -> o1.getCodigo().compareTo(o2.getCodigo()));
         TreeItem<String> root1 = new TreeItem<>("Provincias");
         root1.setExpanded(false);
         int cont111 = 0;
@@ -131,30 +141,109 @@ public class ProvinciaController extends Controller implements Initializable {
                 contt = 0;
                 cont22 = 0;
             }
-            root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia] "+ "Población:" + cont111 + " Área Cuadrada:" + cont222);
+            root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia] " + "Población:" + cont111 + " Área Cuadrada:" + cont222);
             for (TreeItem tree : listaItemProvincia) {
                 root.getChildren().addAll(tree);
             }
-            cont111=0;
-            cont222=0;
+            cont111 = 0;
+            cont222 = 0;
             root1.getChildren().add(root);
         }
         treeView.setRoot(root1);
     }
 
-    private void actionAerolineaClick() {
-
-        treeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-                if (mouseEvent.getClickCount() == 2 && treeView.selectionModelProperty().get().getSelectedItem() != null) {
-                    TreeItem<String> aerolinea = treeView.selectionModelProperty().get().getSelectedItem();
-                    FlowController.getInstance().goView("inicio/Inicio");
+    public void CargarTreeViewMayor(String MayorMenor, int valor) {
+        if (MayorMenor.equals("menor")) {
+            provinciaList = ProvinciaService.estado(true);
+            Collections.sort(provinciaList, (o1, o2) -> o1.getCodigo().compareTo(o2.getCodigo()));
+            TreeItem<String> root1 = new TreeItem<>("Provincias");
+            root1.setExpanded(false);
+            int cont111 = 0;
+            double cont222 = 0;
+            for (int i = 0; i < provinciaList.size(); i++) {
+                TreeItem<String> root;
+                cantonList = CantonService.provinciaIdCanton(provinciaList.get(i).getId());
+                cantonList2 = new ArrayList<CantonDTO>();
+                listaItemProvincia = new ArrayList<TreeItem>();
+                for (CantonDTO CantonDTO : cantonList) {
+                    if (CantonDTO.getEstado() == true) {
+                        cantonList2.add(CantonDTO);
+                    }
                 }
+                int contt = 0;
+                double cont22 = 0;
+                for (int j = 0; j < cantonList2.size(); j++) {
 
+                    TreeItem<String> item;
+                    distritonList = DistritoService.cantonesIddistrito(cantonList2.get(j).getId());
+                    distritonList2 = new ArrayList<DistritoDTO>();
+                    listaItemCanton = new ArrayList<TreeItem>();
+                    for (DistritoDTO DistritoDTO : distritonList) {
+                        if (DistritoDTO.isEstado() == true) {
+                            distritonList2.add(DistritoDTO);
+                        }
+                    }
+                    int cont = 0;
+                    double cont2 = 0;
+                    for (int k = 0; k < distritonList2.size(); k++) {
+
+                        TreeItem<String> item1;
+                        unidadnList = UnidadService.distritoIdUnidad(distritonList2.get(k).getId());
+                        unidadnList2 = new ArrayList<UnidadDTO>();
+                        listaItemDistrito = new ArrayList<TreeItem>();
+                        for (UnidadDTO UnidadDTO : unidadnList) {
+                            if (UnidadDTO.isEstado() == true) {
+                                unidadnList2.add(UnidadDTO);
+                            }
+                        }
+                        for (int f = 0; f < unidadnList2.size(); f++) {
+
+                            
+                            if (unidadnList2.get(f).getPoblacion() < valor) {
+                               TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad() + " [Unidad] " + "Población:" + unidadnList2.get(f).getPoblacion() + " Área Cuadrada:" + unidadnList2.get(f).getAreaCuadrada());
+                                listaItemDistrito.add(item2);
+                                cont = (int) (cont + unidadnList2.get(f).getPoblacion());
+                                cont2 = cont2 + unidadnList2.get(f).getAreaCuadrada();
+                            }
+                        }
+                        item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito() + " [Distrito] " + "Población:" + cont + " Área Cuadrada:" + cont2);
+                        for (TreeItem tree : listaItemDistrito) {
+                            item1.getChildren().addAll(tree);
+                        }
+
+                        
+                        //if (contt < valor) {
+                        listaItemCanton.add(item1);
+                        contt = (int) (contt + cont);
+                        cont22 = cont22 + cont2;
+                        cont = 0;
+                        cont2 = 0;
+                        //}
+                    }
+
+                    item = new TreeItem<>(cantonList2.get(j).getNombreCanton() + " [Cantón] " + "Población:" + contt + " Área Cuadrada:" + cont22);
+                    for (TreeItem tree : listaItemCanton) {
+                        item.getChildren().addAll(tree);
+                    }
+
+                    cont111 = (int) (cont111 + contt);
+                    cont222 = cont222 + cont22;
+                    contt = 0;
+                    cont22 = 0;
+                    // if (cont111 > valor) {
+                    listaItemProvincia.add(item);
+                    //}
+                }
+                root = new TreeItem<>(provinciaList.get(i).getNombreProvincia() + " [Provincia] " + "Población:" + cont111 + " Área Cuadrada:" + cont222);
+                for (TreeItem tree : listaItemProvincia) {
+                    root.getChildren().addAll(tree);
+                }
+                cont111 = 0;
+                cont222 = 0;
+                root1.getChildren().add(root);
             }
-        });
+            treeView.setRoot(root1);
+        }
     }
 
     @Override
@@ -165,6 +254,16 @@ public class ProvinciaController extends Controller implements Initializable {
     @FXML
     private void regresar(ActionEvent event) {
         FlowController.getInstance().goView("menuProvincia/MenuProvincia");
+    }
+
+    @FXML
+    private void filtrar(ActionEvent event) {
+        int numEntero = Integer.parseInt(txtValor.getText());
+        if (combMayoMenor.getValue().equals("mayor")) {
+            CargarTreeViewMayor("mayor", numEntero);
+        } else {
+            CargarTreeViewMayor("menor", numEntero);
+        }
     }
 
 }
