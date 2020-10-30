@@ -7,10 +7,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.una.examenp3cliente.controllers.MenuProvinciaController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.MenuProvinciaController">
    <children>
-      <StackPane prefHeight="560.0" prefWidth="793.0">
+      <StackPane prefHeight="600.0" prefWidth="900.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -19,7 +18,7 @@
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="110.0" text="Menú" />
                      </children>
                   </HBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+                  <VBox alignment="CENTER" prefHeight="400.0" prefWidth="900.0" spacing="30.0">
                      <children>
                         <JFXButton onAction="#irProvincia" prefHeight="45.0" prefWidth="317.0" text="Agregar Provincias" />
                         <JFXButton onAction="#irCantone" prefHeight="45.0" prefWidth="317.0" text="Agregar Cantones" />
