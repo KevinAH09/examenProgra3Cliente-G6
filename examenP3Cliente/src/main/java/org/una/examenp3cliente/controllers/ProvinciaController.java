@@ -34,6 +34,9 @@ public class ProvinciaController extends Controller implements Initializable {
 
     @FXML
     private JFXTreeView<String> treeView;
+
+    ProvinciaDTO pro;
+
     public List<ProvinciaDTO> provinciaList = new ArrayList<ProvinciaDTO>();
 
     public List<CantonDTO> cantonList = new ArrayList<CantonDTO>();
@@ -45,11 +48,14 @@ public class ProvinciaController extends Controller implements Initializable {
     public List<UnidadDTO> unidadnList = new ArrayList<UnidadDTO>();
     public List<UnidadDTO> unidadnList2 = new ArrayList<UnidadDTO>();
 
+    public List<TreeItem> listaItemUnidad = new ArrayList<TreeItem>();
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         provinciaList = ProvinciaService.estado(true);
 
         TreeItem<String> root1 = new TreeItem<>("Provincias");
@@ -69,26 +75,38 @@ public class ProvinciaController extends Controller implements Initializable {
                 distritonList = DistritoService.cantonesIddistrito(cantonList2.get(j).getId());
                 distritonList2 = new ArrayList<DistritoDTO>();
                 for (DistritoDTO DistritoDTO : distritonList) {
-                    if (DistritoDTO.isEstado()== true) {
+                    if (DistritoDTO.isEstado() == true) {
                         distritonList2.add(DistritoDTO);
                     }
                 }
+
                 for (int k = 0; k < distritonList2.size(); k++) {
-                    TreeItem<String> item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito()+ " [Distrito]");
+                    int cont = 0;
+                    double cont2 = 0;
+                    TreeItem<String> item1;
                     unidadnList = UnidadService.distritoIdUnidad(distritonList2.get(k).getId());
                     unidadnList2 = new ArrayList<UnidadDTO>();
+                    listaItemUnidad = new ArrayList<TreeItem>();
                     for (UnidadDTO UnidadDTO : unidadnList) {
-                    if (UnidadDTO.isEstado()== true) {
-                        unidadnList2.add(UnidadDTO);
+                        if (UnidadDTO.isEstado() == true) {
+                            unidadnList2.add(UnidadDTO);
+                        }
                     }
                     for (int f = 0; f < unidadnList2.size(); f++) {
-                    TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad()+ " [Unidad] " + "Población:"+unidadnList2.get(f).getPoblacion());
-                    item1.getChildren().addAll(item2);
+                        TreeItem<String> item2 = new TreeItem<>(unidadnList2.get(f).getNombreUnidad() + " [Unidad] " + "Población:" + unidadnList2.get(f).getPoblacion() + " Área Cuadrada:" + unidadnList2.get(f).getAreaCuadrada());
+                        listaItemUnidad.add(item2);
+                        cont = (int) (cont + unidadnList2.get(f).getPoblacion());
+                        cont2 = cont2 + unidadnList2.get(f).getAreaCuadrada();
                     }
+
+                    item1 = new TreeItem<>(distritonList2.get(k).getNombreDistrito() + " [Distrito] " + "Población:" + cont + " Área Cuadrada:" + cont2);
+                    for (TreeItem tree : listaItemUnidad) {
+                        item1.getChildren().addAll(tree);
+                    }
+
+                    item.getChildren().addAll(item1);
                 }
-                item.getChildren().addAll(item1);
-                }
-            root.getChildren().addAll(item);
+                root.getChildren().addAll(item);
             }
 
             root1.getChildren().add(root);

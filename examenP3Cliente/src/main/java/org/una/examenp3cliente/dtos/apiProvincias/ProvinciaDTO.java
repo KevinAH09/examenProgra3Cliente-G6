@@ -20,7 +20,21 @@ public class ProvinciaDTO {
     private String codigo;
     
     private boolean estado;
+    
+    private List<CantonDTO> listCantones ;
+    
+    public ProvinciaDTO() {
+        listCantones = new ArrayList();
+    }
 
+    public List<CantonDTO> getListCantones() {
+        return listCantones;
+    }
+
+    public void setListCantones(List<CantonDTO> listCantones) {
+        this.listCantones = listCantones;
+    }
+    
     public boolean isEstado() {
         return estado;
     }
