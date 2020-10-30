@@ -5,11 +5,25 @@
  */
 package org.una.examenp3cliente.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXSlider;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import org.una.examenp3cliente.utils.AppContext;
+import org.una.examenp3cliente.utils.FlowController;
+import org.una.examenp3cliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -20,15 +34,71 @@ public class CrearRangoController extends Controller implements Initializable {
 
     @FXML
     private JFXSlider slider;
+    @FXML
+    private Label lblIni;
+    @FXML
+    private Label lblfin;
+    @FXML
+    private JFXColorPicker colorPicker;
+    @FXML
+    private JFXButton btnCrear;
+    @FXML
+    private GridPane gripPane;
+    List<RangoExtendsAnchor> listrangoExtendsAnchor = new ArrayList();
+    int colunm = 2;
+    int row = 2;
 
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
+
+    }
 
     @Override
     public void initialize() {
     }
-    
+
+    @FXML
+    private void actionCrearRango(ActionEvent event) {
+
+        if (!Double.valueOf(String.format("%.0f", slider.getMin())).equals(100)) {
+            if (!Double.valueOf(String.format("%.0f", slider.getValue())).equals(Double.valueOf(String.format("%.0f", slider.getMin())))) {
+                RangoExtendsAnchor rangoExtendsAnchor = new RangoExtendsAnchor(String.format("%.0f", slider.getValue()), String.format("%.0f", slider.getMin()), colorPicker.getValue());
+                listrangoExtendsAnchor.add(rangoExtendsAnchor);
+                while (listrangoExtendsAnchor.size() > colunm * row) {
+                    colunm++;
+                    row++;
+                }
+                gripPane.getChildren().clear();
+                int contList = 0;
+                for (int i = 0; i < colunm; i++) {
+                    for (int j = 0; j < row; j++) {
+                        if (contList < listrangoExtendsAnchor.size()) {
+                            gripPane.add(listrangoExtendsAnchor.get(contList), i, j);
+                        }
+                        contList++;
+                    }
+                }
+
+                slider.setMin(Double.valueOf(String.format("%.0f", slider.getValue())));
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Crear rango", (Stage) btnCrear.getScene().getWindow(), "Seleccione un rango mayor al anterior");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Crear rango", (Stage) btnCrear.getScene().getWindow(), "Llego al limite del rango");
+        }
+    }
+
+    @FXML
+    private void actionCancelarCambios(ActionEvent event) {
+         AppContext.getInstance().set("listRangos", null);
+        FlowController.getInstance().goView("tarea/Tarea");
+    }
+
+    @FXML
+    private void actionGuardarCambios(ActionEvent event) {
+        System.out.println("org.una.examenp3cliente.controllers.CrearRangoController.actionGuardarCambios() Guardaaaaadddddddddddd");
+        AppContext.getInstance().set("listRangos", listrangoExtendsAnchor);
+        FlowController.getInstance().goView("tarea/Tarea");
+    }
+
 }

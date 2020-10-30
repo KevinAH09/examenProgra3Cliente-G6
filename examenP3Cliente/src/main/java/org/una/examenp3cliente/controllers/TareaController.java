@@ -18,24 +18,34 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.una.examenp3cliente.dtos.apiTareas.ProyectoDTO;
 import org.una.examenp3cliente.dtos.apiTareas.TareaDTO;
 import org.una.examenp3cliente.entitiesServices.apiTareas.ProyectoService;
 import org.una.examenp3cliente.entitiesServices.apiTareas.TareaService;
+import org.una.examenp3cliente.utils.AppContext;
 import org.una.examenp3cliente.utils.FlowController;
 import org.una.examenp3cliente.utils.Mensaje;
 
@@ -47,7 +57,7 @@ import org.una.examenp3cliente.utils.Mensaje;
 public class TareaController extends Controller implements Initializable {
 
     @FXML
-    private JFXTreeView<String> treeView;
+    private JFXTreeView<Label> treeView;
 
     List<ProyectoDTO> listProyectos = new ArrayList<>();
     ProyectoDTO proyectoSelect;
@@ -97,6 +107,8 @@ public class TareaController extends Controller implements Initializable {
     @FXML
     private JFXButton brnGuardarTarea;
 
+    List<RangoExtendsAnchor> listrangoExtendsAnchor = new ArrayList();
+
     /**
      * Initializes the controller class.
      */
@@ -133,23 +145,20 @@ public class TareaController extends Controller implements Initializable {
         treeView.setRoot(null);
         if (listProyect != null) {
             treeView.setRoot(null);
-//  
-//            Node imgroot = new ImageView(new Image("org/una/laboratorio/icons/menu.png"));
-//            Node imgInformacion = new ImageView(new Image("org/una/laboratorio/icons/informacion.png"));
-//            Node imgAdmin = new ImageView(new Image("org/una/laboratorio/icons/lengueta.png"));
-
-            TreeItem<String> root = new TreeItem<>("Proyectos");
-//            root.setGraphic(imgroot);
+//             Node imgroot = new ImageView(new Image("org/una/examenp3cliente/views/shared/info.png"));
+            TreeItem<Label> root = new TreeItem<>(new Label("Proyectos"));
             root.setExpanded(true);
             treeView.setRoot(root);
 
             for (ProyectoDTO proyecto : listProyect) {
-                TreeItem<String> item = new TreeItem<>(proyecto.getNombre());
+                Label labelPro = new Label(proyecto.getNombre());
+                TreeItem<Label> item = new TreeItem<>(labelPro);
 //                item.setGraphic(imgroot);
                 root.getChildren().add(item);
                 for (TareaDTO tarea : proyecto.getListTareas()) {
-                    TreeItem<String> itemTarea = new TreeItem<>(tarea.getNombre());
-//                    itemTarea.setGraphic(imgAdmin);
+                    Label label = new Label(tarea.getNombre());
+                    label.setBackground(retunrColorTarea(tarea.getProcentajeAvance()));
+                    TreeItem<Label> itemTarea = new TreeItem<>(label);
                     item.getChildren().add(itemTarea);
 
                 }
@@ -160,15 +169,27 @@ public class TareaController extends Controller implements Initializable {
 
     }
 
+    private Background retunrColorTarea(double porcentaje) {
+        if (AppContext.getInstance().get("listRangos") != null) {
+            listrangoExtendsAnchor = (List<RangoExtendsAnchor>) AppContext.getInstance().get("listRangos");
+            for (int i = 0; i < listrangoExtendsAnchor.size(); i++) {
+                if (listrangoExtendsAnchor.get(i).getValorIni() <= porcentaje && listrangoExtendsAnchor.get(i).getValorFin() >= porcentaje) {
+                    return new Background(new BackgroundFill(listrangoExtendsAnchor.get(i).getColor(), null, null));
+                }
+            }
+        }
+        return new Background(new BackgroundFill(Color.BLACK, null, null));
+    }
+
     void actionTreeView() {
         treeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
                 if (mouseEvent.getClickCount() == 2) {
-                    TreeItem<String> item = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
+                    TreeItem<Label> item = (TreeItem<Label>) treeView.getSelectionModel().getSelectedItem();
                     if (!item.getValue().equals("Proyectos")) {
-                        selectItem(item.getParent().getValue(), item.getValue());
+                        selectItem(item.getParent().getValue().getText(), item.getValue().getText());
                     }
 
                 }
