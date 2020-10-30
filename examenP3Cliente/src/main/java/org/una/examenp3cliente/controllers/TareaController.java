@@ -146,17 +146,21 @@ public class TareaController extends Controller implements Initializable {
         if (listProyect != null) {
             treeView.setRoot(null);
 //             Node imgroot = new ImageView(new Image("org/una/examenp3cliente/views/shared/info.png"));
-            TreeItem<Label> root = new TreeItem<>(new Label("Proyectos"));
+            Label rootLabel = new Label("Lista de proyectos");
+            rootLabel.setId("Lista de proyectos");
+            TreeItem<Label> root = new TreeItem<>(rootLabel);
             root.setExpanded(true);
             treeView.setRoot(root);
 
             for (ProyectoDTO proyecto : listProyect) {
-                Label labelPro = new Label(proyecto.getNombre());
+                Label labelPro = new Label("(Proyecto) " + proyecto.getNombre());
+                labelPro.setId(proyecto.getId().toString());
                 TreeItem<Label> item = new TreeItem<>(labelPro);
 //                item.setGraphic(imgroot);
                 root.getChildren().add(item);
                 for (TareaDTO tarea : proyecto.getListTareas()) {
-                    Label label = new Label(tarea.getNombre());
+                    Label label = new Label("(Tarea) " + tarea.getNombre());
+                    label.setId(tarea.getId().toString());
                     label.setBackground(retunrColorTarea(tarea.getProcentajeAvance()));
                     TreeItem<Label> itemTarea = new TreeItem<>(label);
                     item.getChildren().add(itemTarea);
@@ -188,8 +192,8 @@ public class TareaController extends Controller implements Initializable {
 
                 if (mouseEvent.getClickCount() == 2) {
                     TreeItem<Label> item = (TreeItem<Label>) treeView.getSelectionModel().getSelectedItem();
-                    if (!item.getValue().equals("Proyectos")) {
-                        selectItem(item.getParent().getValue().getText(), item.getValue().getText());
+                    if (!item.getValue().getId().equals("Lista de proyectos")) {
+                        selectItem(item.getParent().getValue().getId(), item.getValue().getId());
                     }
 
                 }
@@ -198,12 +202,12 @@ public class TareaController extends Controller implements Initializable {
         });
     }
 
-    private void selectItem(String nombreProyecto, String nombreTarea) {
-        if (!nombreProyecto.equals("Proyectos")) {
-            proyectoSelect = listProyectos.stream().filter(x -> x.getNombre().equals(nombreProyecto)).findFirst().get();
+    private void selectItem(String idProyecto, String idTarea) {
+        if (!idProyecto.equals("Lista de proyectos")) {
+            proyectoSelect = listProyectos.stream().filter(x -> x.getId().equals(Long.valueOf(idProyecto))).findFirst().get();
             if (proyectoSelect != null) {
 
-                tareaSelect = proyectoSelect.getListTareas().stream().filter(x -> x.getNombre().equals(nombreTarea)).findFirst().get();
+                tareaSelect = proyectoSelect.getListTareas().stream().filter(x -> x.getId().equals(Long.valueOf(idTarea))).findFirst().get();
 
                 if (tareaSelect != null) {
                     txtNombreProyecto.setText(proyectoSelect.getNombre());
@@ -220,9 +224,17 @@ public class TareaController extends Controller implements Initializable {
                 }
             }
         } else {
-            proyectoSelect = listProyectos.stream().filter(x -> x.getNombre().equals(nombreTarea)).findFirst().get();
+            proyectoSelect = listProyectos.stream().filter(x -> x.getId().equals(Long.valueOf(idTarea))).findFirst().get();
             txtNombreProyecto.setText(proyectoSelect.getNombre());
             txtdescripcionProyecto.setText(proyectoSelect.getDescripcion());
+            txtNombreTarea.setText("");
+            txtdescripcionTarea.setText("");
+            txtPorcentajeTarea.setText("");
+            txtImportancia.setText("");
+            txtUrgancia.setText("");
+            txtPrioridad.setText("");
+            fechaInicio.setValue(null);
+            fechaFinalizacion.setValue(null);
         }
 
     }
@@ -571,6 +583,13 @@ public class TareaController extends Controller implements Initializable {
     @FXML
     private void actionRangos(ActionEvent event) {
         FlowController.getInstance().goView("crearRango/CrearRango");
+    }
+
+    @FXML
+    private void actionSalirTareas(ActionEvent event) {
+        if (new Mensaje().showConfirmation("Salir", (Stage) btnCancelarTarea.getScene().getWindow(), "¿Desea salir de la vista?")) {
+            FlowController.getInstance().goView("inicio/Inicio");
+        }
     }
 
 }

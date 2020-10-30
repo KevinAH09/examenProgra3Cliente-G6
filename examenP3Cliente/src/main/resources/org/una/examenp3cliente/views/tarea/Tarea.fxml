@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.TareaController">
    <children>
@@ -39,7 +40,7 @@
                                     <JFXTextArea fx:id="txtdescripcionProyecto" disable="true" prefHeight="43.0" prefWidth="398.0" promptText="Descripcion" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="10.0">
+                              <HBox alignment="CENTER" prefHeight="46.0" prefWidth="610.0" spacing="10.0">
                                  <children>
                                     <JFXButton onAction="#actionEliminarProyecto" prefHeight="29.0" prefWidth="98.0" text="Eliminar" />
                                     <JFXButton fx:id="brnCancelarProyecto" onAction="#actionCancelarProyecto" prefHeight="29.0" prefWidth="119.0" text="Cancelar" />
@@ -81,7 +82,7 @@
                                     <JFXTextArea fx:id="txtdescripcionTarea" disable="true" prefHeight="43.0" prefWidth="428.0" promptText="Descripcion" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="610.0" spacing="10.0">
+                              <HBox alignment="CENTER" prefHeight="46.0" prefWidth="610.0" spacing="10.0">
                                  <children>
                                     <JFXButton onAction="#actionEliminarTarea" prefHeight="29.0" prefWidth="92.0" text="Eliminar" />
                                     <Button fx:id="btnCancelarTarea" mnemonicParsing="false" onAction="#actionCancelarTarea" prefHeight="29.0" prefWidth="120.0" text="Cancelar" />
@@ -103,7 +104,20 @@
          <top>
             <VBox alignment="CENTER" prefHeight="44.0" prefWidth="900.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton onAction="#actionRangos" text="Crear rangos" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <JFXButton onAction="#actionSalirTareas" text="Salir" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <JFXButton onAction="#actionRangos" text="Crear rangos de porcentaje de avance" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
                   <Separator prefWidth="200.0" />
                </children>
             </VBox>
@@ -111,7 +125,7 @@
          <left>
             <VBox alignment="CENTER" prefHeight="493.0" prefWidth="274.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXTextField fx:id="txtnombreProyecto" alignment="CENTER" labelFloat="true" onKeyPressed="#actionFilterproyecto" promptText="Buscar por nombre del proyecto">
+                  <JFXTextField fx:id="txtnombreProyecto" alignment="CENTER" labelFloat="true" onKeyPressed="#actionFilterproyecto" promptText="Buscar proyecto por nombre">
                      <focusColor>
                         <LinearGradient endX="1.0" endY="1.0">
                            <stops>
@@ -122,6 +136,7 @@
                      </focusColor>
                   </JFXTextField>
                   <JFXTreeView fx:id="treeView" VBox.vgrow="ALWAYS" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Doble click en un item para ver su informacion" />
                </children>
                <BorderPane.margin>
                   <Insets left="5.0" right="5.0" />

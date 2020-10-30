@@ -16,7 +16,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXSlider fx:id="slider" indicatorPosition="RIGHT" majorTickUnit="1.0" minorTickCount="10" prefHeight="62.0" prefWidth="900.0" showTickLabels="true" showTickMarks="true" VBox.vgrow="ALWAYS" />
+            <JFXSlider fx:id="slider" indicatorPosition="RIGHT" majorTickUnit="1.0" minorTickCount="10" onMouseClicked="#actionClick" onMouseDragged="#actionDrag" prefHeight="62.0" prefWidth="900.0" showTickLabels="true" showTickMarks="true" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="900.0" spacing="20.0">
                <children>
                   <Label text="Valor inicio:" />
@@ -24,7 +24,7 @@
                   <Label text="Valor Fin:" />
                   <Label fx:id="lblfin" prefHeight="20.0" prefWidth="35.0" />
                   <JFXColorPicker fx:id="colorPicker" prefHeight="31.0" prefWidth="106.0" />
-                  <JFXButton fx:id="btnCrear" onAction="#actionCrearRango" text="Crear" />
+                  <JFXButton fx:id="btnCrear" onAction="#actionCrearRango" text="Crear rango" />
                </children>
             </HBox>
             <HBox prefHeight="375.0" prefWidth="900.0" VBox.vgrow="ALWAYS">

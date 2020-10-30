@@ -18,6 +18,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -50,7 +54,8 @@ public class CrearRangoController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        lblIni.setText(String.format("%.0f", slider.getMin()));
+        lblfin.setText(String.format("%.0f", slider.getValue()));
     }
 
     @Override
@@ -80,6 +85,8 @@ public class CrearRangoController extends Controller implements Initializable {
                 }
 
                 slider.setMin(Double.valueOf(String.format("%.0f", slider.getValue())));
+                lblIni.setText(String.format("%.0f", slider.getMin()));
+                lblfin.setText(String.format("%.0f", slider.getValue()));
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Crear rango", (Stage) btnCrear.getScene().getWindow(), "Seleccione un rango mayor al anterior");
             }
@@ -90,7 +97,7 @@ public class CrearRangoController extends Controller implements Initializable {
 
     @FXML
     private void actionCancelarCambios(ActionEvent event) {
-         AppContext.getInstance().set("listRangos", null);
+        AppContext.getInstance().set("listRangos", null);
         FlowController.getInstance().goView("tarea/Tarea");
     }
 
@@ -99,6 +106,16 @@ public class CrearRangoController extends Controller implements Initializable {
         System.out.println("org.una.examenp3cliente.controllers.CrearRangoController.actionGuardarCambios() Guardaaaaadddddddddddd");
         AppContext.getInstance().set("listRangos", listrangoExtendsAnchor);
         FlowController.getInstance().goView("tarea/Tarea");
+    }
+
+    @FXML
+    private void actionDrag(MouseEvent event) {
+        lblfin.setText(String.format("%.0f", slider.getValue()));
+    }
+
+    @FXML
+    private void actionClick(MouseEvent event) {
+        lblfin.setText(String.format("%.0f", slider.getValue()));
     }
 
 }
