@@ -208,7 +208,7 @@ public class VerCobrosController extends Controller implements Initializable {
 
                         ini = Date.from(fInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
                         fina = Date.from(fFin.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                        if (ini.before(fina)) {
+                        if (ini.after(fina)) {
                             cobrosList = null;
                         } else {
                             filtered = new ArrayList<CobroDTO>();
