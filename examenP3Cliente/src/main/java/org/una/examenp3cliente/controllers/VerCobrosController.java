@@ -27,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,6 +37,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.una.examenp3cliente.dtos.apiCobros.ClienteDTO;
 import org.una.examenp3cliente.dtos.apiCobros.CobroDTO;
 import org.una.examenp3cliente.dtos.apiCobros.MembresiaDTO;
@@ -43,6 +45,7 @@ import org.una.examenp3cliente.entitiesServices.apiCobros.ClienteService;
 import org.una.examenp3cliente.entitiesServices.apiCobros.CobrosService;
 import org.una.examenp3cliente.entitiesServices.apiCobros.MembresiaService;
 import org.una.examenp3cliente.utils.FlowController;
+import org.una.examenp3cliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -127,7 +130,7 @@ public class VerCobrosController extends Controller implements Initializable {
                     box1.setVisible(false);
                 }
             }
-            if (cmbBusqueda.getValue() != null) {
+            if (cmbBusqueda.getValue() != null && fInicio.getValue() != null && fFin.getValue() != null) {
                 clientesList = new ArrayList<ClienteDTO>();
                 if (cmbBusqueda.getValue().equals("Fechas")) {
                     clientesList = ClienteService.allCliente();
@@ -205,13 +208,18 @@ public class VerCobrosController extends Controller implements Initializable {
 
                         ini = Date.from(fInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
                         fina = Date.from(fFin.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                        filtered = new ArrayList<CobroDTO>();
-                        for (CobroDTO cobroDTO : cobrosList) {
-                            if (cobroDTO.getFechaVencimiento().after(ini) && cobroDTO.getFechaVencimiento().before(fina)) {
-                                filtered.add(cobroDTO);
+                        if (ini.before(fina)) {
+                            cobrosList = null;
+                        } else {
+                            filtered = new ArrayList<CobroDTO>();
+                            for (CobroDTO cobroDTO : cobrosList) {
+                                if (cobroDTO.getFechaVencimiento().after(ini) && cobroDTO.getFechaVencimiento().before(fina)) {
+                                    filtered.add(cobroDTO);
+                                }
                             }
+                            cobrosList = filtered;
                         }
-                        cobrosList = filtered;
+
                     }
                     if (cobrosList != null) {
                         cobrosList.sort(Comparator.comparing(CobroDTO::getFechaVencimiento));
@@ -225,6 +233,7 @@ public class VerCobrosController extends Controller implements Initializable {
 
                         }
                     } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error en fechas", ((Stage) txtBusqueda.getScene().getWindow()), "No se puede tener la fecha final menor o igual que la inicial");
                         TreeItem<String> itemCobro = new TreeItem<>("No hay cobros  para mostrar");
                         item4.getChildren().add(itemCobro);
                     }
@@ -238,6 +247,7 @@ public class VerCobrosController extends Controller implements Initializable {
 
     }
 //Metodo para notificar graficamente cuando no hay resultados de los filtros
+
     private void notificar() {
         treeview.setVisible(false);
 
