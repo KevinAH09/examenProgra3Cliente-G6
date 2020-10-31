@@ -75,9 +75,6 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
     }
 
     public void inicio() {
-        for (int i = 0; i < 6000; i++) {
-
-        }
         generarCobro();
     }
 
@@ -107,10 +104,6 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
             cobroDTO.setPeriodo(periodo);
             cobroDTO.setTipo(membresiaFilt2.getDescripcion());
             cobroDTO2 = CobrosService.createCobros(cobroDTO);
-//            if (cobroDTO2 == null) {
-//                band = false;
-//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar cobros pendientes", ((Stage) txtNombre.getScene().getWindow()), "No se guardó el cobro correctamente");
-//            }
             System.out.println(cobroDTO);
         }
     }
