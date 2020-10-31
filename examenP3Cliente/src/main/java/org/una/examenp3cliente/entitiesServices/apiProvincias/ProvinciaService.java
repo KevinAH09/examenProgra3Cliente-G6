@@ -46,17 +46,6 @@ public class ProvinciaService {
         return dtos;
     }
     
-    public static int deleteProvincia(Long id) {
-
-        try {
-            return Conection.deleteObjetcConnection("provincias/" + id);
-
-        } catch (IOException ex) {
-            Logger.getLogger(ProvinciaService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
-
     public static ProvinciaDTO idProvincia(Long id) {
 
         ProvinciaDTO ProvinciaDTO = new ProvinciaDTO();

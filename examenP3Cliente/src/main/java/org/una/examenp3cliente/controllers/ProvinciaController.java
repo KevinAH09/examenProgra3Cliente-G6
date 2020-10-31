@@ -365,6 +365,7 @@ public class ProvinciaController extends Controller implements Initializable {
 
     @FXML
     private void Limpiar(ActionEvent event) {
+        provinciaList=ProvinciaService.estado(true);
         cargarTreeView(provinciaList);
     }
 
