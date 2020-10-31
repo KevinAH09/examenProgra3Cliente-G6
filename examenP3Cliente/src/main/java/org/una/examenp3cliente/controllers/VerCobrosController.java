@@ -84,7 +84,7 @@ public class VerCobrosController extends Controller implements Initializable {
         cmbBusqueda.setItems(FXCollections.observableArrayList("Todos", "Identificacion", "Fechas"));
         notificar();
         box1.setVisible(true);
-        cmbBusqueda.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        cmbBusqueda.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {//Para obtener en tiempo real el cambio de seleccion de jun item en el combobox
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                 if (t1 == "Todos") {
@@ -237,7 +237,7 @@ public class VerCobrosController extends Controller implements Initializable {
         }
 
     }
-
+//Metodo para notificar graficamente cuando no hay resultados de los filtros
     private void notificar() {
         treeview.setVisible(false);
 

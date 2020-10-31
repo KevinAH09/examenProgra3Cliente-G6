@@ -81,7 +81,7 @@ public class GenerarCobroController extends Controller implements Initializable 
     private Pane paneNotificar;
     @FXML
     private HBox hboxProgress;
-    
+
     public List<ClienteDTO> clientesList = new ArrayList<ClienteDTO>();
     public List<MembresiaDTO> membresiaList = new ArrayList<MembresiaDTO>();
     public List<CobroDTO> cobroList = new ArrayList<CobroDTO>();
@@ -261,18 +261,6 @@ public class GenerarCobroController extends Controller implements Initializable 
         } else {
             paneNotificar.setVisible(false);
         }
-    }
-
-    public void limpiar() {
-        txtDescripcion.clear();
-        txtId.clear();
-        txtIdentificacion.clear();
-        txtMonto.clear();
-        txtNombre.clear();
-        txtPeridiocidad.clear();
-        txtTelefono.clear();
-        cmbMembresia.getItems().clear();
-
     }
 
     @Override

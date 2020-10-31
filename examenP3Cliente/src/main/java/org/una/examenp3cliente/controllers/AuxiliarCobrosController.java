@@ -45,10 +45,6 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
     public MembresiaDTO membresiaFilt2 = new MembresiaDTO();
     public ClienteDTO clientesFilt2 = new ClienteDTO();
 
-    private int mili1;
-    private int minuto1;
-    private int segundo1;
-
     /**
      * Initializes the controller class.
      */
@@ -57,6 +53,7 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
         inicio();
     }
 
+    //Metodo para obtener la fecha de vencimiento
     public void FechaVencimiento(Date dat, int dias) {
         Calendar hoy = Calendar.getInstance();
         hoy.setTime(date);
@@ -64,6 +61,7 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
         date = hoy.getTime();
     }
 
+    //Metodo para verificar que un cliente no posea un cobro ya realizado
     public boolean verificaficacion(String identificacion, String tipo) {
         cobroList = null;
         cobroList = CobrosService.identificacionTipoClienteCobros(identificacion, tipo);
@@ -78,6 +76,7 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
         generarCobro();
     }
 
+    //Metodo para guardar los cobros 
     public void guardarCobros(Date dates, int cantidad, int cantDias, Double monto, String periodo) {
 
         BigDecimal formatNumber = new BigDecimal(monto);
@@ -92,12 +91,12 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
                 cobroDTO = new CobroDTO();
                 fecha.setTime(dates);
             } else {
-                int dias = 30 * cantDias;
+                int dias = 30 * cantDias;//30 dias por la cantidad de meses
                 FechaVencimiento(date, dias);
                 cobroDTO = new CobroDTO();
                 fecha.setTime(date);
             }
-            cobroDTO.setAnno(String.valueOf(fecha.get(Calendar.YEAR)));
+            cobroDTO.setAnno(String.valueOf(fecha.get(Calendar.YEAR)));//Se le ingresa el año de la fecha de vencimiento.
             cobroDTO.setClientesId(clientesFilt2);
             cobroDTO.setFechaVencimiento(date);
             cobroDTO.setMonto(formatNumber.doubleValue());
@@ -108,6 +107,7 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
         }
     }
 
+    //Metodo para iniciar con los cobros respectivos
     private void generarCobro() {
         clientesListCobro = ClienteService.allCliente();
 
@@ -121,10 +121,12 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
                         if (membresiaDTO.getPeriodicidad().equals("Anual")) {
                             date = new Date();
                             guardarCobros(date, 1, 12, membresiaDTO.getMonto(), "Anual");
+                            //el date es la fecha actual, el 1 es la cantidad de cobros a realizar, el 12 es la cantidad
+                            //de meses para la fecha de vencimiento, luego el monto y por ultimo el periodo de pago.
                         }
                         if (membresiaDTO.getPeriodicidad().equals("Mensual")) {
                             date = new Date();
-                            guardarCobros(date, 12, 1, (membresiaDTO.getMonto() / 12), "Mensual");
+                            guardarCobros(date, 12, 1, (membresiaDTO.getMonto() / 12), "Mensual");//Se divide el monto por la cantidad de cobros a realizar.
                         }
                         if (membresiaDTO.getPeriodicidad().equals("Bimestral")) {
                             date = new Date();
