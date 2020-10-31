@@ -18,29 +18,29 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javafx.beans.value.ObservableValueBase;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.una.examenp3cliente.dtos.apiTareas.ProyectoDTO;
 import org.una.examenp3cliente.dtos.apiTareas.TareaDTO;
 import org.una.examenp3cliente.entitiesServices.apiTareas.ProyectoService;
@@ -114,6 +114,7 @@ public class TareaController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         proyectoSelect = new ProyectoDTO();
         tareaSelect = new TareaDTO();
         llenarProyectos();
@@ -121,6 +122,68 @@ public class TareaController extends Controller implements Initializable {
         actionTreeView();
         importanciaValidator.setAutoHide(false);
         urgenciaValidator.setAutoHide(false);
+        Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (fechaInicio.getValue() != null) {
+                    if (item.isBefore(fechaInicio.getValue())) {
+                        setStyle("-fx-background-color: #ffc0cb;");
+                        Platform.runLater(() -> setDisable(true));
+                    }
+                }
+            }
+        };
+        fechaFinalizacion.setDayCellFactory(dayFinCellFactory);
+        Callback<DatePicker, DateCell> dayIniCellFactory = dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (fechaFinalizacion.getValue() != null) {
+                    if (item.isAfter(fechaFinalizacion.getValue())) {
+                        setStyle("-fx-background-color: #ffc0cb;");
+                        Platform.runLater(() -> setDisable(true));
+                    }
+                }
+            }
+        };
+        fechaInicio.setDayCellFactory(dayIniCellFactory);
+        txtPorcentajeTarea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(txtPorcentajeTarea.getText());
+                if (!newValue.matches("\\d*")) {
+                    txtPorcentajeTarea.setText(newValue.replaceAll("[^\\d]", ""));
+                } else if (!txtPorcentajeTarea.getText().isEmpty() && Double.valueOf(txtPorcentajeTarea.getText()) > 100) {
+                    txtPorcentajeTarea.setText(oldValue);
+                }
+
+            }
+        });
+        txtImportancia.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(txtImportancia.getText());
+                if (!newValue.matches("\\d*")) {
+                    txtImportancia.setText(newValue.replaceAll("[^\\d]", ""));
+                } else if (!txtImportancia.getText().isEmpty() && Double.valueOf(txtImportancia.getText()) > 10) {
+                    txtImportancia.setText(oldValue);
+                }
+
+            }
+        });
+        txtUrgancia.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(txtUrgancia.getText());
+                if (!newValue.matches("\\d*")) {
+                    txtUrgancia.setText(newValue.replaceAll("[^\\d]", ""));
+                } else if (!txtUrgancia.getText().isEmpty() && Double.valueOf(txtUrgancia.getText()) > 10) {
+                    txtUrgancia.setText(oldValue);
+                }
+
+            }
+        });
 
     }
 
@@ -224,9 +287,9 @@ public class TareaController extends Controller implements Initializable {
                     txtPorcentajeAvanceProyecto.setText(String.format("%.0f", proyectoSelect.getProcentajeAvanzeCalculado()));
                     txtNombreTarea.setText(tareaSelect.getNombre());
                     txtdescripcionTarea.setText(tareaSelect.getDescripcion());
-                    txtPorcentajeTarea.setText(String.valueOf(tareaSelect.getProcentajeAvance()));
-                    txtImportancia.setText(String.valueOf(tareaSelect.getImportancia()));
-                    txtUrgancia.setText(String.valueOf(tareaSelect.getUrgencia()));
+                    txtPorcentajeTarea.setText(String.valueOf(String.format("%.0f", tareaSelect.getProcentajeAvance())));
+                    txtImportancia.setText(String.valueOf(String.format("%.0f", tareaSelect.getImportancia())));
+                    txtUrgancia.setText(String.valueOf(String.format("%.0f", tareaSelect.getUrgencia())));
                     txtPrioridad.setText(String.valueOf(tareaSelect.getUrgencia() * tareaSelect.getImportancia()));
                     fechaInicio.setValue(tareaSelect.getFechaInicio().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                     fechaFinalizacion.setValue(tareaSelect.getFechaFinalizacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -339,7 +402,7 @@ public class TareaController extends Controller implements Initializable {
         if (txtUrgancia.getText().equals("")) {
             urgenciaValidator.getItems().clear();
             urgenciaValidator.getItems().add(
-                    new MenuItem("Campo numero del 1 al 10, con el fin de evaluar la urgencia del proyecto"));
+                    new MenuItem("Campo numerico del 1 al 10, con el fin de evaluar la urgencia del proyecto"));
             urgenciaValidator.show(txtUrgancia, Side.RIGHT, 10, 0);
         }
     }
@@ -375,24 +438,32 @@ public class TareaController extends Controller implements Initializable {
         if (txtImportancia.getText().equals("")) {
             importanciaValidator.getItems().clear();
             importanciaValidator.getItems().add(
-                    new MenuItem("Campo numero del 1 al 10, con el fin de evaluar la importancia del proyecto"));
+                    new MenuItem("Campo numerico del 1 al 10, con el fin de evaluar la importancia del proyecto"));
             importanciaValidator.show(txtImportancia, Side.RIGHT, 10, 0);
         }
     }
 
     @FXML
     private void actionCancelarTarea(ActionEvent event) {
-        btnEditarProeycto.setDisable(true);
-        btnCrearTarea.setDisable(true);
-        btnProyectoNuevo.setDisable(true);
-        brnGuardarTarea.setVisible(true);
-        brnCancelarProyecto.setDisable(true);
+
+        btnEditarProeycto.setDisable(false);
+        btnCrearTarea.setDisable(false);
+        btnProyectoNuevo.setDisable(false);
+        brnGuardarTarea.setVisible(false);
+        brnCancelarProyecto.setDisable(false);
+        txtNombreTarea.setDisable(true);
+        txtdescripcionTarea.setDisable(true);
+        txtPorcentajeTarea.setDisable(true);
+        txtImportancia.setDisable(true);
+        txtUrgancia.setDisable(true);
+        fechaInicio.setDisable(true);
+        fechaFinalizacion.setDisable(true);
         if (tareaSelect.getId() != null) {
             txtNombreTarea.setText(tareaSelect.getNombre());
             txtdescripcionTarea.setText(tareaSelect.getDescripcion());
-            txtPorcentajeTarea.setText(String.valueOf(tareaSelect.getProcentajeAvance()));
-            txtImportancia.setText(String.valueOf(tareaSelect.getImportancia()));
-            txtUrgancia.setText(String.valueOf(tareaSelect.getUrgencia()));
+            txtPorcentajeTarea.setText(String.valueOf(String.format("%.0f", tareaSelect.getProcentajeAvance())));
+            txtImportancia.setText(String.valueOf(String.format("%.0f", tareaSelect.getImportancia())));
+            txtUrgancia.setText(String.valueOf(String.format("%.0f", tareaSelect.getUrgencia())));
             txtPrioridad.setText(String.valueOf(tareaSelect.getUrgencia() * tareaSelect.getImportancia()));
             fechaInicio.setValue(tareaSelect.getFechaInicio().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             fechaFinalizacion.setValue(tareaSelect.getFechaFinalizacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -402,6 +473,7 @@ public class TareaController extends Controller implements Initializable {
             txtPorcentajeTarea.setText("");
             txtImportancia.setText("");
             txtUrgancia.setText("");
+            txtPrioridad.setText("");
             fechaInicio.setValue(null);
             fechaFinalizacion.setValue(null);
         }
@@ -540,6 +612,7 @@ public class TareaController extends Controller implements Initializable {
             txtPorcentajeTarea.setText("");
             txtImportancia.setText("");
             txtUrgancia.setText("");
+            txtPrioridad.setText("");
             fechaInicio.setValue(null);
             fechaFinalizacion.setValue(null);
             txtNombreProyecto.setText("");
