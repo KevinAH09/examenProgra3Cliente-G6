@@ -5,6 +5,7 @@
  */
 package org.una.examenp3cliente.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
@@ -13,14 +14,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TreeItem;
-import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.una.examenp3cliente.dtos.apiProvincias.CantonDTO;
 import org.una.examenp3cliente.dtos.apiProvincias.DistritoDTO;
 import org.una.examenp3cliente.dtos.apiProvincias.ProvinciaDTO;
@@ -30,6 +30,7 @@ import org.una.examenp3cliente.entitiesServices.apiProvincias.DistritoService;
 import org.una.examenp3cliente.entitiesServices.apiProvincias.ProvinciaService;
 import org.una.examenp3cliente.entitiesServices.apiProvincias.UnidadService;
 import org.una.examenp3cliente.utils.FlowController;
+import org.una.examenp3cliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -62,6 +63,12 @@ public class ProvinciaController extends Controller implements Initializable {
     private JFXComboBox<String> combMayoMenor;
     @FXML
     private JFXTextField txtValor;
+    @FXML
+    private JFXTextField txtValor1;
+    @FXML
+    private JFXButton filtroProvincia;
+    @FXML
+    private JFXButton filtrarPoblacion;
 
     /**
      * Initializes the controller class.
@@ -69,12 +76,13 @@ public class ProvinciaController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         combMayoMenor.setItems(FXCollections.observableArrayList("mayor", "menor"));
-        cargarTreeView();
+        provinciaList = ProvinciaService.estado(true);
+        cargarTreeView(provinciaList);
 
     }
 
-    public void cargarTreeView() {
-        provinciaList = ProvinciaService.estado(true);
+    public void cargarTreeView(List<ProvinciaDTO> r) {
+        provinciaList = r;
         Collections.sort(provinciaList, (o1, o2) -> o1.getCodigo().compareTo(o2.getCodigo()));
         TreeItem<String> root1 = new TreeItem<>("Provincias");
         root1.setExpanded(false);
@@ -151,6 +159,9 @@ public class ProvinciaController extends Controller implements Initializable {
             root1.getChildren().add(root);
         }
         treeView.setRoot(root1);
+        txtValor.setText("");
+        combMayoMenor.setValue(null);
+        txtValor1.setText("");
     }
 
     public void CargarTreeViewMayor(String MayorMenor, int valor) {
@@ -338,6 +349,8 @@ public class ProvinciaController extends Controller implements Initializable {
             }
             treeView.setRoot(root1);
         }
+        txtValor.setText("");
+        combMayoMenor.setValue(null);
     }
 
     @Override
@@ -351,14 +364,45 @@ public class ProvinciaController extends Controller implements Initializable {
     }
 
     @FXML
-    private void filtrar(ActionEvent event) {
+    private void Limpiar(ActionEvent event) {
+        cargarTreeView(provinciaList);
+    }
+
+    @FXML
+    private void filtrarProvincia(ActionEvent event) {
+        if (!txtValor1.getText().isEmpty()) {
+            provinciaList = new ArrayList<ProvinciaDTO>();
+            provinciaList.clear();
+            provinciaList = ProvinciaService.estado(true);
+            for (ProvinciaDTO provinciaDTO : provinciaList) {
+                if (provinciaDTO.getNombreProvincia().equals(txtValor1.getText())) {
+                    provinciaList = new ArrayList<ProvinciaDTO>();
+                    provinciaList.add(provinciaDTO);
+                }
+            }
+            if (provinciaList != null) {
+                cargarTreeView(provinciaList);
+            } else {
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al filtrar", ((Stage) txtValor.getScene().getWindow()), "No se encontró la provincia");
+            }
+
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al filtrar", ((Stage) txtValor.getScene().getWindow()), "Rellene los campos necesarios");
+        }
+    }
+
+    @FXML
+    private void filtrarPoblacion(ActionEvent event) {
         int numEntero = Integer.parseInt(txtValor.getText());
-        if (combMayoMenor.getValue().isEmpty() || txtValor.getText().isEmpty()){
+
+        if (!combMayoMenor.getValue().isEmpty() && !txtValor.getText().isEmpty()) {
             if (combMayoMenor.getValue().equals("mayor")) {
                 CargarTreeViewMayor("mayor", numEntero);
             } else {
                 CargarTreeViewMayor("menor", numEntero);
             }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al filtrar", ((Stage) txtValor.getScene().getWindow()), "Rellene los campos necesarios");
         }
     }
 

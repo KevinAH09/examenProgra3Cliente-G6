@@ -59,6 +59,7 @@ public class MantenimientoProvinciaController extends Controller implements Init
     }
 
     private void llenarProvincia() {
+        
         tableView.getItems().clear();
         tableView.getColumns().clear();
         TableColumn<ProvinciaDTO, String> colNombre = new TableColumn("Nombre de la Provincia");
@@ -68,11 +69,9 @@ public class MantenimientoProvinciaController extends Controller implements Init
         tableView.getColumns().addAll(colNombre, colCodigo);
 
         provinciaList = ProvinciaService.estado(true);
-        if (provinciaList != null && !provinciaList.isEmpty()) {
+        
+        if (!provinciaList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(provinciaList));
-        } else {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error en Provincias", ((Stage) txtNombreProvincia.getScene().getWindow()), "No existen Provincias");
-
         }
     }
 
@@ -143,7 +142,7 @@ public class MantenimientoProvinciaController extends Controller implements Init
 
     @FXML
     private void eliminar(ActionEvent event) {
-        if (provincia.getId() != null) {
+        if (provincia != null) {
             if (new Mensaje().showConfirmation("Eliminar Provincia", (Stage) txtNombreProvincia.getScene().getWindow(), "Desea eliminar la Provincia ")) {
                provincia.setEstado(false);
                 if (ProvinciaService.updateProvincia(provincia) == 200) {                  

@@ -86,7 +86,6 @@ public class MantenimientoUnidadesController extends Controller implements Initi
 
         TableColumn<UnidadDTO, String> colPoblacion = new TableColumn("Población");
         colPoblacion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getPoblacion().toString()));
-
         TableColumn<UnidadDTO, String> colAreaCuadrada = new TableColumn("Área cuadrada");
         colAreaCuadrada.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getAreaCuadrada().toString()));
 
@@ -97,8 +96,6 @@ public class MantenimientoUnidadesController extends Controller implements Initi
         unidadList = UnidadService.estado(true);
         if (unidadList != null && !unidadList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(unidadList));
-        } else {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error en distrito", ((Stage) txtNombreUnidad.getScene().getWindow()), "No existen distrito");
         }
 
     }
@@ -124,7 +121,7 @@ public class MantenimientoUnidadesController extends Controller implements Initi
     @FXML
     private void guardar(ActionEvent event) {
         if (unidad == null) {
-            if (!txtNombreUnidad.getText().isEmpty() && !txtCodigo.getText().isEmpty() && !combDistrito.getValue().getNombreDistrito().isEmpty() && !combTipoUnidad.getValue().isEmpty() && !txtPoblacion.getText().isEmpty() && !txtAreaCuadrada.getText().isEmpty()) {
+            if (!txtNombreUnidad.getText().isEmpty() && !txtCodigo.getText().isEmpty() && combDistrito.getValue()!=null && !combTipoUnidad.getValue().isEmpty() && !combDistrito.getItems().isEmpty()&& !txtPoblacion.getText().isEmpty() && !txtAreaCuadrada.getText().isEmpty()) {
                 unidad = new UnidadDTO();
                 unidad.setNombreUnidad(txtNombreUnidad.getText());
                 unidad.setCodigo(txtCodigo.getText());
@@ -197,7 +194,7 @@ public class MantenimientoUnidadesController extends Controller implements Initi
 
     @FXML
     private void eliminar(ActionEvent event) {
-        if (unidad.getId() != null) {
+        if (unidad != null) {
             if (new Mensaje().showConfirmation("Eliminar Unidad", (Stage) txtNombreUnidad.getScene().getWindow(), "Desea eliminar la Unidad ")) {
                 unidad.setEstado(false);
                 if (UnidadService.updateUnidad(unidad) == 200) {
@@ -206,7 +203,6 @@ public class MantenimientoUnidadesController extends Controller implements Initi
                 }
 
             }
-
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Error al eliminar la Unidad", ((Stage) txtNombreUnidad.getScene().getWindow()), "Elija en el tableView una Unidad");
         }

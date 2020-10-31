@@ -80,8 +80,6 @@ public class MantenimientoCantonesController extends Controller implements Initi
         cantonList = CantonService.estado(true);
         if (cantonList != null && !cantonList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(cantonList));
-        } else {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error en cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "No existen Cantón");
         }
 
     }
@@ -105,24 +103,29 @@ public class MantenimientoCantonesController extends Controller implements Initi
     private void guardar(ActionEvent event) {
 
         if (canton == null) {
-            if (!txtNombreCanton.getText().isEmpty() && !txtCodigo.getText().isEmpty() && !combProvincia.getValue().getNombreProvincia().isEmpty()) {
-                canton = new CantonDTO();
-                canton.setNombreCanton(txtNombreCanton.getText());
-                canton.setCodigo(txtCodigo.getText());
-                canton.setProvinciaId(combProvincia.getValue());
-                canton.setEstado(true);
-                if (CantonService.createCantones(canton) != null) {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "Se guardó correctamente");
-                    txtNombreCanton.setText("");
-                    txtCodigo.setText("");
-                    combProvincia.setValue(null);
-                    canton = null;
-                    tableView.getItems().clear();
-                    llenarCanton();
+            if (!txtNombreCanton.getText().isEmpty() && !txtCodigo.getText().isEmpty() && !combProvincia.getItems().isEmpty()) {
+                if (combProvincia.getValue() != null) {
+                    canton = new CantonDTO();
+                    canton.setNombreCanton(txtNombreCanton.getText());
+                    canton.setCodigo(txtCodigo.getText());
+                    canton.setProvinciaId(combProvincia.getValue());
+                    canton.setEstado(true);
+                    if (CantonService.createCantones(canton) != null) {
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "Se guardó correctamente");
+                        txtNombreCanton.setText("");
+                        txtCodigo.setText("");
+                        combProvincia.setValue(null);
+                        canton = null;
+                        tableView.getItems().clear();
+                        llenarCanton();
 
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "No se guardó correctamente");
+                    }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "No se guardó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "Rellene los campos necesarios");
                 }
+
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "Rellene los campos necesarios");
             }
@@ -160,16 +163,16 @@ public class MantenimientoCantonesController extends Controller implements Initi
 
     @FXML
     private void eliminar(ActionEvent event) {
-        if (canton.getId() != null) {
+        if (canton != null) {
             if (new Mensaje().showConfirmation("Eliminar Cantón", (Stage) txtNombreCanton.getScene().getWindow(), "Desea eliminar el Cantón ")) {
-               canton.setEstado(false);
-                if (CantonService.updateCanton(canton) == 200) {                  
+                canton.setEstado(false);
+                if (CantonService.updateCanton(canton) == 200) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Cantón", (Stage) txtNombreCanton.getScene().getWindow(), "Cantón eliminado con exito");
                     llenarCanton();
                 }
 
             }
-            
+
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Error al eliminar el Cantón", ((Stage) txtNombreCanton.getScene().getWindow()), "Elija en el tableView un Cantón");
         }

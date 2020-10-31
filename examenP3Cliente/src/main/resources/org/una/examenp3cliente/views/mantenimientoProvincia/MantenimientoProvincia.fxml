@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="560.0" prefWidth="793.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.MantenimientoProvinciaController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.examenp3cliente.controllers.MantenimientoProvinciaController">
    <children>
-      <StackPane prefHeight="560.0" prefWidth="793.0">
+      <StackPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -51,10 +51,10 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="BOTTOM_RIGHT" prefHeight="133.0" prefWidth="793.0" spacing="5.0">
+                  <HBox alignment="BOTTOM_CENTER" prefHeight="133.0" prefWidth="793.0" spacing="5.0">
                      <children>
                         <JFXButton onAction="#regresar" prefHeight="29.0" prefWidth="146.0" text="Regresar al menú" />
-                        <JFXButton prefHeight="29.0" prefWidth="347.0" text="Button" visible="false" />
+                        <JFXButton prefHeight="29.0" prefWidth="451.0" text="Button" visible="false" />
                         <JFXButton onAction="#eliminar" prefHeight="29.0" prefWidth="146.0" text="Eliminar" />
                         <JFXButton fx:id="btnGuardar" onAction="#guardar" prefHeight="29.0" prefWidth="146.0" text="Guardar" />
                      </children>

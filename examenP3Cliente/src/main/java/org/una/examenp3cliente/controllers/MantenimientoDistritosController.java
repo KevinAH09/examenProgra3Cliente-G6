@@ -80,9 +80,7 @@ public class MantenimientoDistritosController extends Controller implements Init
         distritoList = DistritoService.estado(true);
         if (distritoList != null && !distritoList.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(distritoList));
-        } else {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error en distrito", ((Stage) txtNombreDistrito.getScene().getWindow()), "No existen distrito");
-        }
+        } 
 
     }
 
@@ -104,7 +102,7 @@ public class MantenimientoDistritosController extends Controller implements Init
     @FXML
     private void guardar(ActionEvent event) {
         if (distrito == null) {
-            if (!txtNombreDistrito.getText().isEmpty() && !txtCodigo.getText().isEmpty() && !combCantones.getValue().getNombreCanton().isEmpty()) {
+            if (!txtNombreDistrito.getText().isEmpty() && !txtCodigo.getText().isEmpty() && combCantones.getValue()!=null&& !combCantones.getItems().isEmpty()) {
                 distrito = new DistritoDTO();
                 distrito.setNombreDistrito(txtNombreDistrito.getText());
                 distrito.setCodigo(txtCodigo.getText());
@@ -153,7 +151,7 @@ public class MantenimientoDistritosController extends Controller implements Init
 
     @FXML
     private void eliminar(ActionEvent event) {
-        if (distrito.getId() != null) {
+        if (distrito != null) {
             if (new Mensaje().showConfirmation("Eliminar Distrito", (Stage) txtNombreDistrito.getScene().getWindow(), "Desea eliminar el Distrito ")) {
                distrito.setEstado(false);
                 if (DistritoService.updateDistrito(distrito) == 200) {                  
