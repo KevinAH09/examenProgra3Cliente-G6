@@ -121,33 +121,35 @@ public class AuxiliarCobrosController extends Controller implements Initializabl
         for (ClienteDTO clienteDTO : clientesListCobro) {
             clientesFilt2 = clienteDTO;
             membresiaListCobro = MembresiaService.idClienteMembresia(Long.valueOf(clienteDTO.getId()));
-            for (MembresiaDTO membresiaDTO : membresiaListCobro) {
-                membresiaFilt2 = membresiaDTO;
-                if (verificaficacion(clienteDTO.getIdentificacion(), membresiaDTO.getDescripcion())) {
-                    if (membresiaDTO.getPeriodicidad().equals("Anual")) {
-                        date = new Date();
-                        guardarCobros(date, 1, 12, membresiaDTO.getMonto(), "Anual");
-                    }
-                    if (membresiaDTO.getPeriodicidad().equals("Mensual")) {
-                        date = new Date();
-                        guardarCobros(date, 12, 1, (membresiaDTO.getMonto() / 12), "Mensual");
-                    }
-                    if (membresiaDTO.getPeriodicidad().equals("Bimestral")) {
-                        date = new Date();
-                        guardarCobros(date, 6, 2, (membresiaDTO.getMonto() / 6), "Bimestral");
-                    }
-                    if (membresiaDTO.getPeriodicidad().equals("Trimestral")) {
-                        date = new Date();
-                        guardarCobros(date, 4, 3, (membresiaDTO.getMonto() / 4), "Trimestral");
+            if (membresiaListCobro != null) {
+                for (MembresiaDTO membresiaDTO : membresiaListCobro) {
+                    membresiaFilt2 = membresiaDTO;
+                    if (verificaficacion(clienteDTO.getIdentificacion(), membresiaDTO.getDescripcion())) {
+                        if (membresiaDTO.getPeriodicidad().equals("Anual")) {
+                            date = new Date();
+                            guardarCobros(date, 1, 12, membresiaDTO.getMonto(), "Anual");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Mensual")) {
+                            date = new Date();
+                            guardarCobros(date, 12, 1, (membresiaDTO.getMonto() / 12), "Mensual");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Bimestral")) {
+                            date = new Date();
+                            guardarCobros(date, 6, 2, (membresiaDTO.getMonto() / 6), "Bimestral");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Trimestral")) {
+                            date = new Date();
+                            guardarCobros(date, 4, 3, (membresiaDTO.getMonto() / 4), "Trimestral");
 
-                    }
-                    if (membresiaDTO.getPeriodicidad().equals("Cuatrimestral")) {
-                        date = new Date();
-                        guardarCobros(date, 3, 4, (membresiaDTO.getMonto() / 3), "Cuatrimestral");
-                    }
-                    if (membresiaDTO.getPeriodicidad().equals("Semestral")) {
-                        date = new Date();
-                        guardarCobros(date, 2, 6, (membresiaDTO.getMonto() / 2), "Semestral");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Cuatrimestral")) {
+                            date = new Date();
+                            guardarCobros(date, 3, 4, (membresiaDTO.getMonto() / 3), "Cuatrimestral");
+                        }
+                        if (membresiaDTO.getPeriodicidad().equals("Semestral")) {
+                            date = new Date();
+                            guardarCobros(date, 2, 6, (membresiaDTO.getMonto() / 2), "Semestral");
+                        }
                     }
                 }
             }

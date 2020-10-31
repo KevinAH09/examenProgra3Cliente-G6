@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeView?>
 <?import javafx.geometry.Insets?>
@@ -22,9 +23,19 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <JFXTextField fx:id="txtBusqueda" prefHeight="29.0" prefWidth="252.0" promptText="Ingrese la identificacion del cliente" />
+                  <StackPane prefHeight="84.0" prefWidth="450.0">
+                     <children>
+                        <JFXTextField fx:id="txtBusqueda" prefHeight="29.0" prefWidth="295.0" promptText="Ingrese la identificacion del cliente a buscar" />
+                        <HBox fx:id="hboxDates" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <JFXDatePicker fx:id="fInicio" defaultColor="#030303" promptText="Fecha Inicio" />
+                              <JFXDatePicker fx:id="fFin" defaultColor="#141414" promptText="Fecha Fin" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </StackPane>
                   <JFXComboBox fx:id="cmbBusqueda" prefHeight="26.0" prefWidth="158.0" promptText="Seleccione un item" />
-                  <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" text="Filtrar" />
+                  <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" prefHeight="29.0" prefWidth="74.0" text="Filtrar" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="396.0" prefWidth="906.0">

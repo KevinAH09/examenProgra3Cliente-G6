@@ -7,14 +7,21 @@ package org.una.examenp3cliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,15 +68,46 @@ public class VerCobrosController extends Controller implements Initializable {
     private StackPane stack;
     VBox box2 = new VBox();
     VBox box1 = new VBox();
+    @FXML
+    private HBox hboxDates;
+    @FXML
+    private JFXDatePicker fInicio;
+    @FXML
+    private JFXDatePicker fFin;
+    List<CobroDTO> filtered = new ArrayList<CobroDTO>();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cmbBusqueda.setItems(FXCollections.observableArrayList("Todos", "Identificacion"));
+        cmbBusqueda.setItems(FXCollections.observableArrayList("Todos", "Identificacion", "Fechas"));
         notificar();
         box1.setVisible(true);
+        cmbBusqueda.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Todos") {
+                    hboxDates.setDisable(true);
+                    hboxDates.setVisible(false);
+                    txtBusqueda.setDisable(true);
+                    txtBusqueda.setVisible(true);
+                }
+                if (t1 == "Identificacion") {
+                    hboxDates.setDisable(true);
+                    hboxDates.setVisible(false);
+                    txtBusqueda.setDisable(false);
+                    txtBusqueda.setVisible(true);
+                }
+                if (t1 == "Fechas") {
+                    hboxDates.setDisable(false);
+                    hboxDates.setVisible(true);
+                    txtBusqueda.setDisable(true);
+                    txtBusqueda.setVisible(false);
+                }
+            }
+        }
+        );
     }
 
     @FXML
@@ -82,11 +120,27 @@ public class VerCobrosController extends Controller implements Initializable {
                     box1.setVisible(false);
                     box2.setVisible(false);
                     treeview.setVisible(true);
-                    llenarTree();
+                    llenarTree(false);
                 } else {
                     treeview.setVisible(false);
                     box2.setVisible(true);
                     box1.setVisible(false);
+                }
+            }
+            if (cmbBusqueda.getValue() != null) {
+                clientesList = new ArrayList<ClienteDTO>();
+                if (cmbBusqueda.getValue().equals("Fechas")) {
+                    clientesList = ClienteService.allCliente();
+                    if (clientesList != null) {
+                        box1.setVisible(false);
+                        box2.setVisible(false);
+                        treeview.setVisible(true);
+                        llenarTree(true);
+                    } else {
+                        treeview.setVisible(false);
+                        box2.setVisible(true);
+                        box1.setVisible(false);
+                    }
                 }
             }
             if (cmbBusqueda.getValue().equals("Identificacion")) {
@@ -96,7 +150,7 @@ public class VerCobrosController extends Controller implements Initializable {
                     box2.setVisible(false);
                     clientesList.add(clientesFilt);
                     treeview.setVisible(true);
-                    llenarTree();
+                    llenarTree(false);
                 } else {
 
                     treeview.setVisible(false);
@@ -107,50 +161,79 @@ public class VerCobrosController extends Controller implements Initializable {
         }
     }
 
-    private void llenarTree() {
+    private void llenarTree(Boolean band) {
         TreeItem<String> root = new TreeItem<>("Datos Generales de cobros");
         treeview.setRoot(root);
         TreeItem<String> inicio = new TreeItem<>("Cliente");
         root.getChildren().add(inicio);
-        clientesList.sort(Comparator.comparing(ClienteDTO::getNombre));
-        for (ClienteDTO clienteDTO : clientesList) {
-            String title = clienteDTO.getNombre();
-            TreeItem<String> item = new TreeItem<>(title);
-            inicio.getChildren().add(item);
+        if (clientesList != null) {
+            clientesList.sort(Comparator.comparing(ClienteDTO::getNombre));
+            for (ClienteDTO clienteDTO : clientesList) {
+                String title = clienteDTO.getNombre();
+                TreeItem<String> item = new TreeItem<>(title);
+                inicio.getChildren().add(item);
 
-            TreeItem<String> item2 = new TreeItem<>("Información del Cliente");
-            item.getChildren().add(item2);
+                TreeItem<String> item2 = new TreeItem<>("Información del Cliente");
+                item.getChildren().add(item2);
 
-            item2.getChildren().add(new TreeItem("Identificación: " + clienteDTO.getIdentificacion()));
-            item2.getChildren().add(new TreeItem("Teléfono: " + clienteDTO.getTelefono()));
+                item2.getChildren().add(new TreeItem("Identificación: " + clienteDTO.getIdentificacion()));
+                item2.getChildren().add(new TreeItem("Teléfono: " + clienteDTO.getTelefono()));
 
-            TreeItem<String> item3 = new TreeItem<>("Información de la o las Membresías");
-            item.getChildren().add(item3);
-            membresiaList = MembresiaService.idClienteMembresia(Long.valueOf(clienteDTO.getId()));
-            for (MembresiaDTO membresiaDTO : membresiaList) {
+                TreeItem<String> item3 = new TreeItem<>("Información de la o las Membresías");
+                item.getChildren().add(item3);
+                membresiaList = MembresiaService.idClienteMembresia(Long.valueOf(clienteDTO.getId()));
+                if (membresiaList != null) {
+                    for (MembresiaDTO membresiaDTO : membresiaList) {
 
-                TreeItem<String> itemMembresia = new TreeItem<>(membresiaDTO.getDescripcion());
-                item3.getChildren().add(itemMembresia);
-                itemMembresia.getChildren().add(new TreeItem("Periodicidad: " + membresiaDTO.getPeriodicidad()));
-                itemMembresia.getChildren().add(new TreeItem("Monto: " + membresiaDTO.getMonto()));
+                        TreeItem<String> itemMembresia = new TreeItem<>(membresiaDTO.getDescripcion());
+                        item3.getChildren().add(itemMembresia);
+                        itemMembresia.getChildren().add(new TreeItem("Periodicidad: " + membresiaDTO.getPeriodicidad()));
+                        itemMembresia.getChildren().add(new TreeItem("Monto: " + membresiaDTO.getMonto()));
+                    }
+                } else {
+                    TreeItem<String> itemMembresia = new TreeItem<>("No hay membresias asociadas a este usuario");
+                    item3.getChildren().add(itemMembresia);
+                }
+                TreeItem<String> item4 = new TreeItem<>("Información de Cobros Pendientes");
+                item.getChildren().add(item4);
+
+                cobrosList = CobrosService.idClienteCobros(Long.valueOf(clienteDTO.getId()));
+                if (cobrosList != null) {
+                    if (band) {
+                        Date ini = new Date();
+                        Date fina = new Date();
+
+                        ini = Date.from(fInicio.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        fina = Date.from(fFin.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        filtered = new ArrayList<CobroDTO>();
+                        for (CobroDTO cobroDTO : cobrosList) {
+                            if (cobroDTO.getFechaVencimiento().after(ini) && cobroDTO.getFechaVencimiento().before(fina)) {
+                                filtered.add(cobroDTO);
+                            }
+                        }
+                        cobrosList = filtered;
+                    }
+                    if (cobrosList != null) {
+                        cobrosList.sort(Comparator.comparing(CobroDTO::getFechaVencimiento));
+                        for (CobroDTO cobroDTO : cobrosList) {
+                            TreeItem<String> itemCobro = new TreeItem<>("Fecha vencimiento: " + formatter.format(cobroDTO.getFechaVencimiento()));
+                            item4.getChildren().add(itemCobro);
+                            itemCobro.getChildren().add(new TreeItem("Año: " + cobroDTO.getAnno()));
+                            itemCobro.getChildren().add(new TreeItem("Período: " + cobroDTO.getPeriodo()));
+                            itemCobro.getChildren().add(new TreeItem("Tipo servicio: " + cobroDTO.getTipo()));
+                            itemCobro.getChildren().add(new TreeItem("Monto: " + cobroDTO.getMonto()));
+
+                        }
+                    } else {
+                        TreeItem<String> itemCobro = new TreeItem<>("No hay cobros  para mostrar");
+                        item4.getChildren().add(itemCobro);
+                    }
+                } else {
+                    TreeItem<String> itemCobro = new TreeItem<>("No existen cobros registrados para este usuario");
+                    item4.getChildren().add(itemCobro);
+                }
+                treeview.getSelectionModel().select(item);
             }
-
-            TreeItem<String> item4 = new TreeItem<>("Información de Cobros Pendientes");
-            item.getChildren().add(item4);
-
-            cobrosList = CobrosService.idClienteCobros(Long.valueOf(clienteDTO.getId()));
-            cobrosList.sort(Comparator.comparing(CobroDTO::getFechaVencimiento));
-            for (CobroDTO cobroDTO : cobrosList) {
-                TreeItem<String> itemCobro = new TreeItem<>("Fecha vencimiento: " + formatter.format(cobroDTO.getFechaVencimiento()));
-                item4.getChildren().add(itemCobro);
-                itemCobro.getChildren().add(new TreeItem("Año: " + cobroDTO.getAnno()));
-                itemCobro.getChildren().add(new TreeItem("Período: " + cobroDTO.getPeriodo()));
-                itemCobro.getChildren().add(new TreeItem("Tipo servicio: " + cobroDTO.getTipo()));
-                itemCobro.getChildren().add(new TreeItem("Monto: " + cobroDTO.getMonto()));
-
-            }
-
-            treeview.getSelectionModel().select(item);
         }
 
     }
